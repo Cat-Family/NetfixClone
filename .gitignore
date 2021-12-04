@@ -1,0 +1,41 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/movie/nbproject/private/
+/movie/nbbuild/
+/movie/dist/
+/movie/nbdist/
+/movie/.nb-gradle/
+/movie/build/
+/movie/!**/src/main/**/build/
+/movie/!**/src/test/**/build/
+
+### IDE ###
+.vscode/
+.idea/
+
+### movie ui ###
+/movieui/node_modules
+/movieui/.DS_Store
+/movieui/dist
+/movieui/dist-ssr
+/movieui/*.local
