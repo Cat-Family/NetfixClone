@@ -2,7 +2,8 @@
 
 ## Movie UI
 
-Build projects with Vue 3 with Vite\
+Build projects with Vue 3 with Vite.\
+Use naive-ui as ui framework and vfonts as the default font . \
 Recommend node version lts 16.13.1
 
 - Add dependencies through yarn or npm install
