@@ -1,7 +1,10 @@
-# Vue 3 + Vite
+# 毕业设计电影网站
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## Movie UI
 
-## Recommended IDE Setup
+Build projects with Vue 3 with Vite\
+Recommend node version lts 16.13.1
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+- Add dependencies through yarn or npm install
+- Run with yarn dev or npm run dev.
+- Build a project with yarn build or npm build, and use yarn serve or npm serve to simulate a deployment

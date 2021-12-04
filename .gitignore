@@ -20,22 +20,23 @@ target/
 *.ipr
 
 ### NetBeans ###
-/movie/nbproject/private/
-/movie/nbbuild/
-/movie/dist/
-/movie/nbdist/
-/movie/.nb-gradle/
-/movie/build/
-/movie/!**/src/main/**/build/
-/movie/!**/src/test/**/build/
+movie/nbproject/private/
+movie/nbbuild/
+movie/dist/
+movie/nbdist/
+movie/.nb-gradle/
+movie/build/
+movie/!**/src/main/**/build/
+movie/!**/src/test/**/build/
 
 ### IDE ###
 .vscode/
 .idea/
 
 ### movie ui ###
-/movieui/node_modules
-/movieui/.DS_Store
-/movieui/dist
-/movieui/dist-ssr
-/movieui/*.local
+movieui/node_modules
+movieui/.DS_Store
+movieui/dist
+movieui/dist-ssr
+movieui/*.local
+movieui/yarn.lock
