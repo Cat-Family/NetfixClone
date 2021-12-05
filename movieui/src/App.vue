@@ -10,7 +10,7 @@
           <n-button @click="theme = null">浅色</n-button>
         </n-space>
         <br />
-        <Login />
+        <router-view></router-view>
       </n-card>
     </n-message-provider>
   </n-config-provider>
@@ -19,16 +19,13 @@
 <script >
 import { defineComponent, ref } from "vue";
 import { darkTheme } from "naive-ui";
-import Login from "./views/Login.vue";
+
 export default defineComponent({
   setup() {
     return {
       darkTheme,
       theme: ref(null),
     };
-  },
-  components: {
-    Login,
   },
 });
 </script>

@@ -39,7 +39,6 @@
       </n-col>
     </n-row>
   </n-form>
-
   <pre>
   {{ JSON.stringify(model, 0, 2) }}
   </pre>
