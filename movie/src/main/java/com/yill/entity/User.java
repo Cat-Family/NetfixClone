@@ -56,6 +56,16 @@ public class User implements Serializable {
      */
     private String email;
 
+    /**
+     * 状态
+     */
+    private Integer status;
+
+    /**
+     * 最后登录时间
+     */
+    private LocalDateTime lastLogin;
+
     private Boolean isDelete;
 
 

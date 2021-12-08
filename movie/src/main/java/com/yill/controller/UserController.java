@@ -1,7 +1,7 @@
 package com.yill.controller;
 
 
-import com.yill.config.Result;
+import com.yill.utils.Result;
 import com.yill.entity.dto.user.input.UserAddInput;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestBody;
