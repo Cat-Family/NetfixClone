@@ -1,10 +1,13 @@
 <template>
-  <div>
-    <router-view></router-view>
-  </div>
+  <router-view />
 </template>
 
-<script >
-</script>
+<script>
+export default {
+  name: "App",
 
-<style></style>
+  data: () => ({
+    //
+  }),
+};
+</script>
