@@ -6,15 +6,7 @@ const history = createWebHashHistory();
 const routes = [
   {
     path: "/",
-    component: Home,
-  },
-  {
-    path: "/login",
     component: Login,
-  },
-  {
-    path: "/all",
-    component: Home,
   },
 ];
 const router = createRouter({
