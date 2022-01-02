@@ -37,7 +37,6 @@ import javax.validation.Valid;
 @RequestMapping("/user")
 public class UserController {
 
-
     @Autowired
     UserService userService;
 
@@ -48,7 +47,7 @@ public class UserController {
     @RequestMapping(value = "/login", produces = { "application/json" }, method = RequestMethod.POST)
     @Valid
     public Result login(@Validated @RequestBody LoginDto loginDto, HttpServletResponse response) {
-        User user = userService.getOne(new QueryWrapper<User>().eq("username", loginDto.getUsername()));
+        User user = userService.getOne(new QueryWrapper<User>().eq("name", loginDto.getName()));
         Assert.notNull(user, "用户不存在");
         if(!user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))) {
             return Result.fail("密码错误！");
@@ -59,7 +58,7 @@ public class UserController {
         // 用户可以另一个接口
         return Result.succ(MapUtil.builder()
                 .put("id", user.getId())
-                .put("username", user.getName())
+                .put("name", user.getName())
                 .put("email", user.getEmail())
                 .map()
         );
