@@ -1,8 +1,8 @@
 <template>
   <header class="Header--un">
-    <svg
+    <img
       class="Header__logo Header__logo--un"
-      src="../../assets/images/netflix.svg"
+      src="../../assets/images/netflix.png"
     />
     <div class="Header__actions">
       <router-link class="btn btn--primary"> Sign in </router-link>
