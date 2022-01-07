@@ -40,3 +40,4 @@ movieui/dist
 movieui/dist-ssr
 movieui/*.local
 movieui/yarn.lock
+yarn-error.log
