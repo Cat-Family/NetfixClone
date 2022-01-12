@@ -8,19 +8,24 @@
         </transition>
         <form @submit.prevent="onSignIn" class="form">
           <div class="form__field">
-            <div class="input__wrapper">
+            <div v-if="!signInPhone" class="input__wrapper">
               <input
                 id="email"
                 type="email"
                 required
                 placeholder="Email"
                 v-model="email"
-                :class="[{ 'input--filled': email }, 'input']"
+                :class="[
+                  {
+                    'input--filled': email,
+                  },
+                  'input',
+                ]"
               />
               <label class="input__placeholder" for="email"> Email </label>
             </div>
           </div>
-          <div class="form__field">
+          <div v-if="!signInPhone" class="form__field">
             <div class="input__wrapper">
               <input
                 id="password"
@@ -35,17 +40,81 @@
               </label>
             </div>
           </div>
+          <div v-if="signInPhone" class="form__field">
+            <div class="input__wrapper">
+              <input
+                id="phone"
+                type="phone"
+                required
+                placeholder="phone"
+                v-model="phone"
+                :class="[{ 'input--filled': phone }, 'input']"
+              />
+              <label class="input__placeholder" for="phone"> Phone </label>
+            </div>
+          </div>
+          <div v-if="signInPhone && signInPhoneNext" class="form__field">
+            <div class="input__wrapper">
+              <input
+                id="code"
+                type="code"
+                required
+                placeholder="code"
+                v-model="code"
+                :class="[{ 'input--filled': code }, 'input']"
+              />
+              <label class="input__placeholder" for="phone"> Code </label>
+            </div>
+          </div>
           <div class="form__btns">
-            <button type="submit" class="btn btn--primary" :disabled="loading">
+            <button
+              v-if="!signInPhone"
+              type="submit"
+              class="btn btn--primary"
+              :disabled="loading"
+            >
               Sign In
             </button>
             <button
+              v-if="signInPhone && signInPhoneNext"
+              class="btn btn--primary"
+              :disabled="loading"
+              @click.prevent="onSignInPhone"
+            >
+              Sign In
+            </button>
+            <button
+              v-if="!signInPhone"
               type="button"
               class="btn btn--secondary"
               :disabled="loading"
-              @click="onSignInAnonymously"
+              @click.prevent="onSignInByPhone"
             >
-              Demo User
+              <i class="SignIn__social-icon">
+                <font-awesome-icon :icon="['fas', 'phone']" />
+              </i>
+              Login with Phone
+            </button>
+            <button
+              v-if="signInPhone && !signInPhoneNext"
+              type="button"
+              class="btn btn--primary"
+              :disabled="loading"
+              @click.prevent="onSignInPhoneNext"
+            >
+              Next
+            </button>
+            <button
+              v-if="signInPhone"
+              type="button"
+              class="btn btn--secondary"
+              :disabled="loading"
+              @click.prevent="onSignInEmail"
+            >
+              <i class="SignIn__social-icon">
+                <font-awesome-icon :icon="['fas', 'phone']" />
+              </i>
+              Login with Email
             </button>
           </div>
           <div class="flex-jc">
@@ -71,18 +140,7 @@
           </div>
         </form>
         <ul class="SignIn__social-list">
-          <li class="SignIn_social-item">
-            <button
-              class="btn SignIn__social-btn"
-              :disabled="loading"
-              @click.prevent="onSignInPhone"
-            >
-              <i class="SignIn__social-icon">
-                <font-awesome-icon :icon="['fas', 'phone']" />
-              </i>
-              Login with Phone
-            </button>
-          </li>
+          <li class="SignIn_social-item"></li>
         </ul>
         <p>
           New to netflix?
@@ -107,38 +165,42 @@ export default {
   data() {
     return {
       email: "",
+      phone: "",
       password: "",
+      code: "",
       rememberMe: false,
       signUpRoute: routes.signUp,
+      signInPhone: false,
+      signInPhoneNext: false,
     };
   },
   computed: {
     user() {
-      // return this.$store.getters.user;
+      return this.$store.getters.user;
     },
     error() {
-      // let template = "";
-      // if (!this.$store.getters.error) return null;
-      // switch (this.$store.getters.error.code) {
-      //   case "auth/user-not-found":
-      //     template =
-      //       "<div>Sorry, we can't find an account with this email address. Please try again or " +
-      //       "<router-link to='/sign-up'>create a new account.</router-link></div>";
-      //     break;
-      //   case "auth/wrong-password":
-      //     template =
-      //       "<div><b>Incorrect password.</b> Please try again or you can " +
-      //       "<router-link to='/recover-password'>reset your password.</router-link></div>";
-      //     break;
-      //   default:
-      //     template = "";
-      // }
-      // return {
-      //   template: template,
-      // };
+      let template = "";
+      if (!this.$store.getters.error) return null;
+      switch (this.$store.getters.error.code) {
+        case "auth/user-not-found":
+          template =
+            "<div>Sorry, we can't find an account with this email address. Please try again or " +
+            "<router-link to='/sign-up'>create a new account.</router-link></div>";
+          break;
+        case "auth/wrong-password":
+          template =
+            "<div><b>Incorrect password.</b> Please try again or you can " +
+            "<router-link to='/recover-password'>reset your password.</router-link></div>";
+          break;
+        default:
+          template = "";
+      }
+      return {
+        template: template,
+      };
     },
     loading() {
-      // return this.$store.getters.loading;
+      return this.$store.getters.loading;
     },
   },
   components: {
@@ -153,29 +215,36 @@ export default {
   },
   methods: {
     onSignIn() {
-      // this.$store.dispatch(actions.signIn, {
-      //   email: this.email,
-      //   password: this.password,
-      //   rememberMe: this.rememberMe,
-      // });
-      console.log({
-        email: this.email,
-        password: this.password,
+      if (!this.signInPhone) {
+        this.$store.dispatch(actions.signIn, {
+          email: this.email,
+          password: this.password,
+          rememberMe: this.rememberMe,
+        });
+      }
+    },
+    onSignInPhone() {
+      this.$store.dispatch(actions.signInPhone, {
+        phone: this.phone,
+        code: this.code,
         rememberMe: this.rememberMe,
       });
     },
-    onSignInGoogle() {
-      // this.$store.dispatch(actions.signInGoogle);
+    onSignInByPhone() {
+      this.signInPhone = true;
     },
-    onSignInFacebook() {
-      // this.$store.dispatch(actions.signInFacebook);
+    onSignInPhoneNext() {
+      if (this.phone == "" || this.phone == null) {
+      } else {
+        this.signInPhoneNext = true;
+      }
     },
-    onSignInAnonymously() {
-      // this.$store.dispatch(actions.signInAnonymously);
+    onSignInEmail() {
+      this.signInPhone = false;
     },
   },
   destroyed() {
-    // this.$store.dispatch(actions.clearError);
+    this.$store.dispatch(actions.clearError);
   },
 };
 </script>
