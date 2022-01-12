@@ -1,29 +1,20 @@
 package com.yill.controller;
 
-
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yill.common.dto.LoginDto;
 import com.yill.entity.User;
-import com.yill.service.UserService;
-import com.yill.utils.JwtUtils;
+import com.yill.mapper.UserMapper;
+import com.yill.utils.RedisUtil;
 import com.yill.utils.Result;
-import com.yill.entity.dto.user.input.UserAddInput;
+import com.yill.utils.TokenUtil;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Collections;
+import java.util.Objects;
 
 /**
  * <p>
@@ -38,37 +29,35 @@ import javax.validation.Valid;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    RedisUtil redisUtil;
 
     @Autowired
-    JwtUtils jwtUtils;
-
+    UserMapper userMapper;
+    @ResponseBody
     @ApiOperation(value = "注册功能", tags = { "登录" })
     @RequestMapping(value = "/login", produces = { "application/json" }, method = RequestMethod.POST)
     @Valid
-    public Result login(@Validated @RequestBody LoginDto loginDto, HttpServletResponse response) {
-        User user = userService.getOne(new QueryWrapper<User>().eq("name", loginDto.getName()));
-        Assert.notNull(user, "用户不存在");
-        if(!user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))) {
-            return Result.fail("密码错误！");
+    public Result login(@RequestBody LoginDto loginDto, HttpServletResponse response) throws JsonProcessingException {
+        User user=new User();
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("name", loginDto.getName());
+        User users = userMapper.selectOne(queryWrapper);
+        System.out.println(queryWrapper);
+        //去数据库拿密码验证用户名密码，这里直接验证
+        if(Objects.isNull(users)){
+                return new Result(400,"用户名不存在");
+        }else{
+            queryWrapper.eq("password",loginDto.getPassword());
+            if (Objects.isNull(userMapper.selectOne(queryWrapper))){
+                return new Result(400, "密码错误");
+            }
         }
-        String jwt = jwtUtils.generateToken(user.getId());
-        response.setHeader("Authorization", jwt);
+        Long currentTimeMillis = System.currentTimeMillis();
+        String token= TokenUtil.sign(loginDto.getName(),currentTimeMillis);
+        redisUtil.set(loginDto.getName(),currentTimeMillis,TokenUtil.REFRESH_EXPIRE_TIME);
+        response.setHeader("Authorization", token);
         response.setHeader("Access-Control-Expose-Headers", "Authorization");
-        // 用户可以另一个接口
-        return Result.succ(MapUtil.builder()
-                .put("id", user.getId())
-                .put("name", user.getName())
-                .put("email", user.getEmail())
-                .map()
-        );
-    }
 
-    // 退出
-    @RequestMapping("/logout")
-    @RequiresAuthentication
-    public Result logout() {
-        SecurityUtils.getSubject().logout();
-        return Result.succ(null);
-    }
+        return new Result().OK();
+    };
 }

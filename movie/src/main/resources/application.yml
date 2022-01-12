@@ -2,7 +2,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/vueblog?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/movie?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: root
     password: zhuyilai995
 mybatis-plus:
@@ -29,3 +29,16 @@ markerhub:
     # token有效时长，7天，单位秒
     expire: 604800
     header: token
+  redis:
+    host: localhost
+    port: 6379
+    jedis:
+      pool:
+        max-active: -1
+        max-wait: 3000ms
+    timeout: 3000ms
+    #by zhengkai.blog.csdn.net
+    #mybatis-plus配置控制台打印完整带参数SQL语句
+  mybatis-plus:
+    configuration:
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
