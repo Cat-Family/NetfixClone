@@ -1,5 +1,5 @@
 function convertTime(time) {
-  const [amt, t = 'ms'] = String(time).split(/(ms|s)/i);
+  const [amt, t = "ms"] = String(time).split(/(ms|s)/i);
   const types = {
     ms: 1,
     s: 1000,
@@ -9,8 +9,8 @@ function convertTime(time) {
 }
 
 function debounce(fn, wait) {
-  let timeout = null;
-  const timer = typeof wait === 'number' ? wait : convertTime(wait);
+  let timeout;
+  const timer = typeof wait === "number" ? wait : convertTime(wait);
 
   const debounced = function (...args) {
     const later = () => {
