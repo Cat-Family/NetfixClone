@@ -1,10 +1,12 @@
-import { createApp } from "vue";
 import { createStore } from "vuex";
+import user from "./User";
+import shared from "./shared";
 
-const app = createApp({
-  /* your root component */
+const store = createStore({
+  modules: {
+    user: user,
+    shared: shared,
+  },
 });
 
-const store = createStore({});
-
-app.use(store);
+export default store;
