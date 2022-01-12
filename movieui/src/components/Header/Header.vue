@@ -1,23 +1,37 @@
 <template>
   <header class="Header--un">
-    <img
-      class="Header__logo Header__logo--un"
-      src="../../assets/images/netflix.png"
-    />
+    <router-link to="/">
+      <img
+        class="Header__logo Header__logo--un"
+        src="../../assets/images/netflix.png"
+      />
+    </router-link>
     <div class="Header__actions">
-      <router-link class="btn btn--primary"> Sign in </router-link>
+      <router-link
+        v-if="routePath === '/signIn'"
+        class="btn btn--primary"
+        :to="signUpRoute"
+      >
+        Sign Up
+      </router-link>
+      <router-link
+        v-if="routePath !== '/signIn'"
+        class="btn btn--primary"
+        :to="signInRoute"
+      >
+        Sign In
+      </router-link>
     </div>
   </header>
 </template>
 
 <script>
-import NetflixLogo from "../../assets/images/netflix.svg";
 import { routes } from "../../helpers/constants";
-
 export default {
   name: "Header",
   data() {
     return {
+      signUpRoute: routes.signUp,
       signInRoute: routes.signIn,
     };
   },
@@ -26,9 +40,7 @@ export default {
       return this.$route.path;
     },
   },
-  components: {
-    NetflixLogo,
-  },
+  components: {},
 };
 </script>
 
