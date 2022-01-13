@@ -28,7 +28,7 @@ markerhub:
     secret: f4e2e52034348f86b67cde581c0f9eb5
     # token有效时长，7天，单位秒
     expire: 604800
-    header: token
+    header: Authorization
   redis:
     host: localhost
     port: 6379

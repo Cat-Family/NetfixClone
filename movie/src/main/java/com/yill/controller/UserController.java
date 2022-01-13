@@ -5,15 +5,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yill.common.dto.LoginDto;
 import com.yill.entity.User;
 import com.yill.mapper.UserMapper;
-import com.yill.utils.RedisUtil;
-import com.yill.utils.Result;
-import com.yill.utils.TokenUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.Objects;
 
 /**
