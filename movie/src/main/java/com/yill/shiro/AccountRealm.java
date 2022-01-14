@@ -3,7 +3,7 @@ package com.yill.shiro;
 import cn.hutool.core.bean.BeanUtil;
 import com.yill.entity.User;
 import com.yill.service.UserService;
-import com.yill.util.JwtUtils;
+import com.yill.utils.JwtUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;

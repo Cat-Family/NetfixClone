@@ -5,6 +5,11 @@ spring:
     url: jdbc:mysql://localhost:3306/movie?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: root
     password: zhuyilai995
+  mail:
+    default-encoding: utf-8
+    host: smtp.qq.com
+    username: 1293453296@qq.com
+    password: hnzulhxonwfeieha
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml
   application:
@@ -22,23 +27,31 @@ shiro-redis:
   enabled: true
   redis-manager:
     host: 127.0.0.1:6379
-markerhub:
+  application:
+    name: ware-jwt-token
+yill:
   jwt:
-    # 加密秘钥
+    # 加密密钥
     secret: f4e2e52034348f86b67cde581c0f9eb5
-    # token有效时长，7天，单位秒
+    # token有效时长
     expire: 604800
+    # header 名称
     header: Authorization
-  redis:
-    host: localhost
-    port: 6379
-    jedis:
-      pool:
-        max-active: -1
-        max-wait: 3000ms
-    timeout: 3000ms
+
+redis:
+  host: localhost
+  port: 6379
+  jedis:
+    pool:
+      max-active: -1
+      max-wait: 3000ms
+  timeout: 3000ms
     #by zhengkai.blog.csdn.net
     #mybatis-plus配置控制台打印完整带参数SQL语句
   mybatis-plus:
     configuration:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# 开启MyBatis打印日志
+logging:
+  level:
+    com.yill.mapper: debug
