@@ -1,7 +1,10 @@
 package com.yill.service;
 
+import com.yill.entity.dto.user.input.ModifyDto;
+import com.yill.entity.dto.user.input.RegionDto;
 import com.yill.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yill.utils.Result;
 
 /**
  * <p>
@@ -13,4 +16,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface UserService extends IService<User> {
 
+    void region(RegionDto regionDto);
+
+    Result check(String info);
+
+    void modify(ModifyDto modifyDto);
 }
