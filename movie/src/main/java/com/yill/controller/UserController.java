@@ -72,13 +72,14 @@ public class UserController {
                 .put("id", user.getId())
                 .put("username", user.getName())
                 .put("email", user.getEmail())
+                .put("token",jwt)
                 .map()
         );
     }
     @ApiOperation(value = "郵箱登录功能", tags = {"用户"})
     @RequestMapping(value = "getCheckCode", produces = {"application/json"}, method = RequestMethod.POST)
     @ResponseBody
-    public String getCheckCode(String email){
+    public String getCheckCode(String email,String code){
         String checkCode = String.valueOf(new Random().nextInt(899999) + 100000);
         redisUtils.setWithTime(email,checkCode,60);
         String message = "欢迎使用无花果影音，您的注册验证码为："+checkCode;
@@ -86,12 +87,18 @@ public class UserController {
             mailService.sendSimpleMail(email, "注册验证码", message);
             User user = new User();
             user.setEmail(email);
+            user.setName(email);
+            if (!code.equals(checkCode)){
+                Result.fail("验证码错误");
+            }
             userMapper.insert(user);
         }catch (Exception e){
             return "";
         }
         return checkCode;
     }
+
+
 
     @ApiOperation(value = "注册功能", tags = {"用户"})
     @RequestMapping(value = "region", produces = {"application/json"}, method = RequestMethod.POST)
