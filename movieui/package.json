@@ -1,5 +1,5 @@
 {
-  "name": "movieui",
+  "name": "yes",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
@@ -25,5 +25,9 @@
     "typescript": "^4.4.4",
     "vite": "^2.7.2",
     "vue-tsc": "^0.29.8"
-  }
+  },
+  "main": "vite.config.js",
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

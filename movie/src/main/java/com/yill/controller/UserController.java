@@ -11,6 +11,7 @@ import com.yill.mapper.UserMapper;
 import com.yill.service.MailService;
 import com.yill.service.UserService;
 import com.yill.utils.JwtUtils;
+import com.yill.utils.RedisUtils;
 import com.yill.utils.Result;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ import java.util.Random;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    @Autowired
+    private RedisUtils redisUtils;
 
     @Autowired
     JwtUtils jwtUtils;
@@ -76,6 +80,7 @@ public class UserController {
     @ResponseBody
     public String getCheckCode(String email){
         String checkCode = String.valueOf(new Random().nextInt(899999) + 100000);
+        redisUtils.setWithTime(email,checkCode,60);
         String message = "欢迎使用无花果影音，您的注册验证码为："+checkCode;
         try {
             mailService.sendSimpleMail(email, "注册验证码", message);
@@ -110,4 +115,6 @@ public class UserController {
     public void modify(ModifyDto modifyDto){
         userService.modify(modifyDto);
     }
+
+
 }
