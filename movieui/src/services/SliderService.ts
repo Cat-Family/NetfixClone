@@ -206,6 +206,7 @@ export const handlers = {
       const { autoplay, pauseOnDotsHover, pauseOnHover } = this.settings;
       if (!autoplay) return;
       if ((element === 'dot' && pauseOnDotsHover) || (element === 'track' && pauseOnHover)) {
+        // @ts-ignore
         this.pauseAutoPlay = true;
       }
     },
@@ -214,6 +215,7 @@ export const handlers = {
       const { autoplay, pauseOnDotsHover, pauseOnHover } = this.settings;
       if (!autoplay) return;
       if ((element === 'dot' && pauseOnDotsHover) || (element === 'track' && pauseOnHover)) {
+        // @ts-ignore
         this.pauseAutoPlay = false;
       }
     }

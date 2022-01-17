@@ -1,0 +1,18 @@
+#端口
+server:
+  port: 8080
+#服务名
+spring:
+  application:
+    name: movie-web
+  #  nacos
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 81.70.97.93:8848
+        namespace: b9662b45-aea9-4a05-9231-13f7592807b3
+      config:
+        server-addr: 81.70.97.93:8848 #Nacos作为配置中心地址
+        file-extension: yaml  #指定yaml格式的配置
+        namespace: b9662b45-aea9-4a05-9231-13f7592807b3
+        group: DEV_GROUP

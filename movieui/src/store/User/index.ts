@@ -22,7 +22,7 @@ export default {
       commit(actions.setLoading, true);
       commit(actions.clearError);
       axios
-        .post("http://m39973w600.zicp.vip/user/login", payload)
+        .post("http://localhost:8080/user/login", payload)
         .then((user) => {
           commit(actions.setLoading, false);
           commit(actions.setUser, user);

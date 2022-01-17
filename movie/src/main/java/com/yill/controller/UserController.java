@@ -80,6 +80,7 @@ public class UserController {
     @RequestMapping(value = "getCheckCode", produces = {"application/json"}, method = RequestMethod.POST)
     @ResponseBody
     public String getCheckCode(String email,String code){
+        System.out.println("邮箱登录");
         String checkCode = String.valueOf(new Random().nextInt(899999) + 100000);
         redisUtils.setWithTime(email,checkCode,60);
         String message = "欢迎使用无花果影音，您的注册验证码为："+checkCode;
