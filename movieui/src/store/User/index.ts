@@ -1,5 +1,6 @@
 import router from "../../router";
 import { routes, actions } from "../../helpers/constants";
+import axios from "axios";
 
 export default {
   state: {
@@ -21,8 +22,18 @@ export default {
       commit(actions.setLoading, true);
       commit(actions.clearError);
       console.log(payload);
+      axios
+        .post("http://m39973w600.zicp.vip/user/login", payload)
+        .then((user) => {
+          commit(actions.setLoading, false);
+          commit(actions.setUser, user);
+        })
+        .catch((error) => {
+          commit(actions.setLoading, false);
+          commit(actions.setError, error);
+        });
     },
-    signInPhone({ commit }, payload) {
+    signInEmail({ commit }, payload) {
       commit(actions.setLoading, true);
       commit(actions.clearError);
       console.log(payload);

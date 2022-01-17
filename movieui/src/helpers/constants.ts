@@ -32,7 +32,7 @@ export const routes: router = {
 export const actions = {
   signUp: "signUp",
   signIn: "signIn",
-  signInPhone: "signInPhone",
+  signInEmail: "signInEmail",
   autoSignIn: "autoSignIn",
   signInGoogle: "signInGoogle",
   signInFacebook: "signInFacebook",

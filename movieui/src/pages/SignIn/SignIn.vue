@@ -3,15 +3,11 @@
     <div class="bg tile">
       <div class="tile__container">
         <h1 class="tile__title">Sign In</h1>
-        <transition name="fade-height">
-          <div v-bind:is="error" v-if="error" class="form__error-message" />
-        </transition>
         <form @submit.prevent="onSignIn" class="form">
           <div class="form__field">
-            <div v-if="!signInPhone" class="input__wrapper">
+            <div v-if="!signInEmail" class="input__wrapper">
               <input
                 id="email"
-                type="email"
                 required
                 placeholder="Email"
                 v-model="email"
@@ -25,7 +21,7 @@
               <label class="input__placeholder" for="email"> Email </label>
             </div>
           </div>
-          <div v-if="!signInPhone" class="form__field">
+          <div v-if="!signInEmail" class="form__field">
             <div class="input__wrapper">
               <input
                 id="password"
@@ -40,7 +36,7 @@
               </label>
             </div>
           </div>
-          <div v-if="signInPhone" class="form__field">
+          <div v-if="signInEmail" class="form__field">
             <div class="input__wrapper">
               <input
                 id="phone"
@@ -53,7 +49,7 @@
               <label class="input__placeholder" for="phone"> Phone </label>
             </div>
           </div>
-          <div v-if="signInPhone && signInPhoneNext" class="form__field">
+          <div v-if="signInEmail && signInEmailNext" class="form__field">
             <div class="input__wrapper">
               <input
                 id="code"
@@ -68,7 +64,7 @@
           </div>
           <div class="form__btns">
             <button
-              v-if="!signInPhone"
+              v-if="!signInEmail"
               type="submit"
               class="btn btn--primary"
               :disabled="loading"
@@ -76,15 +72,15 @@
               Sign In
             </button>
             <button
-              v-if="signInPhone && signInPhoneNext"
+              v-if="signInEmail && signInEmailNext"
               class="btn btn--primary"
               :disabled="loading"
-              @click.prevent="onSignInPhone"
+              @click.prevent="onSignInEmail"
             >
               Sign In
             </button>
             <button
-              v-if="!signInPhone"
+              v-if="!signInEmail"
               type="button"
               class="btn btn--secondary"
               :disabled="loading"
@@ -96,20 +92,20 @@
               Login with Phone
             </button>
             <button
-              v-if="signInPhone && !signInPhoneNext"
+              v-if="signInEmail && !signInEmailNext"
               type="button"
               class="btn btn--primary"
               :disabled="loading"
-              @click.prevent="onSignInPhoneNext"
+              @click.prevent="onSignInEmailNext"
             >
               Next
             </button>
             <button
-              v-if="signInPhone"
+              v-if="signInEmail"
               type="button"
               class="btn btn--secondary"
               :disabled="loading"
-              @click.prevent="onSignInEmail"
+              @click.prevent="onSignByEmail"
             >
               <i class="SignIn__social-icon">
                 <font-awesome-icon :icon="['fas', 'phone']" />
@@ -156,7 +152,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" >
+import { ElMessage } from "element-plus";
 import Spinner from "../../components/Spinner/Spinner.vue";
 import { routes, actions } from "../../helpers/constants";
 
@@ -170,35 +167,15 @@ export default {
       code: "",
       rememberMe: false,
       signUpRoute: routes.signUp,
-      signInPhone: false,
-      signInPhoneNext: false,
+      signInEmail: false,
+      signInEmailNext: false,
     };
   },
   computed: {
     user() {
       return this.$store.getters.user;
     },
-    error() {
-      let template = "";
-      if (!this.$store.getters.error) return null;
-      switch (this.$store.getters.error.code) {
-        case "auth/user-not-found":
-          template =
-            "<div>Sorry, we can't find an account with this email address. Please try again or " +
-            "<router-link to='/sign-up'>create a new account.</router-link></div>";
-          break;
-        case "auth/wrong-password":
-          template =
-            "<div><b>Incorrect password.</b> Please try again or you can " +
-            "<router-link to='/recover-password'>reset your password.</router-link></div>";
-          break;
-        default:
-          template = "";
-      }
-      return {
-        template: template,
-      };
-    },
+    error() {},
     loading() {
       return this.$store.getters.loading;
     },
@@ -215,7 +192,7 @@ export default {
   },
   methods: {
     onSignIn() {
-      if (!this.signInPhone) {
+      if (!this.signInEmail) {
         this.$store.dispatch(actions.signIn, {
           email: this.email,
           password: this.password,
@@ -223,24 +200,25 @@ export default {
         });
       }
     },
-    onSignInPhone() {
-      this.$store.dispatch(actions.signInPhone, {
+    onSignInEmail() {
+      ElMessage.error("test");
+      this.$store.dispatch(actions.signInEmail, {
         phone: this.phone,
         code: this.code,
         rememberMe: this.rememberMe,
       });
     },
     onSignInByPhone() {
-      this.signInPhone = true;
+      this.signInEmail = true;
     },
-    onSignInPhoneNext() {
+    onSignInEmailNext() {
       if (this.phone == "" || this.phone == null) {
       } else {
-        this.signInPhoneNext = true;
+        this.signInEmailNext = true;
       }
     },
-    onSignInEmail() {
-      this.signInPhone = false;
+    onSignByEmail() {
+      this.signInEmail = false;
     },
   },
   destroyed() {
