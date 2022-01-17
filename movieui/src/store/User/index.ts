@@ -1,6 +1,7 @@
 import router from "../../router";
 import { routes, actions } from "../../helpers/constants";
 import axios from "axios";
+import { ElMessage } from "element-plus";
 
 export default {
   state: {
@@ -15,28 +16,32 @@ export default {
     singnUp({ commit }, payload) {
       commit(actions.setLoading, true);
       commit(actions.clearError);
-      console.log(payload.phone, payload.email, payload.password);
     },
 
     signIn({ commit }, payload) {
       commit(actions.setLoading, true);
       commit(actions.clearError);
-      console.log(payload);
       axios
         .post("http://m39973w600.zicp.vip/user/login", payload)
         .then((user) => {
           commit(actions.setLoading, false);
           commit(actions.setUser, user);
+          ElMessage.success("登录成功");
         })
         .catch((error) => {
           commit(actions.setLoading, false);
-          commit(actions.setError, error);
+          commit(
+            actions.setError,
+            error.response.data.msg ? error.response.data.msg : error
+          );
+          ElMessage.error(
+            error.response.data.msg ? error.response.data.msg : error
+          );
         });
     },
     signInEmail({ commit }, payload) {
       commit(actions.setLoading, true);
       commit(actions.clearError);
-      console.log(payload);
     },
   },
   getters: {

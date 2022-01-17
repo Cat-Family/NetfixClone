@@ -175,7 +175,6 @@ export default {
     user() {
       return this.$store.getters.user;
     },
-    error() {},
     loading() {
       return this.$store.getters.loading;
     },
@@ -194,14 +193,13 @@ export default {
     onSignIn() {
       if (!this.signInEmail) {
         this.$store.dispatch(actions.signIn, {
-          email: this.email,
+          name: this.email,
           password: this.password,
           rememberMe: this.rememberMe,
         });
       }
     },
     onSignInEmail() {
-      ElMessage.error("test");
       this.$store.dispatch(actions.signInEmail, {
         phone: this.phone,
         code: this.code,
