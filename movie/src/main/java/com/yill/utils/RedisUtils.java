@@ -9,8 +9,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Redis工具类
- * @author 刘嘉豪
- * @since 2021/10/17
  */
 @Component
 @Log4j2

@@ -20,8 +20,6 @@ import java.net.UnknownHostException;
 
 /**
  * Redis配置
- * @author 刘嘉豪
- * @date 2021年10月17日
  */
 @Configuration
 public class RedisConfig extends CachingConfigurerSupport {
