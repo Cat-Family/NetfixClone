@@ -104,7 +104,7 @@ public class UserController {
     @ApiOperation(value = "注册功能", tags = {"用户"})
     @RequestMapping(value = "region", produces = {"application/json"}, method = RequestMethod.POST)
     @ResponseBody
-    public void region(RegionDto regionDto){
+    public void region(@RequestBody RegionDto regionDto){
         userService.region(regionDto);
     }
 
