@@ -2,23 +2,26 @@
   <div class="SignIn">
     <div class="bg tile">
       <div class="tile__container">
-        <h1 class="tile__title">Sign In</h1>
+        <h1 class="tile__title">登录</h1>
         <form @submit.prevent="onSignIn" class="form">
-          <div class="form__field">
-            <div v-if="!signInEmail" class="input__wrapper">
+          <!-- 密码登录 -->
+          <div v-if="!signInEmail" class="form__field">
+            <div class="input__wrapper">
               <input
-                id="email"
+                id="name"
                 required
                 placeholder="Email"
-                v-model="email"
+                v-model="name"
                 :class="[
                   {
-                    'input--filled': email,
+                    'input--filled': name,
                   },
                   'input',
                 ]"
               />
-              <label class="input__placeholder" for="email"> Email </label>
+              <label class="input__placeholder" for="name">
+                邮箱/手机/用户名
+              </label>
             </div>
           </div>
           <div v-if="!signInEmail" class="form__field">
@@ -31,22 +34,21 @@
                 v-model="password"
                 :class="[{ 'input--filled': password }, 'input']"
               />
-              <label class="input__placeholder" for="password">
-                Password
-              </label>
+              <label class="input__placeholder" for="password"> 密码 </label>
             </div>
           </div>
+          <!-- 邮箱验证登录 -->
           <div v-if="signInEmail" class="form__field">
             <div class="input__wrapper">
               <input
-                id="phone"
-                type="phone"
+                id="email"
+                type="email"
                 required
-                placeholder="phone"
-                v-model="phone"
+                placeholder="email"
+                v-model="email"
                 :class="[{ 'input--filled': phone }, 'input']"
               />
-              <label class="input__placeholder" for="phone"> Phone </label>
+              <label class="input__placeholder" for="email"> 邮箱 </label>
             </div>
           </div>
           <div v-if="signInEmail && signInEmailNext" class="form__field">
@@ -59,7 +61,7 @@
                 v-model="code"
                 :class="[{ 'input--filled': code }, 'input']"
               />
-              <label class="input__placeholder" for="phone"> Code </label>
+              <label class="input__placeholder" for="phone"> 验证码 </label>
             </div>
           </div>
           <div class="form__btns">
@@ -69,15 +71,7 @@
               class="btn btn--primary"
               :disabled="loading"
             >
-              Sign In
-            </button>
-            <button
-              v-if="signInEmail && signInEmailNext"
-              class="btn btn--primary"
-              :disabled="loading"
-              @click.prevent="onSignInEmail"
-            >
-              Sign In
+              登录
             </button>
             <button
               v-if="!signInEmail"
@@ -89,7 +83,15 @@
               <i class="SignIn__social-icon">
                 <font-awesome-icon :icon="['fas', 'phone']" />
               </i>
-              Login with Phone
+              帐号密码登录
+            </button>
+            <button
+              v-if="signInEmail && signInEmailNext"
+              class="btn btn--primary"
+              :disabled="loading"
+              @click.prevent="onSignInEmail"
+            >
+              登录
             </button>
             <button
               v-if="signInEmail && !signInEmailNext"
@@ -98,7 +100,7 @@
               :disabled="loading"
               @click.prevent="onSignInEmailNext"
             >
-              Next
+              获取验证码
             </button>
             <button
               v-if="signInEmail"
@@ -110,7 +112,7 @@
               <i class="SignIn__social-icon">
                 <font-awesome-icon :icon="['fas', 'phone']" />
               </i>
-              Login with Email
+              邮箱验证登录
             </button>
           </div>
           <div class="flex-jc">
@@ -127,21 +129,19 @@
                     <polyline points="1.5 6 4.5 9 10.5 1" />
                   </svg>
                 </span>
-                <span class="checkbox__text"> Remember me </span>
+                <span class="checkbox__text"> 免密登录 </span>
               </label>
             </div>
-            <a href="https://www.netflix.com/LoginHelp" class="link link--s">
-              Need help ?
-            </a>
+            <a class="link link--s"> 需要帮助? </a>
           </div>
         </form>
         <ul class="SignIn__social-list">
           <li class="SignIn_social-item"></li>
         </ul>
         <p>
-          New to netflix?
+          还没有帐户？
           <router-link class="link link--white" :to="signUpRoute"
-            >Sign up now.</router-link
+            >立即注册。</router-link
           >
         </p>
         <div class="Spinner__overflow" v-if="loading">
@@ -153,7 +153,6 @@
 </template>
 
 <script lang="ts" >
-import { ElMessage } from "element-plus";
 import Spinner from "../../components/Spinner/Spinner.vue";
 import { routes, actions } from "../../helpers/constants";
 
@@ -161,6 +160,7 @@ export default {
   name: "SignIn",
   data() {
     return {
+      name: "",
       email: "",
       phone: "",
       password: "",
@@ -193,7 +193,7 @@ export default {
     onSignIn() {
       if (!this.signInEmail) {
         this.$store.dispatch(actions.signIn, {
-          name: this.email,
+          name: this.name,
           password: this.password,
           rememberMe: this.rememberMe,
         });
@@ -210,7 +210,7 @@ export default {
       this.signInEmail = true;
     },
     onSignInEmailNext() {
-      if (this.phone == "" || this.phone == null) {
+      if (this.email == "" || this.email == null) {
       } else {
         this.signInEmailNext = true;
       }

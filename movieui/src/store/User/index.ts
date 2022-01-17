@@ -25,19 +25,15 @@ export default {
       commit(actions.setLoading, true);
       commit(actions.clearError);
       axios
-        .post("http://localhost:8080/user/login", payload)
-        .then((user) => {
+        .post(`${baseUrl}/user/region`, payload)
+        .then((res) => {
           commit(actions.setLoading, false);
-          commit(actions.setUser, user.data.data);
-          const userInfo = user.data.data;
-          console.log(payload);
-          if (payload.rememberMe) {
-            localStorage.setItem("token", userInfo.token);
-            localStorage.setItem("email", userInfo.email);
-            localStorage.setItem("username", userInfo.username);
-            localStorage.setItem("id", userInfo.id);
+          if (res.data.code == 200) {
+            ElMessage.success("注册成功");
+          } else {
+            commit(actions.setError, res.data.msg);
+            ElMessage.error(res.data.msg);
           }
-          ElMessage.success("登录成功");
         })
         .catch((error) => {
           commit(actions.setLoading, false);
@@ -47,6 +43,39 @@ export default {
           );
           ElMessage.error(
             error.response.data.msg ? error.response.data.msg : error
+          );
+        });
+    },
+    signIn({ commit }, payload) {
+      commit(actions.setLoading, true);
+      commit(actions.clearError);
+      axios
+        .post(`${baseUrl}/user/login`, payload)
+        .then((res) => {
+          commit(actions.setLoading, false);
+          if (res.data.code == 200) {
+            commit(actions.setUser, res.data.data);
+            const userInfo = res.data.data;
+            if (payload.rememberMe) {
+              localStorage.setItem("token", userInfo.token);
+              localStorage.setItem("email", userInfo.email);
+              localStorage.setItem("username", userInfo.username);
+              localStorage.setItem("id", userInfo.id);
+            }
+            ElMessage.success("登录成功");
+          } else {
+            commit(actions.setError, res.data.msg);
+            ElMessage.error(res.data.msg);
+          }
+        })
+        .catch((error) => {
+          commit(actions.setLoading, false);
+          commit(
+            actions.setError,
+            error.response?.data.msg ? error.response.data.msg : error
+          );
+          ElMessage.error(
+            error.response?.data.msg ? error.response.data.msg : error
           );
         });
     },
