@@ -3,9 +3,17 @@ import { routes, actions } from "../../helpers/constants";
 import axios from "axios";
 import { ElMessage } from "element-plus";
 
+const baseUrl = "http://m39973w600.zicp.vip";
+//const baseUrl = "390gq17426.wicp.vip";
+
 export default {
   state: {
-    user: null,
+    user: {
+      token: localStorage.getItem("token"),
+      email: localStorage.getItem("email"),
+      username: localStorage.getItem("username"),
+      id: localStorage.getItem("id"),
+    },
   },
   mutations: {
     setUser(state, payload) {
@@ -13,19 +21,22 @@ export default {
     },
   },
   actions: {
-    singnUp({ commit }, payload) {
-      commit(actions.setLoading, true);
-      commit(actions.clearError);
-    },
-
-    signIn({ commit }, payload) {
+    signUp({ commit }, payload) {
       commit(actions.setLoading, true);
       commit(actions.clearError);
       axios
         .post("http://localhost:8080/user/login", payload)
         .then((user) => {
           commit(actions.setLoading, false);
-          commit(actions.setUser, user);
+          commit(actions.setUser, user.data.data);
+          const userInfo = user.data.data;
+          console.log(payload);
+          if (payload.rememberMe) {
+            localStorage.setItem("token", userInfo.token);
+            localStorage.setItem("email", userInfo.email);
+            localStorage.setItem("username", userInfo.username);
+            localStorage.setItem("id", userInfo.id);
+          }
           ElMessage.success("登录成功");
         })
         .catch((error) => {
