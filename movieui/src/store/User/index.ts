@@ -3,7 +3,7 @@ import { routes, actions } from "../../helpers/constants";
 import axios from "axios";
 import { ElMessage } from "element-plus";
 
-const baseUrl = "http://m39973w600.zicp.vip";
+const baseUrl = "http://localhost:8080";
 //const baseUrl = "390gq17426.wicp.vip";
 
 export default {
@@ -25,7 +25,7 @@ export default {
       commit(actions.setLoading, true);
       commit(actions.clearError);
       axios
-        .post(`${baseUrl}/user/region`, payload)
+        .post(`${baseUrl}/user/register`, payload)
         .then((res) => {
           commit(actions.setLoading, false);
           if (res.data.code == 200) {

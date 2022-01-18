@@ -2,8 +2,8 @@ package com.yill.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yill.entity.dto.user.input.ModifyDto;
-import com.yill.entity.dto.user.input.RegionDto;
 import com.yill.entity.User;
+import com.yill.entity.dto.user.input.RegisterDto;
 import com.yill.mapper.UserMapper;
 import com.yill.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -30,13 +30,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 
     @Override
-    public void region(RegionDto regionDto) {
+    public void register(RegisterDto registerDto) {
         User user = new User();
-        user.setName(regionDto.getName());
-        user.setPassword(regionDto.getPassword());
-        user.setPhone(regionDto.getPhone());
-        user.setEmail(regionDto.getEmail());
+        user.setName(registerDto.getName());
+        user.setPassword(registerDto.getPassword());
+        user.setPhone(registerDto.getPhone());
+        user.setEmail(registerDto.getEmail());
         userMapper.insert(user);
+
     }
 
     @Override

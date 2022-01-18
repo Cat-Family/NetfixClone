@@ -5,8 +5,8 @@ import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yill.entity.dto.user.input.LoginDto;
 import com.yill.entity.dto.user.input.ModifyDto;
-import com.yill.entity.dto.user.input.RegionDto;
 import com.yill.entity.User;
+import com.yill.entity.dto.user.input.RegisterDto;
 import com.yill.mapper.UserMapper;
 import com.yill.service.MailService;
 import com.yill.service.UserService;
@@ -38,10 +38,13 @@ public class UserController {
 
     @Autowired
     JwtUtils jwtUtils;
+
     @Autowired
     UserService userService;
+
     @Autowired
     private MailService mailService;
+
     @Autowired
     UserMapper userMapper;
 
@@ -102,10 +105,10 @@ public class UserController {
 
 
     @ApiOperation(value = "注册功能", tags = {"用户"})
-    @RequestMapping(value = "region", produces = {"application/json"}, method = RequestMethod.POST)
+    @RequestMapping(value = "register", produces = {"application/json"}, method = RequestMethod.POST)
     @ResponseBody
-    public void region(@RequestBody RegionDto regionDto){
-        userService.region(regionDto);
+    public void region(@RequestBody RegisterDto registerDto){
+        userService.register(registerDto);
     }
 
 
