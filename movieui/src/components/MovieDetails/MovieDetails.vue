@@ -85,7 +85,6 @@ export default {
   },
   methods: {
     getBackgroundImageUrl(url, size) {
-      console.log(`url(${getImageUrl(url, size, "backdrop")})`);
       return `url(${getImageUrl(url, size, "backdrop")})`;
     },
     addMovieToMyList() {

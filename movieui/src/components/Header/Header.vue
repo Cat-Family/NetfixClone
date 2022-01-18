@@ -1,52 +1,35 @@
 <template>
-  <header class="Header--un">
-    <router-link to="/">
-      <img
-        class="Header__logo Header__logo--un"
-        src="../../assets/images/netflix.png"
-      />
-    </router-link>
-    <div class="Header__actions">
-      <router-link
-        v-if="routePath === '/signIn'"
-        class="btn btn--primary"
-        :to="signUpRoute"
-      >
-        注册
-      </router-link>
-      <router-link
-        v-if="routePath !== '/signIn'"
-        class="btn btn--primary"
-        :to="signInRoute"
-      >
-        登录
-      </router-link>
-    </div>
-  </header>
+  <div v-if="userIsAuthenticated">
+    <AuthorizedHeader />
+  </div>
+  <div v-else>
+    <UnauthorizedHeader />
+  </div>
 </template>
 
 <script>
-import { routes } from "../../helpers/constants";
+import AuthorizedHeader from "./AuthorizedHeader.vue";
+import UnauthorizedHeader from "./UnauthorizedHeader.vue";
+import { actions } from "../../helpers/constants";
+
 export default {
   name: "Header",
-  data() {
-    return {
-      signUpRoute: routes.signUp,
-      signInRoute: routes.signIn,
-    };
-  },
   computed: {
-    routePath() {
-      return this.$route.path;
+    userIsAuthenticated() {
+      return (
+        this.$store.getters.user !== null &&
+        this.$store.getters.user !== undefined
+      );
     },
   },
-  components: {},
+  components: {
+    AuthorizedHeader,
+    UnauthorizedHeader,
+  },
+  methods: {
+    onLogOut() {
+      this.$store.dispatch(actions.logout);
+    },
+  },
 };
 </script>
-
-<style lang="scss">
-@import "./Header.scss";
-img {
-  color: whitesmoke;
-}
-</style>

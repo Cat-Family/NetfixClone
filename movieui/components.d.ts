@@ -4,13 +4,16 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AuthorizedHeader: typeof import('./src/components/Header/AuthorizedHeader.vue')['default']
     Header: typeof import('./src/components/Header/Header.vue')['default']
     MovieDetails: typeof import('./src/components/MovieDetails/MovieDetails.vue')['default']
     MovieLabels: typeof import('./src/components/MovieLabels/MovieLabels.vue')['default']
     MovieSlider: typeof import('./src/components/MovieSlider/MovieSlider.vue')['default']
     MovieSliderItem: typeof import('./src/components/MovieSliderItem/MovieSliderItem.vue')['default']
+    ProfileDropdown: typeof import('./src/components/ProfileDropdown/ProfileDropdown.vue')['default']
     Slider: typeof import('./src/components/Slider/Slider.vue')['default']
     Spinner: typeof import('./src/components/Spinner/Spinner.vue')['default']
+    UnauthorizedHeader: typeof import('./src/components/Header/UnauthorizedHeader.vue')['default']
   }
 }
 

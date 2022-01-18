@@ -52,7 +52,7 @@ export default {
       };
 
       await axios
-        .get("http://localhost:3000/movie.json")
+        .get("http://localhost:3000/list.json")
         .then((response) => {
           genres.movies = response.data.genres;
         })
@@ -61,7 +61,7 @@ export default {
         });
 
       await axios
-        .get("http://localhost:3000/list.json")
+        .get("http://localhost:3000/show_list.json")
         .then((response) => {
           genres.tv = response.data.genres;
         })
