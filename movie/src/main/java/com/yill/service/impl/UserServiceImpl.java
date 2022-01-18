@@ -30,14 +30,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 
     @Override
-    public void register(RegisterDto registerDto) {
+    public Result register(RegisterDto registerDto) {
         User user = new User();
         user.setName(registerDto.getName());
         user.setPassword(registerDto.getPassword());
         user.setPhone(registerDto.getPhone());
         user.setEmail(registerDto.getEmail());
         userMapper.insert(user);
-
+        return Result.succ("注册成功");
     }
 
     @Override

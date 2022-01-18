@@ -16,7 +16,7 @@ import com.yill.utils.Result;
  */
 public interface UserService extends IService<User> {
 
-    void register(RegisterDto registerDto);
+    Result  register(RegisterDto registerDto);
 
     Result check(String info);
 
