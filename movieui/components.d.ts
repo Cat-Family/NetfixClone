@@ -5,6 +5,8 @@
 declare module 'vue' {
   export interface GlobalComponents {
     Header: typeof import('./src/components/Header/Header.vue')['default']
+    MovieDetails: typeof import('./src/components/MovieDetails/MovieDetails.vue')['default']
+    MovieLabels: typeof import('./src/components/MovieLabels/MovieLabels.vue')['default']
     Slider: typeof import('./src/components/Slider/Slider.vue')['default']
     Spinner: typeof import('./src/components/Spinner/Spinner.vue')['default']
   }

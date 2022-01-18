@@ -152,7 +152,7 @@
   </div>
 </template>
 
-<script lang="ts" >
+<script>
 import Spinner from "../../components/Spinner/Spinner.vue";
 import { routes, actions } from "../../helpers/constants";
 
