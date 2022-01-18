@@ -12,14 +12,14 @@
         class="btn btn--primary"
         :to="signUpRoute"
       >
-        Sign Up
+        注册
       </router-link>
       <router-link
         v-if="routePath !== '/signIn'"
         class="btn btn--primary"
         :to="signInRoute"
       >
-        Sign In
+        登录
       </router-link>
     </div>
   </header>
