@@ -10,7 +10,6 @@ library.add(faPhone);
 
 import "element-plus/dist/index.css";
 
-import vClickOutside from "click-outside-vue3";
 
 /** Module */
 import store from "./store";
@@ -20,7 +19,6 @@ import "./index.scss";
 import "./helpers/fontawesome.js";
 
 const app = createApp(App);
-app.use(vClickOutside);
 app.use(router);
 app.use(store);
 app.component("font-awesome-icon", FontAwesomeIcon);

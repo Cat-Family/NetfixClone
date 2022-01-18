@@ -29,9 +29,12 @@
 
 <script>
 import axios from "axios";
+import vClickOutside from "click-outside-vue3";
 import Slider from "../../components/Slider/Slider.vue";
 import MovieSliderItem from "../../components/MovieSliderItem/MovieSliderItem.vue";
 import MovieDetails from "../../components/MovieDetails/MovieDetails.vue";
+// import clickOutside from "../../directives/clickOutside";
+
 export default {
   name: "MovieSlider",
   props: {
@@ -68,6 +71,9 @@ export default {
     MovieSliderItem,
     MovieDetails,
   },
+  directives: {
+    clickOutside: vClickOutside.directive,
+  },
   methods: {
     selectMovie(movie) {
       if (this.selectedMovie && this.selectedMovie.id === movie.id)
@@ -75,7 +81,6 @@ export default {
       else this.selectedMovie = movie;
     },
     unselectMovie() {
-      console.log("test");
       this.selectedMovie = null;
     },
   },
