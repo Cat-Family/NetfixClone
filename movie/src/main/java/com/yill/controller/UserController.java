@@ -89,7 +89,7 @@ public class UserController {
         String message = "欢迎使用无花果影音，您的注册验证码为：" + checkCode;
         try {
             mailService.sendSimpleMail(email, "注册验证码", message);
-            redisUtils.set("code", checkCode);
+            redisUtils.set(email, checkCode);
         } catch (Exception e) {
             return "";
         }
@@ -99,15 +99,15 @@ public class UserController {
     @ApiOperation(value = "邮箱登录", tags = {"用户"})
     @RequestMapping(value = "email-login", produces = {"application/json"}, method = RequestMethod.POST)
     @ResponseBody
-    public Result emailLogin(String validateCode) {
-        if (validateCode == null) {
-            return Result.fail("错误获取");
+    public Result emailLogin( String email,String validateCode) {
+        if (email==null||validateCode == null) {
+            return Result.fail("邮箱或验证码出错");
         }
         //redis中的验证码
-        Object checkCode = redisUtils.get("code");
+        Object checkCode = redisUtils.get(email);
         //校验
         System.out.println(checkCode);
-        if (validateCode != null && validateCode.equals(checkCode)) {
+        if (email!=null && validateCode != null && validateCode.equals(checkCode)) {
             return Result.succ("验证码正确");
         }
         return Result.fail("验证码错误");
@@ -124,7 +124,7 @@ public class UserController {
     @ApiOperation(value = "修改完善功能", tags = {"用户"})
     @RequestMapping(value = "update", produces = {"application/json"}, method = RequestMethod.POST)
     @ResponseBody
-    public void modify(ModifyDto modifyDto) {
+    public void modify(@RequestBody ModifyDto modifyDto) {
         userService.modify(modifyDto);
     }
 
