@@ -11,6 +11,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yill.utils.JwtUtils;
 import com.yill.utils.RedisUtils;
 import com.yill.utils.Result;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.BeanUtils;
@@ -41,6 +43,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private JwtUtils jwtUtils;
 
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public Result register(RegisterDto registerDto) {
@@ -91,12 +95,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Result loginByEmail(String email, String validateCode,HttpServletResponse response) {
         if (null == email || validateCode == null) {
+            logger.info("邮箱或验证码出错");
             return Result.fail("邮箱或验证码出错");
         } else {
             User user = userMapper.queryUserByEmail(email);
             if (null != user) {
                 boolean hasKey = redisUtils.hasKey(email);
                 if (!hasKey) {
+                    logger.info("验证码已过期，请重新获取");
                     return Result.fail("验证码已过期，请重新获取");
                 } else {
                     String realCode = (String) redisUtils.get(email);
@@ -112,10 +118,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                                 .map()
                         );
                     } else {
+                        logger.info("验证码错误");
                         return Result.fail("验证码错误");
                     }
                 }
             } else {
+                logger.info("邮箱错误，请检查");
                 return Result.fail("邮箱错误，请检查");
             }
         }
