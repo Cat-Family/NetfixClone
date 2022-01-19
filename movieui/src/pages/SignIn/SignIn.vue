@@ -3,14 +3,14 @@
     <div class="bg tile">
       <div class="tile__container">
         <h1 class="tile__title">登录</h1>
-        <form v-if="!signInEmail" @submit.prevent="onSignIn" class="form">
+        <form v-if="signInEmail == 0" @submit.prevent="onSignIn" class="form">
           <!-- 密码登录 -->
           <div class="form__field">
             <div class="input__wrapper">
               <input
                 id="name"
                 required
-                placeholder="Email"
+                placeholder="name"
                 v-model="name"
                 :class="[
                   {
@@ -45,7 +45,7 @@
               type="button"
               class="btn btn--secondary"
               :disabled="loading"
-              @click.prevent="onSignInByPhone"
+              @click.prevent="onSignInByEmail"
             >
               <i class="SignIn__social-icon">
                 <font-awesome-icon :icon="['fas', 'envelope']" />
@@ -73,7 +73,11 @@
             <a class="link link--s"> 需要帮助? </a>
           </div>
         </form>
-        <form v-if="signInEmail" @submit.prevent="onSignInEmail" class="form">
+        <form
+          v-if="signInEmail == 1"
+          @submit.prevent="onSignInEmail"
+          class="form"
+        >
           <!-- 邮箱验证登录 -->
           <div v-if="signInEmail" class="form__field">
             <div class="input__wrapper">
@@ -89,7 +93,7 @@
             </div>
           </div>
           <div class="form__field" style="display: flex">
-            <div class="input__wrapper">
+            <div class="input__wrapper" style="flex: 1">
               <input
                 id="code"
                 type="code"
@@ -98,13 +102,14 @@
                 v-model="code"
                 :class="[{ 'input--filled': code }, 'input']"
               />
-              <label class="input__placeholder" for="phone"> 验证码 </label>
+              <label class="input__placeholder" for="code"> 验证码 </label>
             </div>
             <button
               v-if="signInEmail"
               type="button"
-              class="btn btn--secondary"
+              class="btn btn--primary"
               :disabled="loading"
+              disable
               @click="onSignInEmailNext"
             >
               {{ codeBtnWord }}
@@ -163,6 +168,7 @@
 </template>
 
 <script>
+import { ElMessage } from "element-plus";
 import Spinner from "../../components/Spinner/Spinner.vue";
 import { routes, actions } from "../../helpers/constants";
 
@@ -177,11 +183,10 @@ export default {
       code: "",
       rememberMe: false,
       signUpRoute: routes.signUp,
-      signInEmail: false,
+      signInEmail: localStorage.getItem("signInEmail") || 0,
       signInEmailNext: false,
       codeBtnWord: "获取验证码", // 获取验证码按钮文字
       waitTime: 61, // 获取验证码按钮失效时间
-      verificationCode: "",
     };
   },
   computed: {
@@ -219,35 +224,41 @@ export default {
         rememberMe: this.rememberMe,
       });
     },
-    onSignInByPhone() {
-      this.signInEmail = true;
+    onSignInByEmail() {
+      localStorage.setItem("signInEmail", 1);
+      this.signInEmail = 1;
     },
     onSignInEmailNext() {
-      if (this.phoneNumberStyle) {
-        let params = {};
-        params.phone = this.loginForm.phoneNumber;
-        // 调用获取短信验证码接口
-
-        // 因为下面用到了定时器，需要保存this指向
-        let that = this;
-        that.waitTime--;
-        that.getCodeBtnDisable = true;
-        this.codeBtnWord = `${this.waitTime}s 后重新获取`;
-        let timer = setInterval(function () {
-          if (that.waitTime > 1) {
-            that.waitTime--;
-            that.codeBtnWord = `${that.waitTime}s 后重新获取`;
-          } else {
-            clearInterval(timer);
-            that.codeBtnWord = "获取验证码";
-            that.getCodeBtnDisable = false;
-            that.waitTime = 61;
-          }
-        }, 1000);
+      if (
+        /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(this?.email)
+      ) {
+        if (this.waitTime === 61) {
+          // 因为下面用到了定时器，需要保存this指向
+          let that = this;
+          that.waitTime--;
+          that.getCodeBtnDisable = true;
+          this.codeBtnWord = `${this.waitTime}s 后重新获取`;
+          let timer = setInterval(function () {
+            if (that.waitTime > 1) {
+              that.waitTime--;
+              that.codeBtnWord = `${that.waitTime}s 后重新获取`;
+            } else {
+              clearInterval(timer);
+              that.codeBtnWord = "获取验证码";
+              that.getCodeBtnDisable = false;
+              that.waitTime = 61;
+            }
+          }, 1000);
+        } else {
+          ElMessage.error("请勿频繁请求验证码");
+        }
+      } else {
+        ElMessage.error("邮箱格式错误");
       }
     },
     onSignByEmail() {
-      this.signInEmail = false;
+      localStorage.setItem("signInEmail", 0);
+      this.signInEmail = 0;
     },
   },
   destroyed() {
