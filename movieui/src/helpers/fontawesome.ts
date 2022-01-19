@@ -1,4 +1,4 @@
-import { library} from '@fortawesome/fontawesome-svg-core';
+import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faSortDown,
   faPlus,
@@ -11,12 +11,12 @@ import {
   faPlusCircle,
   faInfoCircle,
   faSearch,
-} from '@fortawesome/free-solid-svg-icons';
-import {
-  faFacebook,
-  faGoogle,
-} from '@fortawesome/free-brands-svg-icons';
+  faEnvelope,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
+import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 
+/* import the fontawesome core */
 library.add(
   faFacebook,
   faGoogle,
@@ -31,4 +31,6 @@ library.add(
   faPlusCircle,
   faInfoCircle,
   faSearch,
+  faEnvelope,
+  faUser
 );

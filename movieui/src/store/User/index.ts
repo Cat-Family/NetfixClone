@@ -1,5 +1,7 @@
+import { ElMessage } from "element-plus";
 import { routes, actions } from "../../helpers/constants";
 import instance from "../../request";
+import router from "../../router/index";
 
 export default {
   state: {
@@ -59,6 +61,12 @@ export default {
     signInEmail({ commit }, payload) {
       commit(actions.setLoading, true);
       commit(actions.clearError);
+    },
+    logout({ commit }) {
+      commit(actions.setUser, null);
+      localStorage.clear();
+      router.push(routes.startNow);
+      ElMessage.success("注销成功");
     },
   },
   getters: {

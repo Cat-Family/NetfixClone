@@ -1,5 +1,5 @@
 <template>
-  <div v-if="userIsAuthenticated">
+  <div v-if="userIsAuthenticated && begin">
     <AuthorizedHeader />
   </div>
   <div v-else>
@@ -8,28 +8,36 @@
 </template>
 
 <script>
-  import AuthorizedHeader from './AuthorizedHeader.vue';
-  import UnauthorizedHeader from './UnauthorizedHeader.vue';
-  import { actions } from '../../helpers/constants';
+import AuthorizedHeader from "./AuthorizedHeader.vue";
+import UnauthorizedHeader from "./UnauthorizedHeader.vue";
+import { actions } from "../../helpers/constants";
+import { useRoute } from "vue-router";
+import { toRaw } from "vue";
 
-  export default {
-    name: 'Header',
-    computed: {
-      userIsAuthenticated() {
-        return (
-          this.$store.getters.user !== null &&
-          this.$store.getters.user !== undefined
-        );
-      },
+export default {
+  name: "Header",
+  computed: {
+    userIsAuthenticated() {
+      return (
+        this.$store.getters.user?.token !== null &&
+        this.$store.getters.user?.token !== undefined
+      );
     },
-    components: {
-      AuthorizedHeader,
-      UnauthorizedHeader,
+    begin() {
+      const route = useRoute();
+      return (
+        route.path != "/" && route.path != "/signin" && route.path != "/signup"
+      );
     },
-    methods: {
-      onLogOut() {
-        this.$store.dispatch(actions.logout);
-      },
+  },
+  components: {
+    AuthorizedHeader,
+    UnauthorizedHeader,
+  },
+  methods: {
+    onLogOut() {
+      this.$store.dispatch(actions.logout);
     },
-  };
+  },
+};
 </script>
