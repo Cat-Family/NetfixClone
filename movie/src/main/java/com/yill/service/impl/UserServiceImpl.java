@@ -89,8 +89,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public Result loginByEmail(String email, String code,HttpServletResponse response) {
-        if (null == email || code == null) {
+    public Result loginByEmail(String email, String validateCode,HttpServletResponse response) {
+        if (null == email || validateCode == null) {
             return Result.fail("邮箱或验证码出错");
         } else {
             User user = userMapper.queryUserByEmail(email);
@@ -100,7 +100,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                     return Result.fail("验证码已过期，请重新获取");
                 } else {
                     String realCode = (String) redisUtils.get(email);
-                    if (StringUtils.pathEquals(realCode,code)) {
+                    if (StringUtils.pathEquals(realCode,validateCode)) {
                         String jwt = jwtUtils.generateToken(user.getId());
                         response.setHeader("Authorization", jwt);
                         response.setHeader("Access-Control-Expose-Headers", "Authorization");
