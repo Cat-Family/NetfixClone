@@ -1,8 +1,8 @@
 package com.yill.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.yill.entity.dto.user.input.ModifyDto;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.yill.entity.User;
+import com.yill.entity.dto.user.input.ModifyDto;
 import com.yill.entity.dto.user.input.RegisterDto;
 import com.yill.mapper.UserMapper;
 import com.yill.service.UserService;
@@ -11,6 +11,8 @@ import com.yill.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.BeanUtils;
+
+import java.util.Objects;
 
 
 /**
@@ -31,6 +33,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Result register(RegisterDto registerDto) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(User::getName,registerDto.getName()).select(User::getName);
+        if (!Objects.isNull(userMapper.selectOne(queryWrapper))) {
+            return Result.fail("用户名已存在");
+        }
+        queryWrapper.or().eq(User::getPhone,registerDto.getPhone()).select(User::getPhone);
+        if (!Objects.isNull(userMapper.selectOne(queryWrapper))){
+            return Result.fail("该号码已被注册");
+        }
+        queryWrapper.or().eq(User::getEmail,registerDto.getEmail()).select(User::getEmail);
+        if (!Objects.isNull(userMapper.selectOne(queryWrapper))){
+            return Result.fail("该邮箱已被注册");
+        }
         User user = new User();
         user.setName(registerDto.getName());
         user.setPassword(registerDto.getPassword());
@@ -40,7 +55,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return Result.succ("注册成功");
     }
 
-    @Override
+
+/*    @Override
     public Result check(String info) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<User>();
         queryWrapper.and(wrapper -> wrapper.eq("name",info).or()
@@ -52,12 +68,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }else {
           return   Result.succ("允许使用");
         }
-    }
+    }*/
 
     @Override
     public void modify(ModifyDto modifyDto) {
         User user = new User();
-        BeanUtils.copyProperties(modifyDto,user);
+        BeanUtils.copyProperties(modifyDto, user);
         userMapper.insert(user);
     }
 }

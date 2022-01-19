@@ -18,7 +18,5 @@ public interface UserService extends IService<User> {
 
     Result  register(RegisterDto registerDto);
 
-    Result check(String info);
-
     void modify(ModifyDto modifyDto);
 }

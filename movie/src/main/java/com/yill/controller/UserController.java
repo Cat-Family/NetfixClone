@@ -111,15 +111,6 @@ public class UserController {
        return userService.register(registerDto);
     }
 
-
-
-    @ApiOperation(value = "校验功能", tags = {"用户"})
-    @RequestMapping(value = "check", produces = {"application/json"}, method = RequestMethod.POST)
-    @ResponseBody
-    public Result check(String info){
-       return userService.check(info);
-    }
-
     @ApiOperation(value = "修改完善功能", tags = {"用户"})
     @RequestMapping(value = "update", produces = {"application/json"}, method = RequestMethod.POST)
     @ResponseBody
