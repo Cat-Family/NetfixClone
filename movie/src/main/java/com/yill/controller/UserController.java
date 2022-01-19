@@ -80,20 +80,28 @@ public class UserController {
         );
     }
 
+//    @ApiOperation(value = "获取验证码", tags = {"用户"})
+//    @RequestMapping(value = "/getCheckCode", produces = {"application/json"}, method = RequestMethod.POST)
+//    @ResponseBody
+//    public String getCheckCode(String email) {
+//        String checkCode = String.valueOf(new Random().nextInt(899999) + 100000);
+//        redisUtils.setWithTime(email, checkCode, 60);
+//        String message = "欢迎使用无花果影音，您的注册验证码为：" + checkCode;
+//        try {
+//            mailService.sendSimpleMail(email, "注册验证码", message);
+//            redisUtils.set(email, checkCode);
+//        } catch (Exception e) {
+//            return "";
+//        }
+//        return checkCode;
+//    }
+
     @ApiOperation(value = "获取验证码", tags = {"用户"})
-    @RequestMapping(value = "getCheckCode", produces = {"application/json"}, method = RequestMethod.POST)
+    @RequestMapping(value = "/getCheckCode", produces = {"application/json"}, method = RequestMethod.POST)
     @ResponseBody
-    public String getCheckCode(String email) {
-        String checkCode = String.valueOf(new Random().nextInt(899999) + 100000);
-        redisUtils.setWithTime(email, checkCode, 60);
-        String message = "欢迎使用无花果影音，您的注册验证码为：" + checkCode;
-        try {
-            mailService.sendSimpleMail(email, "注册验证码", message);
-            redisUtils.set(email, checkCode);
-        } catch (Exception e) {
-            return "";
-        }
-        return checkCode;
+    public Result getCheckCode(String email) {
+        Result result = mailService.sendSimpleMail(email);
+        return result;
     }
 
     @ApiOperation(value = "邮箱登录", tags = {"用户"})

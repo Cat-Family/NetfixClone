@@ -1,5 +1,11 @@
 package com.yill.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.yill.constant.EmaliConstant;
+import com.yill.entity.User;
+import com.yill.mapper.UserMapper;
+import com.yill.utils.RedisUtils;
+import com.yill.utils.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,24 +19,49 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 import java.io.File;
 import java.util.List;
+import java.util.Random;
 
 @Service("mailService")
 public class MailService {
+
     @Value("${spring.mail.username}")
     private String from;
+
     @Autowired
     private JavaMailSender mailSender;
 
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private RedisUtils redisUtils;
+
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public void sendSimpleMail(String to,String title,String content){
+    public Result sendSimpleMail(String to){
+        String code = randomCode();
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(from);
-        message.setTo(to);
-        message.setSubject(title);
-        message.setText(content);
-        mailSender.send(message);
-        logger.info("邮件发送成功");
+        User user = userMapper.queryUserByEmail(to);
+        if (null != user) {
+            boolean hasKey = redisUtils.hasKey(to);
+            if (!hasKey) {
+                message.setFrom(from);
+                message.setTo(to);
+                message.setSubject(EmaliConstant.EMALI_TITLE);
+                message.setText(EmaliConstant.EMALI_CONTENT+code+EmaliConstant.EMALI_CONTENT_TIME);
+                mailSender.send(message);
+                redisUtils.setWithTime(to,code,60);
+                logger.info("邮件发送成功");
+                return Result.succ("邮件发送成功");
+            } else {
+                logger.info("请勿频繁请求验证码");
+                return Result.fail("请勿频繁请求验证码");
+            }
+        } else {
+            logger.info("邮箱错误，请检查");
+            return Result.fail("邮箱错误，请检查");
+        }
+
     }
 
     public void sendAttachmentsMail(String to, String title, String cotent, List<File> fileList){
@@ -51,5 +82,18 @@ public class MailService {
         }
         mailSender.send(message);
         logger.info("邮件发送成功");
+    }
+
+    /**
+     * 随机生成6位数的验证码
+     * @return String code
+     */
+    public String randomCode(){
+        StringBuilder str = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 6; i++) {
+            str.append(random.nextInt(10));
+        }
+        return str.toString();
     }
 }
