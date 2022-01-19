@@ -6,9 +6,7 @@
     </div>
     <div class="dropdown">
       <div class="dropdown__list">
-        <button class="btn dropdown__btn">
-          Manage Profiles
-        </button>
+        <button class="btn dropdown__btn">Manage Profiles</button>
         <button class="btn dropdown__btn" v-on:click="onLogOut">
           Sign out of Netflix
         </button>
@@ -18,23 +16,23 @@
 </template>
 
 <script>
-  import { actions } from '../../helpers/constants';
+import { actions } from "../../helpers/constants";
 
-  export default {
-    name: 'ProfileDropdown',
-    data() {
-      return {
-        isDropdownOpened: false,
-      };
+export default {
+  name: "ProfileDropdown",
+  data() {
+    return {
+      isDropdownOpened: false,
+    };
+  },
+  methods: {
+    onLogOut() {
+      this.$store.dispatch(actions.logout);
     },
-    methods: {
-      onLogOut() {
-        this.$store.dispatch(actions.logout);
-      },
-    },
-  }
+  },
+};
 </script>
 
 <style lang="scss">
-  @import 'ProfileDropdown';
+@import "ProfileDropdown";
 </style>

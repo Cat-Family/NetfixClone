@@ -3,9 +3,9 @@
     <div class="bg tile">
       <div class="tile__container">
         <h1 class="tile__title">登录</h1>
-        <form @submit.prevent="onSignIn" class="form">
+        <form v-if="!signInEmail" @submit.prevent="onSignIn" class="form">
           <!-- 密码登录 -->
-          <div v-if="!signInEmail" class="form__field">
+          <div class="form__field">
             <div class="input__wrapper">
               <input
                 id="name"
@@ -24,7 +24,7 @@
               </label>
             </div>
           </div>
-          <div v-if="!signInEmail" class="form__field">
+          <div class="form__field">
             <div class="input__wrapper">
               <input
                 id="password"
@@ -37,6 +37,43 @@
               <label class="input__placeholder" for="password"> 密码 </label>
             </div>
           </div>
+          <div class="form__btns">
+            <button type="submit" class="btn btn--primary" :disabled="loading">
+              登录
+            </button>
+            <button
+              type="button"
+              class="btn btn--secondary"
+              :disabled="loading"
+              @click.prevent="onSignInByPhone"
+            >
+              <i class="SignIn__social-icon">
+                <font-awesome-icon :icon="['fas', 'envelope']" />
+              </i>
+              邮箱验证登录
+            </button>
+          </div>
+          <div class="flex-jc">
+            <div class="checkbox__wrapper">
+              <input
+                id="rememberMeCheckbox"
+                type="checkbox"
+                class="checkbox__input"
+                v-model="rememberMe"
+              />
+              <label for="rememberMeCheckbox" class="checkbox">
+                <span>
+                  <svg width="12px" height="10px" viewBox="0 0 12 10">
+                    <polyline points="1.5 6 4.5 9 10.5 1" />
+                  </svg>
+                </span>
+                <span class="checkbox__text"> 免密登录 </span>
+              </label>
+            </div>
+            <a class="link link--s"> 需要帮助? </a>
+          </div>
+        </form>
+        <form v-if="signInEmail" @submit.prevent="onSignInEmail" class="form">
           <!-- 邮箱验证登录 -->
           <div v-if="signInEmail" class="form__field">
             <div class="input__wrapper">
@@ -46,12 +83,12 @@
                 required
                 placeholder="email"
                 v-model="email"
-                :class="[{ 'input--filled': phone }, 'input']"
+                :class="[{ 'input--filled': email }, 'input']"
               />
               <label class="input__placeholder" for="email"> 邮箱 </label>
             </div>
           </div>
-          <div v-if="signInEmail && signInEmailNext" class="form__field">
+          <div class="form__field" style="display: flex">
             <div class="input__wrapper">
               <input
                 id="code"
@@ -63,45 +100,18 @@
               />
               <label class="input__placeholder" for="phone"> 验证码 </label>
             </div>
-          </div>
-          <div class="form__btns">
             <button
-              v-if="!signInEmail"
-              type="submit"
-              class="btn btn--primary"
-              :disabled="loading"
-            >
-              登录
-            </button>
-            <button
-              v-if="!signInEmail"
+              v-if="signInEmail"
               type="button"
               class="btn btn--secondary"
               :disabled="loading"
-              @click.prevent="onSignInByPhone"
+              @click="onSignInEmailNext"
             >
-              <i class="SignIn__social-icon">
-                <font-awesome-icon :icon="['fas', 'phone']" />
-              </i>
-              帐号密码登录
+              {{ codeBtnWord }}
             </button>
-            <button
-              v-if="signInEmail && signInEmailNext"
-              class="btn btn--primary"
-              :disabled="loading"
-              @click.prevent="onSignInEmail"
-            >
-              登录
-            </button>
-            <button
-              v-if="signInEmail && !signInEmailNext"
-              type="button"
-              class="btn btn--primary"
-              :disabled="loading"
-              @click.prevent="onSignInEmailNext"
-            >
-              获取验证码
-            </button>
+          </div>
+          <div class="form__btns">
+            <button class="btn btn--primary" :disabled="loading">登录</button>
             <button
               v-if="signInEmail"
               type="button"
@@ -110,9 +120,9 @@
               @click.prevent="onSignByEmail"
             >
               <i class="SignIn__social-icon">
-                <font-awesome-icon :icon="['fas', 'phone']" />
+                <font-awesome-icon :icon="['fas', 'user']" />
               </i>
-              邮箱验证登录
+              帐号密码登录
             </button>
           </div>
           <div class="flex-jc">
@@ -169,6 +179,9 @@ export default {
       signUpRoute: routes.signUp,
       signInEmail: false,
       signInEmailNext: false,
+      codeBtnWord: "获取验证码", // 获取验证码按钮文字
+      waitTime: 61, // 获取验证码按钮失效时间
+      verificationCode: "",
     };
   },
   computed: {
@@ -210,9 +223,27 @@ export default {
       this.signInEmail = true;
     },
     onSignInEmailNext() {
-      if (this.email == "" || this.email == null) {
-      } else {
-        this.signInEmailNext = true;
+      if (this.phoneNumberStyle) {
+        let params = {};
+        params.phone = this.loginForm.phoneNumber;
+        // 调用获取短信验证码接口
+
+        // 因为下面用到了定时器，需要保存this指向
+        let that = this;
+        that.waitTime--;
+        that.getCodeBtnDisable = true;
+        this.codeBtnWord = `${this.waitTime}s 后重新获取`;
+        let timer = setInterval(function () {
+          if (that.waitTime > 1) {
+            that.waitTime--;
+            that.codeBtnWord = `${that.waitTime}s 后重新获取`;
+          } else {
+            clearInterval(timer);
+            that.codeBtnWord = "获取验证码";
+            that.getCodeBtnDisable = false;
+            that.waitTime = 61;
+          }
+        }, 1000);
       }
     },
     onSignByEmail() {

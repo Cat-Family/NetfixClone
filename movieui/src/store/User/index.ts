@@ -1,5 +1,6 @@
 import { routes, actions } from "../../helpers/constants";
 import instance from "../../request";
+import router from "../../router/index";
 
 export default {
   state: {
@@ -59,6 +60,10 @@ export default {
     signInEmail({ commit }, payload) {
       commit(actions.setLoading, true);
       commit(actions.clearError);
+    },
+    logout({ commit }) {
+      commit(actions.setUser, null);
+      router.push(routes.startNow);
     },
   },
   getters: {

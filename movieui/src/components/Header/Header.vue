@@ -1,5 +1,5 @@
 <template>
-  <div v-if="userIsAuthenticated">
+  <div v-if="userIsAuthenticated && begin">
     <AuthorizedHeader />
   </div>
   <div v-else>
@@ -11,14 +11,22 @@
 import AuthorizedHeader from "./AuthorizedHeader.vue";
 import UnauthorizedHeader from "./UnauthorizedHeader.vue";
 import { actions } from "../../helpers/constants";
+import { useRoute } from "vue-router";
+import { toRaw } from "vue";
 
 export default {
   name: "Header",
   computed: {
     userIsAuthenticated() {
       return (
-        this.$store.getters.user !== null &&
-        this.$store.getters.user !== undefined
+        this.$store.getters.user?.token !== null &&
+        this.$store.getters.user?.token !== undefined
+      );
+    },
+    begin() {
+      const route = useRoute();
+      return (
+        route.path != "/" && route.path != "/signin" && route.path != "/signup"
       );
     },
   },
