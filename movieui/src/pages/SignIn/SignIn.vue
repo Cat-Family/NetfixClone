@@ -209,13 +209,11 @@ export default {
   },
   methods: {
     onSignIn() {
-      if (!this.signInEmail) {
-        this.$store.dispatch(actions.signIn, {
-          name: this.name,
-          password: this.password,
-          rememberMe: this.rememberMe,
-        });
-      }
+      this.$store.dispatch(actions.signIn, {
+        name: this.name,
+        password: this.password,
+        rememberMe: this.rememberMe,
+      });
     },
     onSignInEmail() {
       this.$store.dispatch(actions.signInEmail, {

@@ -13,6 +13,7 @@ import {
   faSearch,
   faEnvelope,
   faUser,
+  faTv,
 } from "@fortawesome/free-solid-svg-icons";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 
@@ -32,5 +33,6 @@ library.add(
   faInfoCircle,
   faSearch,
   faEnvelope,
-  faUser
+  faUser,
+  faTv
 );

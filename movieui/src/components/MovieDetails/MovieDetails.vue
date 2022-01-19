@@ -43,7 +43,20 @@
             class="MovieDetails__btn-icon"
             fixed-width
           />
-          My List
+          播放列表
+        </button>
+        <button
+          v-if="!isMovieInMyList"
+          type="button"
+          class="btn MovieDetails__btn"
+          @click="toPaly(this.movie.id)"
+        >
+          <font-awesome-icon
+            :icon="['fas', 'play']"
+            class="MovieDetails__btn-icon"
+            fixed-width
+          />
+          立即观看
         </button>
       </div>
     </div>
@@ -55,6 +68,7 @@
 import MovieLabels from "../MovieLabels/MovieLabels.vue";
 import getImageUrl from "../../helpers/getImageUrl";
 import { actions } from "../../helpers/constants";
+import { useRouter } from "vue-router";
 
 export default {
   name: "MovieDetails",
@@ -97,6 +111,21 @@ export default {
         movie: this.movie,
       });
     },
+  },
+  setup() {
+    const router = useRouter();
+
+    const toPaly = (id) => {
+      router.push({
+        path: "/Watch",
+        query: {
+          id: id,
+        },
+      });
+    };
+    return {
+      toPaly,
+    };
   },
 };
 </script>
