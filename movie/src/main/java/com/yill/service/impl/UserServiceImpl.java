@@ -1,5 +1,6 @@
 package com.yill.service.impl;
 
+import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.yill.entity.User;
 import com.yill.entity.dto.user.input.ModifyDto;
@@ -7,11 +8,15 @@ import com.yill.entity.dto.user.input.RegisterDto;
 import com.yill.mapper.UserMapper;
 import com.yill.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yill.utils.JwtUtils;
+import com.yill.utils.RedisUtils;
 import com.yill.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 
@@ -29,6 +34,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private RedisUtils redisUtils;
+
+    @Autowired
+    private JwtUtils jwtUtils;
 
 
     @Override
@@ -76,5 +87,40 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         BeanUtils.copyProperties(modifyDto, user);
         userMapper.insert(user);
     }
+
+    @Override
+    public Result loginByEmail(String email, String code,HttpServletResponse response) {
+        if (null == email || code == null) {
+            return Result.fail("邮箱或验证码出错");
+        } else {
+            User user = userMapper.queryUserByEmail(email);
+            if (null != user) {
+                boolean hasKey = redisUtils.hasKey(email);
+                if (!hasKey) {
+                    return Result.fail("验证码已过期，请重新获取");
+                } else {
+                    String realCode = (String) redisUtils.get(email);
+                    if (StringUtils.pathEquals(realCode,code)) {
+                        String jwt = jwtUtils.generateToken(user.getId());
+                        response.setHeader("Authorization", jwt);
+                        response.setHeader("Access-Control-Expose-Headers", "Authorization");
+                        return Result.succ(MapUtil.builder()
+                                .put("id", user.getId())
+                                .put("username", user.getName())
+                                .put("email", user.getEmail())
+                                .put("token", jwt)
+                                .map()
+                        );
+                    } else {
+                        return Result.fail("验证码错误");
+                    }
+                }
+            } else {
+                return Result.fail("邮箱错误，请检查");
+            }
+        }
+    }
+
+
 }
 

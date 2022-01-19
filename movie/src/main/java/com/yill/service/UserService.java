@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.yill.entity.dto.user.input.RegisterDto;
 import com.yill.utils.Result;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * <p>
  *  服务类
@@ -19,4 +21,6 @@ public interface UserService extends IService<User> {
     Result  register(RegisterDto registerDto);
 
     void modify(ModifyDto modifyDto);
+
+    Result loginByEmail(String email, String code, HttpServletResponse response);
 }

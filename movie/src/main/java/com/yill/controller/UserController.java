@@ -104,21 +104,29 @@ public class UserController {
         return result;
     }
 
+//    @ApiOperation(value = "邮箱登录", tags = {"用户"})
+//    @RequestMapping(value = "email-login", produces = {"application/json"}, method = RequestMethod.POST)
+//    @ResponseBody
+//    public Result emailLogin( String email,String validateCode) {
+//        if (email==null||validateCode == null) {
+//            return Result.fail("邮箱或验证码出错");
+//        }
+//        //redis中的验证码
+//        Object checkCode = redisUtils.get(email);
+//        //校验
+//        System.out.println(checkCode);
+//        if (email!=null && validateCode != null && validateCode.equals(checkCode)) {
+//            return Result.succ("验证码正确");
+//        }
+//        return Result.fail("验证码错误");
+//    }
+
     @ApiOperation(value = "邮箱登录", tags = {"用户"})
     @RequestMapping(value = "email-login", produces = {"application/json"}, method = RequestMethod.POST)
     @ResponseBody
-    public Result emailLogin( String email,String validateCode) {
-        if (email==null||validateCode == null) {
-            return Result.fail("邮箱或验证码出错");
-        }
-        //redis中的验证码
-        Object checkCode = redisUtils.get(email);
-        //校验
-        System.out.println(checkCode);
-        if (email!=null && validateCode != null && validateCode.equals(checkCode)) {
-            return Result.succ("验证码正确");
-        }
-        return Result.fail("验证码错误");
+    public Result emailLogin( String email,String validateCode,HttpServletResponse response) {
+        Result result = userService.loginByEmail(email, validateCode, response);
+        return result;
     }
 
 

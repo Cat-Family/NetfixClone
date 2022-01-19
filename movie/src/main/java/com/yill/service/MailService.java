@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yill.constant.EmaliConstant;
 import com.yill.entity.User;
 import com.yill.mapper.UserMapper;
+import com.yill.utils.CommonUtils;
 import com.yill.utils.RedisUtils;
 import com.yill.utils.Result;
 import org.slf4j.Logger;
@@ -39,7 +40,7 @@ public class MailService {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public Result sendSimpleMail(String to){
-        String code = randomCode();
+        String code = CommonUtils.randomCode();
         SimpleMailMessage message = new SimpleMailMessage();
         User user = userMapper.queryUserByEmail(to);
         if (null != user) {
@@ -84,16 +85,5 @@ public class MailService {
         logger.info("邮件发送成功");
     }
 
-    /**
-     * 随机生成6位数的验证码
-     * @return String code
-     */
-    public String randomCode(){
-        StringBuilder str = new StringBuilder();
-        Random random = new Random();
-        for (int i = 0; i < 6; i++) {
-            str.append(random.nextInt(10));
-        }
-        return str.toString();
-    }
+
 }
