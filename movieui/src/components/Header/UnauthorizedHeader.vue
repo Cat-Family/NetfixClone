@@ -1,17 +1,8 @@
 <template>
   <header class="Header--un">
-    <router-link to="/">
-      <img
-        class="Header__logo Header__logo--un"
-        src="../../assets/images/netflix.png"
-      />
-    </router-link>
+    <NetflixLogo class="Header__logo Header__logo--un" />
     <div class="Header__actions">
-      <router-link
-        v-if="routePath !== signInRoute"
-        class="btn btn--primary"
-        :to="signInRoute"
-      >
+      <router-link v-if="routePath !== signInRoute" class="btn btn--primary" :to="signInRoute">
         Sign in
       </router-link>
     </div>
@@ -19,27 +10,27 @@
 </template>
 
 <script>
-import NetflixLogo from "../../assets/images/netflix.svg";
-import { routes } from "../../helpers/constants";
+  import NetflixLogo from '../../assets/images/netflix.svg';
+  import { routes } from '../../helpers/constants';
 
-export default {
-  name: "UnauthorizedHeader",
-  data() {
-    return {
-      signInRoute: routes.signIn,
-    };
-  },
-  computed: {
-    routePath() {
-      return this.$route.path;
+  export default {
+    name: 'UnauthorizedHeader',
+    data() {
+      return {
+        signInRoute: routes.signIn,
+      };
     },
-  },
-  components: {
-    NetflixLogo,
-  },
-};
+    computed: {
+      routePath() {
+        return this.$route.path;
+      },
+    },
+    components: {
+      NetflixLogo,
+    },
+  };
 </script>
 
 <style lang="scss">
-@import "./Header.scss";
+  @import "./Header.scss";
 </style>

@@ -1,30 +1,30 @@
 <template>
   <div class="StartNow bg">
     <div class="StartNow__container">
-      <h1 class="StartNow__title">了解下一步。</h1>
-      <p class="StartNow__subtitle">随时随地观看。随时取消。</p>
+      <h1 class="StartNow__title">See what’s next.</h1>
+      <p class="StartNow__subtitle">WATCH ANYWHERE. CANCEL ANYTIME.</p>
       <router-link class="btn btn--primary StartNow__btn" :to="signInRoute">
-        现在 开始
+        Start Now
       </router-link>
     </div>
   </div>
 </template>
 
 <script>
-import { routes } from "../../helpers/constants";
+  import { routes } from '../../helpers/constants';
 
-export default {
-  name: "StartNow",
-  data() {
-    return {
-      signInRoute: routes.signIn,
-    };
-  },
-};
+  export default {
+    name: 'StartNow',
+    data() {
+      return {
+        signInRoute: routes.signIn,
+      };
+    },
+  }
 </script>
 
 <style lang="scss">
-@import "StartNow";
+  @import "StartNow";
 </style>
 
 

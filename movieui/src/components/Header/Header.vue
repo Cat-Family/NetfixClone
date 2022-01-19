@@ -8,28 +8,28 @@
 </template>
 
 <script>
-import AuthorizedHeader from "./AuthorizedHeader.vue";
-import UnauthorizedHeader from "./UnauthorizedHeader.vue";
-import { actions } from "../../helpers/constants";
+  import AuthorizedHeader from './AuthorizedHeader.vue';
+  import UnauthorizedHeader from './UnauthorizedHeader.vue';
+  import { actions } from '../../helpers/constants';
 
-export default {
-  name: "Header",
-  computed: {
-    userIsAuthenticated() {
-      return (
-        this.$store.getters.user !== null &&
-        this.$store.getters.user !== undefined
-      );
+  export default {
+    name: 'Header',
+    computed: {
+      userIsAuthenticated() {
+        return (
+          this.$store.getters.user !== null &&
+          this.$store.getters.user !== undefined
+        );
+      },
     },
-  },
-  components: {
-    AuthorizedHeader,
-    UnauthorizedHeader,
-  },
-  methods: {
-    onLogOut() {
-      this.$store.dispatch(actions.logout);
+    components: {
+      AuthorizedHeader,
+      UnauthorizedHeader,
     },
-  },
-};
+    methods: {
+      onLogOut() {
+        this.$store.dispatch(actions.logout);
+      },
+    },
+  };
 </script>

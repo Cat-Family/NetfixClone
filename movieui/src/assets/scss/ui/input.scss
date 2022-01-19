@@ -1,7 +1,7 @@
 .input {
   position: relative;
   width: 100%;
-  border-radius: 0.25rem;
+  border-radius: .25rem;
   background: $gray800;
   border: 0;
   color: $white;
@@ -18,14 +18,14 @@
   &:focus {
     background: $gray700;
     + .input__placeholder {
-      top: 0.7rem;
-      font-size: 0.68rem;
+      top: .7rem;
+      font-size: .68rem;
     }
   }
 
   &__wrapper {
     position: relative;
-    border-radius: 0.25rem;
+    border-radius: .25rem;
   }
 
   &__placeholder {
@@ -34,21 +34,21 @@
     top: 50%;
     left: 1.25rem;
     color: $gray500;
-    transition: font 0.1s ease, top 0.1s ease, transform 0.1s ease;
+    transition: font .1s ease,top .1s ease,transform .1s ease;
     transform: translateY(-50%);
   }
 
   &--error {
     &:after {
-      content: "";
+      content: '';
       position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 0.25rem;
+      height: .25rem;
       border-bottom: 2px solid $orange;
-      border-bottom-right-radius: 0.25rem;
-      border-bottom-left-radius: 0.25rem;
+      border-bottom-right-radius: .25rem;
+      border-bottom-left-radius: .25rem;
     }
   }
 }
