@@ -144,6 +144,12 @@
             </button>
           </div>
         </form>
+        <p>
+          已有帐户？
+          <router-link class="link link--white" to="/signIn"
+            >立即登录。</router-link
+          >
+        </p>
         <div class="Spinner__overflow" v-if="loading">
           <Spinner />
         </div>

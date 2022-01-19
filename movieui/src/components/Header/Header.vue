@@ -26,7 +26,7 @@ export default {
     begin() {
       const route = useRoute();
       return (
-        route.path != "/" && route.path != "/signin" && route.path != "/signup"
+        route.path != "/" && route.path != "/signIn" && route.path != "/signUp"
       );
     },
   },
