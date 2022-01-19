@@ -61,6 +61,34 @@ export default {
     signInEmail({ commit }, payload) {
       commit(actions.setLoading, true);
       commit(actions.clearError);
+      instance
+        .post(
+          `/user/email-login?email=${payload.email}&validateCode=${payload.code}`,
+          payload
+        )
+        .then((res) => {
+          commit(actions.setLoading, false);
+          console.log(res);
+        })
+        .catch((error) => {
+          commit(actions.setLoading, false);
+          commit(
+            actions.setError,
+            error.response?.data.msg ? error.response.data.msg : error
+          );
+        });
+    },
+    sendEmial({ commit }, payload) {
+      commit(actions.clearError);
+      instance
+        .post(`/user/getCheckCode?email=${payload.email}`)
+        .then((res) => {})
+        .catch((error) =>
+          commit(
+            actions.setError,
+            error.response?.data.msg ? error.response.data.msg : error
+          )
+        );
     },
     logout({ commit }) {
       commit(actions.setUser, null);

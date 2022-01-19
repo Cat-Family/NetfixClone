@@ -217,7 +217,7 @@ export default {
     },
     onSignInEmail() {
       this.$store.dispatch(actions.signInEmail, {
-        phone: this.phone,
+        email: this.email,
         code: this.code,
         rememberMe: this.rememberMe,
       });
@@ -231,22 +231,27 @@ export default {
         /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(this?.email)
       ) {
         if (this.waitTime === 61) {
-          // 因为下面用到了定时器，需要保存this指向
-          let that = this;
-          that.waitTime--;
-          that.getCodeBtnDisable = true;
-          this.codeBtnWord = `${this.waitTime}s 后重新获取`;
-          let timer = setInterval(function () {
-            if (that.waitTime > 1) {
-              that.waitTime--;
-              that.codeBtnWord = `${that.waitTime}s 后重新获取`;
-            } else {
-              clearInterval(timer);
-              that.codeBtnWord = "获取验证码";
-              that.getCodeBtnDisable = false;
-              that.waitTime = 61;
-            }
-          }, 1000);
+          this.$store.dispatch(actions.sendEmial, {
+            email: this.email,
+          });
+          if (this.$store.getters.error == null) {
+            // 因为下面用到了定时器，需要保存this指向
+            let that = this;
+            that.waitTime--;
+            that.getCodeBtnDisable = true;
+            this.codeBtnWord = `${this.waitTime}s 后重新获取`;
+            let timer = setInterval(function () {
+              if (that.waitTime > 1) {
+                that.waitTime--;
+                that.codeBtnWord = `${that.waitTime}s 后重新获取`;
+              } else {
+                clearInterval(timer);
+                that.codeBtnWord = "获取验证码";
+                that.getCodeBtnDisable = false;
+                that.waitTime = 61;
+              }
+            }, 1000);
+          }
         } else {
           ElMessage.error("请勿频繁请求验证码");
         }

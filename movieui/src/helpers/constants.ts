@@ -31,6 +31,7 @@ export const routes: router = {
 
 export const actions = {
   signUp: "signUp",
+  sendEmial: "sendEmial",
   signIn: "signIn",
   signInEmail: "signInEmail",
   autoSignIn: "autoSignIn",
