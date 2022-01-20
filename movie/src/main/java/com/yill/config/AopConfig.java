@@ -33,7 +33,9 @@ public class AopConfig {
         long start = System.currentTimeMillis();
         Date date = new Date(start);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat logSimpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         String format = simpleDateFormat.format(date);
+        String logFormat = logSimpleDateFormat.format(date);
         Object[] args = pjd.getArgs();
         String params = "请求参数:";
         for (Object object : args) {
@@ -42,7 +44,8 @@ public class AopConfig {
         params = params.substring(0, params.length() - 1);
         log.info("接口"+methodName + params);
         result = pjd.proceed();
-        redisUtils.setList("log20220120",result);
+        String resultString = result.toString();
+        redisUtils.setList("log"+logFormat,"请求时间:"+format+",接口"+methodName + params+",返回报文"+resultString+"，接口"+methodName + "执行时长:" + (System.currentTimeMillis() - start+"ms"));
         log.info("接口"+methodName +"返回报文:" + (result instanceof Result ? (Result) result : result));
         log.info("接口"+methodName+"请求时间:"+format);
         log.info("接口"+methodName + "执行时长:" + (System.currentTimeMillis() - start+"ms"));
