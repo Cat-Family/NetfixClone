@@ -1,5 +1,6 @@
 package com.yill.service;
 
+import com.yill.entity.dto.user.input.FindPassword;
 import com.yill.entity.dto.user.input.ModifyDto;
 import com.yill.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -23,4 +24,6 @@ public interface UserService extends IService<User> {
     void modify(ModifyDto modifyDto);
 
     Result loginByEmail(String email, String code, HttpServletResponse response);
+
+    Result findPassword(FindPassword findPassword);
 }
