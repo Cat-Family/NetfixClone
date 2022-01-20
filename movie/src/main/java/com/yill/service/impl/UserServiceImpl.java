@@ -123,8 +123,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                     }
                 }
             } else {
-                logger.info("邮箱错误，请检查");
-                return Result.fail("邮箱错误，请检查");
+                logger.info("邮箱不存在，请检查");
+                return Result.fail("邮箱不存在，请检查");
             }
         }
     }
