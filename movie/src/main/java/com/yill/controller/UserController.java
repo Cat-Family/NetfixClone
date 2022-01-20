@@ -3,6 +3,7 @@ package com.yill.controller;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.yill.entity.dto.user.input.FindPassword;
 import com.yill.entity.dto.user.input.LoginDto;
 import com.yill.entity.dto.user.input.ModifyDto;
 import com.yill.entity.User;
@@ -121,7 +122,7 @@ public class UserController {
 //        return Result.fail("验证码错误");
 //    }
 
-    @ApiOperation(value = "邮箱登录", tags = {"用户"})
+    @ApiOperation(value = "邮箱登录(找回密码)", tags = {"用户"})
     @RequestMapping(value = "email-login", produces = {"application/json"}, method = RequestMethod.POST)
     @ResponseBody
     public Result emailLogin( String email,String validateCode,HttpServletResponse response) {
@@ -142,6 +143,13 @@ public class UserController {
     @ResponseBody
     public void modify(@RequestBody ModifyDto modifyDto) {
         userService.modify(modifyDto);
+    }
+
+    @ApiOperation(value = "找回密码", tags = {"用户"})
+    @RequestMapping(value = "find-password", produces = {"application/json"}, method = RequestMethod.POST)
+    @ResponseBody
+    public Result findPassword(@RequestBody FindPassword findPassword) {
+       return userService.findPassword(findPassword);
     }
 
 
