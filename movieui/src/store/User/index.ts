@@ -68,7 +68,14 @@ export default {
         )
         .then((res) => {
           commit(actions.setLoading, false);
-          console.log(res);
+          commit(actions.setUser, res.data.data);
+          const userInfo = res.data.data;
+          if (payload.rememberMe) {
+            localStorage.setItem("token", userInfo.token);
+            localStorage.setItem("email", userInfo.email);
+            localStorage.setItem("username", userInfo.username);
+            localStorage.setItem("id", userInfo.id);
+          }
         })
         .catch((error) => {
           commit(actions.setLoading, false);

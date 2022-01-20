@@ -40,6 +40,21 @@ const routes = [
     //   requiresAuth: true,
     // },
   },
+  // {
+  //   path: routes.recoverPassword,
+  //   name: 'RecoverPassword',
+  //   component: RecoverPassword,
+  // },
+  // {
+  //   path: routes.recoverPasswordSuccess,
+  //   name: 'RecoverPasswordSuccess',
+  //   component: RecoverPasswordSuccess,
+  // },
+  // {
+  //   path: routes.recoverPasswordCode,
+  //   name: 'RecoverPasswordForm',
+  //   component: RecoverPasswordForm,
+  // },
 ];
 
 const router = createRouter({

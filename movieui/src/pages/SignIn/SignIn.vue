@@ -171,23 +171,14 @@
 import { ElMessage } from "element-plus";
 import Spinner from "../../components/Spinner/Spinner.vue";
 import { routes, actions } from "../../helpers/constants";
+import { useStore } from "vuex";
+import { ref } from "vue-demi";
+import instance from "../../request";
 
 export default {
   name: "SignIn",
   data() {
-    return {
-      name: "",
-      email: "",
-      phone: "",
-      password: "",
-      code: "",
-      rememberMe: false,
-      signUpRoute: routes.signUp,
-      signInEmail: localStorage.getItem("signInEmail") || 0,
-      signInEmailNext: false,
-      codeBtnWord: "获取验证码", // 获取验证码按钮文字
-      waitTime: 61, // 获取验证码按钮失效时间
-    };
+    return {};
   },
   computed: {
     user() {
@@ -207,63 +198,87 @@ export default {
       }
     },
   },
-  methods: {
-    onSignIn() {
-      this.$store.dispatch(actions.signIn, {
-        name: this.name,
-        password: this.password,
-        rememberMe: this.rememberMe,
-      });
-    },
-    onSignInEmail() {
-      this.$store.dispatch(actions.signInEmail, {
-        email: this.email,
-        code: this.code,
-        rememberMe: this.rememberMe,
-      });
-    },
-    onSignInByEmail() {
-      localStorage.setItem("signInEmail", 1);
-      this.signInEmail = 1;
-    },
-    onSignInEmailNext() {
-      if (
-        /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(this?.email)
-      ) {
-        if (this.waitTime === 61) {
-          this.$store.dispatch(actions.sendEmial, {
-            email: this.email,
-          });
-          if (this.$store.getters.error == null) {
-            // 因为下面用到了定时器，需要保存this指向
-            let that = this;
-            that.waitTime--;
-            that.getCodeBtnDisable = true;
-            this.codeBtnWord = `${this.waitTime}s 后重新获取`;
+  setup() {
+    const store = useStore();
+    let name = ref("");
+    let email = ref("");
+    let password = ref("");
+    let code = ref("");
+    let rememberMe = ref(false);
+    let signUpRoute = ref(routes.signUp);
+    let signInEmailNext = ref(false);
+    let codeBtnWord = ref("获取验证码"); // 获取验证码按钮文字
+    let waitTime = ref(61); // 获取验证码按钮失效时间
+    let signInEmail = ref(localStorage.getItem("signInEmail") || 0);
+    const onSignInEmailNext = () => { 
+      if (waitTime.value === 61) {
+        // store.dispatch(actions.sendEmial, {
+        //   email: email.value,
+        // });
+        instance
+          .post(`/user/getCheckCode?email=${email.value}`)
+          .then((res) => {
+            waitTime.value--;
+            codeBtnWord.value = `${waitTime.value}s 后重新获取`;
             let timer = setInterval(function () {
-              if (that.waitTime > 1) {
-                that.waitTime--;
-                that.codeBtnWord = `${that.waitTime}s 后重新获取`;
+              if (waitTime.value > 1) {
+                waitTime.value--;
+                codeBtnWord.value = `${waitTime.value}s 后重新获取`;
               } else {
                 clearInterval(timer);
-                that.codeBtnWord = "获取验证码";
-                that.getCodeBtnDisable = false;
-                that.waitTime = 61;
+                codeBtnWord.value = "获取验证码";
+                getCodeBtnDisable.value = false;
+                waitTime.value = 61;
               }
             }, 1000);
-          }
-        } else {
-          ElMessage.error("请勿频繁请求验证码");
-        }
+          })
+          .catch((error) => {});
       } else {
-        ElMessage.error("邮箱格式错误");
+        ElMessage.error("请勿频繁请求验证码");
       }
-    },
-    onSignByEmail() {
+    };
+    const onSignIn = () => {
+      store.dispatch(actions.signIn, {
+        name: name.value,
+        password: password.value,
+        rememberMe: rememberMe.value,
+      });
+    };
+    const onSignInEmail = () => {
+      store.dispatch(actions.signInEmail, {
+        email: email.value,
+        code: code.value,
+        rememberMe: rememberMe.value,
+      });
+    };
+    const onSignInByEmail = () => {
+      localStorage.setItem("signInEmail", 1);
+      signInEmail.value = 1;
+    };
+
+    const onSignByEmail = () => {
       localStorage.setItem("signInEmail", 0);
-      this.signInEmail = 0;
-    },
+      signInEmail.value = 0;
+    };
+    return {
+      onSignInEmailNext,
+      onSignIn,
+      onSignInEmail,
+      onSignInByEmail,
+      onSignByEmail,
+      signInEmail,
+      email,
+      name,
+      password,
+      code,
+      signInEmailNext,
+      signUpRoute,
+      codeBtnWord,
+      waitTime,
+      rememberMe,
+    };
   },
+  methods: {},
   destroyed() {
     this.$store.dispatch(actions.clearError);
   },

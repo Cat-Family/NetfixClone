@@ -7,7 +7,8 @@ import store from "./store";
 const AUTH_TOKEN = "";
 
 //const baseUrl = "390gq17426.wicp.vip";
-export const baseURL = "http://m39973w600.zicp.vip";
+// export const baseURL = "http://m39973w600.zicp.vip";
+export const baseURL = "http://6gj3vj.natappfree.cc";
 
 const instance = axios.create({
   baseURL,
