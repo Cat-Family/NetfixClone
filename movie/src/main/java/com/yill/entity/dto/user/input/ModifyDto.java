@@ -3,8 +3,6 @@ package com.yill.entity.dto.user.input;
 import cn.hutool.core.date.DateTime;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Data
@@ -18,7 +16,7 @@ public class ModifyDto implements Serializable {
     @ApiParam(value = "密码")
     private String password;
 
-    @NotBlank(message = "电话不能为空")
+    @ApiParam(value = "电话")
     private String phone;
 
     @ApiParam(value = "邮箱")

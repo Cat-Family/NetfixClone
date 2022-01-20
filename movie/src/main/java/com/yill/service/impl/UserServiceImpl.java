@@ -3,6 +3,7 @@ package com.yill.service.impl;
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.yill.entity.User;
+import com.yill.entity.dto.user.input.FindPassword;
 import com.yill.entity.dto.user.input.ModifyDto;
 import com.yill.entity.dto.user.input.RegisterDto;
 import com.yill.mapper.UserMapper;
@@ -128,6 +129,34 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             }
         }
     }
+
+    @Override
+    public Result findPassword(FindPassword findPassword) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.and(warpper -> warpper.eq(User::getEmail, findPassword.getUserName()).or()
+                .eq(User::getName, findPassword.getUserName()).or()
+                .eq(User::getPhone, findPassword.getUserName())).select(User::getPassword,User::getId);
+        User users = userMapper.selectOne(queryWrapper);
+        if (users != null) {
+            if (!findPassword.getPassword().equals(findPassword.getConfirmPassword())) {
+                logger.info("密码不一致");
+                return Result.fail("密码不一致");
+            }
+            if (findPassword.getPassword().equals("")){
+                return Result.fail("密码不能为空");
+            }
+            User user = new User();
+            user.setPassword(findPassword.getPassword());
+            user.setId(users.getId());
+            userMapper.updateById(user);
+            logger.info("修改成功");
+            return Result.succ("修改成功");
+        }else {
+            logger.info("用户不存在");
+            return Result.fail("用户不存在");
+        }
+    }
+
 
 
 }
