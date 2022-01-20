@@ -12,7 +12,14 @@
         class="btn btn--primary"
         :to="signInRoute"
       >
-        Sign in
+        登录
+      </router-link>
+      <router-link
+        v-if="routePath === signInRoute"
+        class="btn btn--primary"
+        :to="signUpRoute"
+      >
+        注册
       </router-link>
     </div>
   </header>
@@ -27,6 +34,7 @@ export default {
   data() {
     return {
       signInRoute: routes.signIn,
+      signUpRoute: routes.signUp,
     };
   },
   computed: {
