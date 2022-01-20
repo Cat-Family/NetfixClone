@@ -8,7 +8,7 @@ const AUTH_TOKEN = "";
 
 //const baseUrl = "390gq17426.wicp.vip";
 // export const baseURL = "http://m39973w600.zicp.vip";
-export const baseURL = "http://6gj3vj.natappfree.cc";
+export const baseURL = "http://vxy5n5.natappfree.cc";
 
 const instance = axios.create({
   baseURL,
@@ -38,6 +38,8 @@ instance.interceptors.response.use(
   (respose) => {
     if (respose.data.code === 200) {
       ElMessage.success(respose.data.msg);
+      return respose;
+    } else if (respose.data.code === 404) {
       return respose;
     } else if (respose.data.code === 401) {
       localStorage.clear();

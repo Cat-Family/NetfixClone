@@ -165,6 +165,20 @@
       </div>
     </div>
   </div>
+  <el-dialog
+    v-model="dialogVisible"
+    title="提示"
+    open-delay="500"
+    close-delay="500"
+    top="30vh"
+  >
+    <span>该邮箱尚未注册，使用验证码登录将会自动注册。</span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button type="danger" @click="dialogVisible = false">确定</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script>
@@ -172,7 +186,7 @@ import { ElMessage } from "element-plus";
 import Spinner from "../../components/Spinner/Spinner.vue";
 import { routes, actions } from "../../helpers/constants";
 import { useStore } from "vuex";
-import { ref } from "vue-demi";
+import { ref } from "vue";
 import instance from "../../request";
 
 export default {
@@ -210,11 +224,10 @@ export default {
     let codeBtnWord = ref("获取验证码"); // 获取验证码按钮文字
     let waitTime = ref(61); // 获取验证码按钮失效时间
     let signInEmail = ref(localStorage.getItem("signInEmail") || 0);
-    const onSignInEmailNext = () => { 
+    const dialogVisible = ref(false);
+
+    const onSignInEmailNext = () => {
       if (waitTime.value === 61) {
-        // store.dispatch(actions.sendEmial, {
-        //   email: email.value,
-        // });
         instance
           .post(`/user/getCheckCode?email=${email.value}`)
           .then((res) => {
@@ -227,10 +240,24 @@ export default {
               } else {
                 clearInterval(timer);
                 codeBtnWord.value = "获取验证码";
-                getCodeBtnDisable.value = false;
                 waitTime.value = 61;
               }
             }, 1000);
+            if (res.data.code === 404) {
+              dialogVisible.value = true;
+              waitTime.value--;
+              codeBtnWord.value = `${waitTime.value}s 后重新获取`;
+              let timer = setInterval(function () {
+                if (waitTime.value > 1) {
+                  waitTime.value--;
+                  codeBtnWord.value = `${waitTime.value}s 后重新获取`;
+                } else {
+                  clearInterval(timer);
+                  codeBtnWord.value = "获取验证码";
+                  waitTime.value = 61;
+                }
+              }, 1000);
+            }
           })
           .catch((error) => {});
       } else {
@@ -276,6 +303,7 @@ export default {
       codeBtnWord,
       waitTime,
       rememberMe,
+      dialogVisible,
     };
   },
   methods: {},
