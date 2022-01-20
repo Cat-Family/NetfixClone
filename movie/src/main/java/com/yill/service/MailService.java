@@ -59,8 +59,7 @@ public class MailService {
                 return Result.fail("请勿频繁请求验证码");
             }
         } else {
-            logger.info("邮箱错误，请检查");
-            return Result.fail("邮箱错误，请检查");
+            return Result.fail(404,"账号："+to+"\t未注册，是否立即注册？",to);
         }
 
     }

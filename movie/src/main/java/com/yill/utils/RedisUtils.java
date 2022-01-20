@@ -92,4 +92,13 @@ public class RedisUtils {
             return false;
         }
     }
+
+    public boolean setList(String key, Object value) {
+        try {
+            redisTemplate.opsForList().leftPush(key,value);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
