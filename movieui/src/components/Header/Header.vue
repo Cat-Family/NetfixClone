@@ -12,7 +12,6 @@ import AuthorizedHeader from "./AuthorizedHeader.vue";
 import UnauthorizedHeader from "./UnauthorizedHeader.vue";
 import { actions } from "../../helpers/constants";
 import { useRoute } from "vue-router";
-import { toRaw } from "vue";
 
 export default {
   name: "Header",
