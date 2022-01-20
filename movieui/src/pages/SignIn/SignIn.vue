@@ -104,16 +104,16 @@
               />
               <label class="input__placeholder" for="code"> 验证码 </label>
             </div>
-            <button
+            <el-button
               v-if="signInEmail"
-              type="button"
-              class="btn btn--primary"
-              :disabled="loading"
-              disable
+              style="height: 3rem"
+              type="danger"
               @click="onSignInEmailNext"
+              :plain="btnDisable"
+              :disabled="btnDisable"
             >
               {{ codeBtnWord }}
-            </button>
+            </el-button>
           </div>
           <div class="form__btns">
             <button class="btn btn--primary" :disabled="loading">登录</button>
@@ -171,6 +171,7 @@
     open-delay="500"
     close-delay="500"
     top="30vh"
+    width="28rem"
   >
     <span>该邮箱尚未注册，使用验证码登录将会自动注册。</span>
     <template #footer>
@@ -214,54 +215,65 @@ export default {
   },
   setup() {
     const store = useStore();
-    let name = ref("");
-    let email = ref("");
-    let password = ref("");
-    let code = ref("");
-    let rememberMe = ref(false);
-    let signUpRoute = ref(routes.signUp);
-    let signInEmailNext = ref(false);
-    let codeBtnWord = ref("获取验证码"); // 获取验证码按钮文字
-    let waitTime = ref(61); // 获取验证码按钮失效时间
-    let signInEmail = ref(localStorage.getItem("signInEmail") || 0);
+    const name = ref("");
+    const email = ref("");
+    const password = ref("");
+    const code = ref("");
+    const rememberMe = ref(false);
+    const signUpRoute = ref(routes.signUp);
+    const signInEmailNext = ref(false);
+    const codeBtnWord = ref("获取验证码"); // 获取验证码按钮文字
+    const waitTime = ref(61); // 获取验证码按钮失效时间
+    const signInEmail = ref(localStorage.getItem("signInEmail") || 0);
     const dialogVisible = ref(false);
+    const btnDisable = ref(false);
 
     const onSignInEmailNext = () => {
-      if (waitTime.value === 61) {
-        instance
-          .post(`/user/getCheckCode?email=${email.value}`)
-          .then((res) => {
-            waitTime.value--;
-            codeBtnWord.value = `${waitTime.value}s 后重新获取`;
-            let timer = setInterval(function () {
-              if (waitTime.value > 1) {
+      if (email == null) {
+        ElMessage("邮箱不能为空!");
+      } else {
+        btnDisable.value = true;
+        if (waitTime.value === 61) {
+          instance
+            .post(`/user/getCheckCode?email=${email.value}`)
+            .then((res) => {
+              if (res.data.code === 404) {
+                dialogVisible.value = true;
                 waitTime.value--;
                 codeBtnWord.value = `${waitTime.value}s 后重新获取`;
+                let timer = setInterval(function () {
+                  if (waitTime.value > 1) {
+                    waitTime.value--;
+                    codeBtnWord.value = `${waitTime.value}s 后重新获取`;
+                  } else {
+                    clearInterval(timer);
+                    codeBtnWord.value = "获取验证码";
+                    waitTime.value = 61;
+                    btnDisable.value = false;
+                  }
+                }, 1000);
               } else {
-                clearInterval(timer);
-                codeBtnWord.value = "获取验证码";
-                waitTime.value = 61;
+                waitTime.value--;
+                codeBtnWord.value = `${waitTime.value}s 后重新获取`;
+                let timer2 = setInterval(function () {
+                  if (waitTime.value > 1) {
+                    waitTime.value--;
+                    codeBtnWord.value = `${waitTime.value}s 后重新获取`;
+                  } else {
+                    clearInterval(timer2);
+                    codeBtnWord.value = "获取验证码";
+                    waitTime.value = 61;
+                    btnDisable.value = false;
+                  }
+                }, 1000);
               }
-            }, 1000);
-            if (res.data.code === 404) {
-              dialogVisible.value = true;
-              waitTime.value--;
-              codeBtnWord.value = `${waitTime.value}s 后重新获取`;
-              let timer = setInterval(function () {
-                if (waitTime.value > 1) {
-                  waitTime.value--;
-                  codeBtnWord.value = `${waitTime.value}s 后重新获取`;
-                } else {
-                  clearInterval(timer);
-                  codeBtnWord.value = "获取验证码";
-                  waitTime.value = 61;
-                }
-              }, 1000);
-            }
-          })
-          .catch((error) => {});
-      } else {
-        ElMessage.error("请勿频繁请求验证码");
+            })
+            .catch((error) => {
+              btnDisable.value = false;
+            });
+        } else {
+          ElMessage.error("请勿频繁请求验证码");
+        }
       }
     };
     const onSignIn = () => {
@@ -304,6 +316,7 @@ export default {
       waitTime,
       rememberMe,
       dialogVisible,
+      btnDisable,
     };
   },
   methods: {},
