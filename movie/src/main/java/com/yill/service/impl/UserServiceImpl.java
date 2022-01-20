@@ -158,6 +158,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                         return Result.fail("验证码错误");
                     }
                 }
+                logger.info("邮箱不存在，请检查");
+                return Result.fail("邮箱不存在，请检查");
             }
         }
     }

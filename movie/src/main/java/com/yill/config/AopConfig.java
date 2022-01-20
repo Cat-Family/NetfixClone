@@ -6,6 +6,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -18,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Date;
 
 @Component
 @Aspect
@@ -38,12 +40,10 @@ public class AopConfig {
         String methodName = pjd.getSignature().getName();
         Logger log = LoggerFactory.getLogger(className.getClass());
         Object result = null;
-        Date date = new Date();
         long start = System.currentTimeMillis();
+        Date date = new Date(start);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat logSimpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         String format = simpleDateFormat.format(date);
-        String logFormat = logSimpleDateFormat.format(date);
         Object[] args = pjd.getArgs();
         String params = "请求参数:";
         for (Object object : args) {
@@ -52,8 +52,7 @@ public class AopConfig {
         params = params.substring(0, params.length() - 1);
         log.info("接口"+methodName + params);
         result = pjd.proceed();
-        String resultString = result.toString();
-        redisUtils.setList("log"+logFormat,"==============请求时间:"+format+",接口"+methodName + params+",返回报文"+resultString+"，接口"+methodName + "执行时长:" + (System.currentTimeMillis() - start+"ms"));
+        redisUtils.setList("log20220120",result);
         log.info("接口"+methodName +"返回报文:" + (result instanceof Result ? (Result) result : result));
         log.info("接口"+methodName+"请求时间:"+format);
         log.info("接口"+methodName + "执行时长:" + (System.currentTimeMillis() - start+"ms"));
