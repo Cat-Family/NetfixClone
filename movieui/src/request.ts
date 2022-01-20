@@ -50,7 +50,7 @@ instance.interceptors.response.use(
     }
   },
   (error) => {
-    ElMessage.error(error.response?.data.msg ? error.response.data.msg : error);
+    ElMessage.error(error.response?.data.msg || error.message);
     return Promise.reject(error);
   }
 );
