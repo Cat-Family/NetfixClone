@@ -168,8 +168,8 @@
   <el-dialog
     v-model="dialogVisible"
     title="提示"
-    open-delay="500"
-    close-delay="500"
+    :open-delay="500"
+    :close-delay="500"
     top="30vh"
     width="28rem"
   >
