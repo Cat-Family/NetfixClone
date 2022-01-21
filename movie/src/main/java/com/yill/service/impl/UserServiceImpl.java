@@ -2,6 +2,7 @@ package com.yill.service.impl;
 
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.yill.constant.EmaliConstant;
 import com.yill.entity.User;
 import com.yill.entity.dto.user.input.FindPassword;
 import com.yill.entity.dto.user.input.ModifyDto;
@@ -9,9 +10,7 @@ import com.yill.entity.dto.user.input.RegisterDto;
 import com.yill.mapper.UserMapper;
 import com.yill.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yill.utils.JwtUtils;
-import com.yill.utils.RedisUtils;
-import com.yill.utils.Result;
+import com.yill.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +43,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private JwtUtils jwtUtils;
 
+    @Autowired
+    private EmailUtils emailUtils;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -166,7 +167,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
-
+    @Override
+    public Result sendEmailForFindPassword(String email) {
+        if (null == email) {
+            return Result.fail("输入邮箱为空");
+        } else {
+            String code = CommonUtils.randomCode();
+            User user = userMapper.queryUserByEmail(email);
+            if (null != user) {
+                //发送邮件
+                Boolean sendEmail = emailUtils.sendEmail(email, EmaliConstant.EMALI_TITLE, "您的修改密码地址为：http://localhost:3000/RecoverPasswordForm?passwordKey=" + code);
+                if (sendEmail) {
+                    return Result.succ(email);
+                } else {
+                    return Result.fail("邮件发送失败，请重试");
+                }
+            } else {
+                return Result.fail("邮箱错误，请重新输入");
+            }
+        }
+    }
 
 }
 
