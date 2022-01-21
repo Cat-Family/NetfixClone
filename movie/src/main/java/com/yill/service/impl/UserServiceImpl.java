@@ -142,7 +142,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                         users.setEmail(email);
                         users.setName(email);
                         userMapper.insert(users);
-                        String jwt = jwtUtils.generateTokens(users.getEmail());
+                        String jwt = jwtUtils.generateToken(users.getId());
                         response.setHeader("Authorization", jwt);
                         response.setHeader("Access-Control-Expose-Headers", "Authorization");
                         return Result.succ(MapUtil.builder()
