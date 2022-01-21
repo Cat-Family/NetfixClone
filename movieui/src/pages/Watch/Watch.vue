@@ -1,23 +1,17 @@
 <template>
-  <Player>
-    <Video>
-      <source data-src="/test2.mp4" type="video/mp4" />
-    </Video>
-    <DefaultUi />
-  </Player>
+  <video
+    class="home-video"
+    src="/test2.mp4"
+    preload="auto"
+    type="video/mp4"
+    controls
+    poster="/website.jpg"
+    style="height: 99vh; width: 99vw"
+  ></video>
 </template>
 
 <script >
-import { Player, Video, DefaultUi } from "@vime/vue-next";
-import "@vime/core/themes/default.css";
-
-export default {
-  name: "App",
-  components: {
-    Player,
-    Video,
-    DefaultUi,
-  },
-};
 </script>
 
+<style>
+</style>
