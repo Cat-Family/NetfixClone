@@ -114,9 +114,11 @@
               v-if="signInEmail"
               style="height: 3rem"
               type="danger"
+              class="btn btn--primary"
               @click="onSignInEmailNext"
               :plain="btnDisable"
               :disabled="btnDisable"
+              :loading="sendMailLoading"
             >
               {{ codeBtnWord }}
             </el-button>
