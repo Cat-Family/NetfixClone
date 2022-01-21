@@ -5,6 +5,9 @@ import SignUp from "../pages/SignUp/SignUp.vue";
 import StartNow from "../pages/StartNow/StartNow.vue";
 import Home from "../pages/Home/Home.vue";
 import Watch from "../pages/Watch/Watch.vue";
+import RecoverPassword from "../pages/RecoverPassword/RecoverPassword.vue";
+import RecoverPasswordSuccess from "../pages/RecoverPassword/RecoverPasswordSuccess.vue";
+import RecoverPasswordForm from "../pages/RecoverPassword/RecoverPasswordForm.vue";
 
 const store = useStore();
 const history = createWebHistory();
@@ -40,21 +43,21 @@ const routes = [
     //   requiresAuth: true,
     // },
   },
-  // {
-  //   path: routes.recoverPassword,
-  //   name: 'RecoverPassword',
-  //   component: RecoverPassword,
-  // },
-  // {
-  //   path: routes.recoverPasswordSuccess,
-  //   name: 'RecoverPasswordSuccess',
-  //   component: RecoverPasswordSuccess,
-  // },
-  // {
-  //   path: routes.recoverPasswordCode,
-  //   name: 'RecoverPasswordForm',
-  //   component: RecoverPasswordForm,
-  // },
+  {
+    path: "/RecoverPassword",
+    name: "RecoverPassword",
+    component: RecoverPassword,
+  },
+  {
+    path: "/RecoverPasswordSuccess",
+    name: "RecoverPasswordSuccess",
+    component: RecoverPasswordSuccess,
+  },
+  {
+    path: "/RecoverPasswordForm",
+    name: "RecoverPasswordForm",
+    component: RecoverPasswordForm,
+  },
 ];
 
 const router = createRouter({

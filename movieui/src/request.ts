@@ -8,7 +8,7 @@ const AUTH_TOKEN = "";
 
 //const baseUrl = "390gq17426.wicp.vip";
 // export const baseURL = "http://m39973w600.zicp.vip";
-export const baseURL = "http://localhost:8080";
+export const baseURL = "http://ekuu67.natappfree.cc";
 
 const instance = axios.create({
   baseURL,
