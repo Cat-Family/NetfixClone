@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface UserService extends IService<User> {
 
-    Result  register(RegisterDto registerDto);
+    Result  register(RegisterDto registerDto,HttpServletResponse response);
 
     void modify(ModifyDto modifyDto);
 
