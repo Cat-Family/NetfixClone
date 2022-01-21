@@ -2,11 +2,7 @@
   <div>
     <Header v-if="route.path !== '/Watch'" />
     <main>
-      <router-view v-slot="{ Component, route }">
-        <transition :name="route.meta.transition || 'fade'">
-          <component :is="Component" />
-        </transition>
-      </router-view>
+      <router-view />
     </main>
   </div>
 </template>

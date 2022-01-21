@@ -38,20 +38,26 @@
             </div>
           </div>
           <div class="form__btns">
-            <button type="submit" class="btn btn--primary" :disabled="loading">
+            <el-button
+              style="height: 3rem"
+              type="danger"
+              class="btn btn--primary"
+              :loading="loading"
+              @click="onSignIn"
+            >
               登录
-            </button>
-            <button
-              type="button"
+            </el-button>
+            <el-button
+              style="height: 3rem; margin: 0"
+              color="transition"
               class="btn btn--secondary"
-              :disabled="loading"
               @click.prevent="onSignInByEmail"
             >
               <i class="SignIn__social-icon">
                 <font-awesome-icon :icon="['fas', 'envelope']" />
               </i>
               邮箱验证登录
-            </button>
+            </el-button>
           </div>
           <div class="flex-jc">
             <div class="checkbox__wrapper">
@@ -108,27 +114,36 @@
               v-if="signInEmail"
               style="height: 3rem"
               type="danger"
+              class="btn btn--primary"
               @click="onSignInEmailNext"
               :plain="btnDisable"
               :disabled="btnDisable"
+              :loading="sendMailLoading"
             >
               {{ codeBtnWord }}
             </el-button>
           </div>
           <div class="form__btns">
-            <button class="btn btn--primary" :disabled="loading">登录</button>
-            <button
+            <el-button
+              style="height: 3rem"
+              class="btn btn--primary"
+              type="danger"
+              :loading="loading"
+              @click="onSignInEmail"
+              >登录</el-button
+            >
+            <el-button
+              style="height: 3rem; margin: 0"
               v-if="signInEmail"
-              type="button"
+              color="transition"
               class="btn btn--secondary"
-              :disabled="loading"
               @click.prevent="onSignByEmail"
             >
               <i class="SignIn__social-icon">
                 <font-awesome-icon :icon="['fas', 'user']" />
               </i>
               帐号密码登录
-            </button>
+            </el-button>
           </div>
           <div class="flex-jc">
             <div class="checkbox__wrapper">
@@ -227,6 +242,7 @@ export default {
     const signInEmail = ref(localStorage.getItem("signInEmail") || 0);
     const dialogVisible = ref(false);
     const btnDisable = ref(false);
+    const sendMailLoading = ref(false);
 
     const onSignInEmailNext = () => {
       if (email.value == null || email.value == "") {
@@ -239,6 +255,7 @@ export default {
         ) {
           btnDisable.value = true;
           if (waitTime.value === 61) {
+            sendMailLoading.value = true;
             instance
               .post(`/user/getCheckCode?email=${email.value}`)
               .then((res) => {
@@ -257,6 +274,7 @@ export default {
                       btnDisable.value = false;
                     }
                   }, 1000);
+                  sendMailLoading.value = false;
                 } else {
                   waitTime.value--;
                   codeBtnWord.value = `${waitTime.value}s 后重新获取`;
@@ -271,9 +289,11 @@ export default {
                       btnDisable.value = false;
                     }
                   }, 1000);
+                  sendMailLoading.value = false;
                 }
               })
               .catch((error) => {
+                sendMailLoading.value = false;
                 btnDisable.value = false;
               });
           } else {
@@ -325,6 +345,7 @@ export default {
       rememberMe,
       dialogVisible,
       btnDisable,
+      sendMailLoading,
     };
   },
   methods: {},
