@@ -42,8 +42,6 @@ public class MailService {
     public Result sendSimpleMail(String to){
         String code = CommonUtils.randomCode();
         SimpleMailMessage message = new SimpleMailMessage();
-        User user = userMapper.queryUserByEmail(to);
-        if (null != user) {
             boolean hasKey = redisUtils.hasKey(to);
             if (!hasKey) {
                 message.setFrom(from);
@@ -58,10 +56,6 @@ public class MailService {
                 logger.info("请勿频繁请求验证码");
                 return Result.fail("请勿频繁请求验证码");
             }
-        } else {
-            return Result.fail(404,"账号："+to+"\t未注册，是否立即注册？",to);
-        }
-
     }
 
     public void sendAttachmentsMail(String to, String title, String cotent, List<File> fileList){
