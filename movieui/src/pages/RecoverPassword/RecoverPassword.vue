@@ -29,11 +29,12 @@
 </template>
 
 <script>
-import { ref } from "vue-demi";
+import { ref } from "vue";
 import Spinner from "../../components/Spinner/Spinner.vue";
 import { actions } from "../../helpers/constants";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
+import instance from "../../request";
 
 export default {
   name: "RecoverPassword",
@@ -42,8 +43,12 @@ export default {
     const router = useRouter();
     const onRecoverPassword = () => {
       console.log(email.value);
-      ElMessage.success("发送成功!");
-      router.push("/RecoverPasswordSuccess");
+      // ElMessage.success("发送成功!");
+      // router.push("/RecoverPasswordSuccess");
+      instance
+        .post(`/user/sendEmailForFindPassword?email=${email.value}`)
+        .then((res) => {})
+        .catch((err) => {});
     };
     return {
       onRecoverPassword,
