@@ -229,50 +229,58 @@ export default {
     const btnDisable = ref(false);
 
     const onSignInEmailNext = () => {
-      if (email == null) {
+      if (email.value == null || email.value == "") {
         ElMessage("邮箱不能为空!");
       } else {
-        btnDisable.value = true;
-        if (waitTime.value === 61) {
-          instance
-            .post(`/user/getCheckCode?email=${email.value}`)
-            .then((res) => {
-              if (res.data.code === 404) {
-                dialogVisible.value = true;
-                waitTime.value--;
-                codeBtnWord.value = `${waitTime.value}s 后重新获取`;
-                let timer = setInterval(function () {
-                  if (waitTime.value > 1) {
-                    waitTime.value--;
-                    codeBtnWord.value = `${waitTime.value}s 后重新获取`;
-                  } else {
-                    clearInterval(timer);
-                    codeBtnWord.value = "获取验证码";
-                    waitTime.value = 61;
-                    btnDisable.value = false;
-                  }
-                }, 1000);
-              } else {
-                waitTime.value--;
-                codeBtnWord.value = `${waitTime.value}s 后重新获取`;
-                let timer2 = setInterval(function () {
-                  if (waitTime.value > 1) {
-                    waitTime.value--;
-                    codeBtnWord.value = `${waitTime.value}s 后重新获取`;
-                  } else {
-                    clearInterval(timer2);
-                    codeBtnWord.value = "获取验证码";
-                    waitTime.value = 61;
-                    btnDisable.value = false;
-                  }
-                }, 1000);
-              }
-            })
-            .catch((error) => {
-              btnDisable.value = false;
-            });
+        if (
+          /^[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/.test(
+            email.value
+          )
+        ) {
+          btnDisable.value = true;
+          if (waitTime.value === 61) {
+            instance
+              .post(`/user/getCheckCode?email=${email.value}`)
+              .then((res) => {
+                if (res.data.code === 404) {
+                  dialogVisible.value = true;
+                  waitTime.value--;
+                  codeBtnWord.value = `${waitTime.value}s 后重新获取`;
+                  let timer = setInterval(function () {
+                    if (waitTime.value > 1) {
+                      waitTime.value--;
+                      codeBtnWord.value = `${waitTime.value}s 后重新获取`;
+                    } else {
+                      clearInterval(timer);
+                      codeBtnWord.value = "获取验证码";
+                      waitTime.value = 61;
+                      btnDisable.value = false;
+                    }
+                  }, 1000);
+                } else {
+                  waitTime.value--;
+                  codeBtnWord.value = `${waitTime.value}s 后重新获取`;
+                  let timer2 = setInterval(function () {
+                    if (waitTime.value > 1) {
+                      waitTime.value--;
+                      codeBtnWord.value = `${waitTime.value}s 后重新获取`;
+                    } else {
+                      clearInterval(timer2);
+                      codeBtnWord.value = "获取验证码";
+                      waitTime.value = 61;
+                      btnDisable.value = false;
+                    }
+                  }, 1000);
+                }
+              })
+              .catch((error) => {
+                btnDisable.value = false;
+              });
+          } else {
+            ElMessage.error("请勿频繁请求验证码");
+          }
         } else {
-          ElMessage.error("请勿频繁请求验证码");
+          ElMessage.error("邮箱格式错误");
         }
       }
     };
