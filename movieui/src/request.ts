@@ -44,6 +44,8 @@ instance.interceptors.response.use(
       store.commit(actions.setUser, null);
       ElMessage.error(respose.data.msg);
       return Promise.reject(respose.data.msg);
+    } else if (respose.data.code === 404) {
+      return respose;
     } else {
       ElMessage.error(respose.data.msg);
       return Promise.reject(respose.data.msg);
