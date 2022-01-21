@@ -134,8 +134,8 @@ public class UserController {
     @ApiOperation(value = "注册功能", tags = {"用户"})
     @RequestMapping(value = "register", produces = {"application/json"}, method = RequestMethod.POST)
     @ResponseBody
-    public Result region(@RequestBody RegisterDto registerDto) {
-        return userService.register(registerDto);
+    public Result region(@RequestBody RegisterDto registerDto,HttpServletResponse response) {
+        return userService.register(registerDto,response);
     }
 
     @ApiOperation(value = "修改完善功能", tags = {"用户"})

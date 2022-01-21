@@ -48,7 +48,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    public Result register(RegisterDto registerDto) {
+    public Result register(RegisterDto registerDto,HttpServletResponse response) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(User::getName,registerDto.getName()).select(User::getName);
         if (!Objects.isNull(userMapper.selectOne(queryWrapper))) {
@@ -68,7 +68,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setPhone(registerDto.getPhone());
         user.setEmail(registerDto.getEmail());
         userMapper.insert(user);
-        return Result.succ("注册成功");
+        String jwt = jwtUtils.generateToken(user.getId());
+        response.setHeader("Authorization", jwt);
+        response.setHeader("Access-Control-Expose-Headers", "Authorization");
+        return Result.succ(MapUtil.builder()
+                .put("id", user.getId())
+                .put("username", user.getName())
+                .put("email", user.getEmail())
+                .put("token", jwt)
+                .map()
+        );
     }
 
 
