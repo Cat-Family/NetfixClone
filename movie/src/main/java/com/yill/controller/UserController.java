@@ -152,5 +152,12 @@ public class UserController {
        return userService.findPassword(findPassword);
     }
 
+    @ApiOperation(value = "获取找回密码连接邮件", tags = {"用户"})
+    @RequestMapping(value = "sendEmailForFindPassword", produces = {"application/json"}, method = RequestMethod.POST)
+    @ResponseBody
+    public Result sendEmailForFindPassword(String email) {
+        return userService.sendEmailForFindPassword(email);
+    }
+
 
 }

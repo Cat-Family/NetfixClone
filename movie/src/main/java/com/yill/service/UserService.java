@@ -26,4 +26,6 @@ public interface UserService extends IService<User> {
     Result loginByEmail(String email, String code, HttpServletResponse response);
 
     Result findPassword(FindPassword findPassword);
+
+    Result sendEmailForFindPassword(String email);
 }
