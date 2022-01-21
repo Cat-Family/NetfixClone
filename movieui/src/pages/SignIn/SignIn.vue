@@ -305,18 +305,30 @@ export default {
       }
     };
     const onSignIn = () => {
-      store.dispatch(actions.signIn, {
-        name: name.value,
-        password: password.value,
-        rememberMe: rememberMe.value,
-      });
+      if (name.value == null || name.value === "") {
+        ElMessage.warning("请输入邮箱、手机或用户名!");
+      } else if (password.value == null || password.value === "") {
+        ElMessage.warning("请输入密码!");
+      } else {
+        store.dispatch(actions.signIn, {
+          name: name.value,
+          password: password.value,
+          rememberMe: rememberMe.value,
+        });
+      }
     };
     const onSignInEmail = () => {
-      store.dispatch(actions.signInEmail, {
-        email: email.value,
-        code: code.value,
-        rememberMe: rememberMe.value,
-      });
+      if (email.value == null || email.value === "") {
+        ElMessage.warning("请输入邮箱!");
+      } else if (code.value == null || code.value === "") {
+        ElMessage.warning("请输入验证码!");
+      } else {
+        store.dispatch(actions.signInEmail, {
+          email: email.value,
+          code: code.value,
+          rememberMe: rememberMe.value,
+        });
+      }
     };
     const onSignInByEmail = () => {
       localStorage.setItem("signInEmail", 1);
