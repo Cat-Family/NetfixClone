@@ -106,8 +106,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Result loginByEmail(String email, String validateCode,HttpServletResponse response) {
         if (null == email || validateCode == null) {
-            logger.info("邮箱或验证码出错");
-            return Result.fail("邮箱或验证码出错");
+            logger.info("邮箱或验证码为空");
+            return Result.fail("邮箱或验证码为空");
         } else {
             User user = userMapper.queryUserByEmail(email);
             if (null != user) {
@@ -134,6 +134,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                     }
                 }
             } else {
+
                 logger.info("邮箱不存在，请检查");
                 return Result.fail("邮箱不存在，请检查");
             }
@@ -170,7 +171,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Result sendEmailForFindPassword(String email) {
         if (null == email) {
-            return Result.fail("输入邮箱为空");
+            return Result.fail("输入邮箱不能为空");
         } else {
             String code = CommonUtils.randomCode();
             User user = userMapper.queryUserByEmail(email);
@@ -183,7 +184,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                     return Result.fail("邮件发送失败，请重试");
                 }
             } else {
-                return Result.fail("邮箱错误，请重新输入");
+                return Result.fail("邮箱未注册，请重新输入");
             }
         }
     }
