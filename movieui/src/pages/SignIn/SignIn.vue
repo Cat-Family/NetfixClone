@@ -147,7 +147,7 @@
                 <span class="checkbox__text"> 免密登录 </span>
               </label>
             </div>
-            <a class="link link--s"> 需要帮助? </a>
+            <a class="link link--s" href="/RecoverPassword"> 需要帮助? </a>
           </div>
         </form>
         <ul class="SignIn__social-list">
@@ -230,7 +230,7 @@ export default {
 
     const onSignInEmailNext = () => {
       if (email.value == null || email.value == "") {
-        ElMessage("邮箱不能为空!");
+        ElMessage.error("邮箱不能为空!");
       } else {
         if (
           /^[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/.test(

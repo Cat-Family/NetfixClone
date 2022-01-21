@@ -71,11 +71,11 @@
             <ul class="form__required-list">
               <li
                 :class="[
-                  { 'form__required-item--done': password.length >= 6 },
+                  { 'form__required-item--done': password.length >= 8 },
                   'form__required-item',
                 ]"
               >
-                <span class="form__required-text"> 长度至少为 6 个字符 </span>
+                <span class="form__required-text"> 长度至少为 8 个字符 </span>
               </li>
               <li
                 :class="[
@@ -86,7 +86,7 @@
                   'form__required-item',
                 ]"
               >
-                <span class="form__required-text"> 一个大写字符 </span>
+                <span class="form__required-text"> 一个大写字母 </span>
               </li>
               <li
                 :class="[
@@ -97,7 +97,7 @@
                   'form__required-item',
                 ]"
               >
-                <span class="form__required-text"> 一个小写字符 </span>
+                <span class="form__required-text"> 一个小写字母 </span>
               </li>
               <li
                 :class="[
@@ -205,8 +205,8 @@ export default {
       if (password !== confirmPassword) {
         this.errors.confirmPassword.push("两次密码不匹配");
       }
-      if (password.length < 6) {
-        this.errors.password.push("长度至少为 6 个字符");
+      if (password.length < 8) {
+        this.errors.password.push("长度至少为 8 个字符");
       }
       if (
         password === password.toLowerCase() ||
