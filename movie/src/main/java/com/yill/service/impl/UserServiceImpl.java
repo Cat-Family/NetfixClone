@@ -49,18 +49,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    public Result register(RegisterDto registerDto,HttpServletResponse response) {
+    public Result register(RegisterDto registerDto, HttpServletResponse response) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(User::getName,registerDto.getName()).select(User::getName);
+        queryWrapper.eq(User::getName, registerDto.getName()).select(User::getName);
         if (!Objects.isNull(userMapper.selectOne(queryWrapper))) {
             return Result.fail("用户名已存在");
         }
-        queryWrapper.or().eq(User::getPhone,registerDto.getPhone()).select(User::getPhone);
-        if (!Objects.isNull(userMapper.selectOne(queryWrapper))){
+        queryWrapper.or().eq(User::getPhone, registerDto.getPhone()).select(User::getPhone);
+        if (!Objects.isNull(userMapper.selectOne(queryWrapper))) {
             return Result.fail("该号码已被注册");
         }
-        queryWrapper.or().eq(User::getEmail,registerDto.getEmail()).select(User::getEmail);
-        if (!Objects.isNull(userMapper.selectOne(queryWrapper))){
+        queryWrapper.or().eq(User::getEmail, registerDto.getEmail()).select(User::getEmail);
+        if (!Objects.isNull(userMapper.selectOne(queryWrapper))) {
             return Result.fail("该邮箱已被注册");
         }
         User user = new User();
@@ -104,26 +104,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public Result loginByEmail(String email, String validateCode,HttpServletResponse response) {
+    public Result loginByEmail(String email, String validateCode, HttpServletResponse response) {
         if (null == email || validateCode == null) {
             logger.info("邮箱或验证码为空");
             return Result.fail("邮箱或验证码为空");
         } else {
             User user = userMapper.queryUserByEmail(email);
+            boolean hasKey = redisUtils.hasKey(email);
             if (null != user) {
-                boolean hasKey = redisUtils.hasKey(email);
                 if (!hasKey) {
                     logger.info("验证码已过期，请重新获取");
                     return Result.fail("验证码已过期，请重新获取");
                 } else {
                     String realCode = (String) redisUtils.get(email);
-                    if (StringUtils.pathEquals(realCode,validateCode)) {
+                    if (StringUtils.pathEquals(realCode, validateCode)) {
                         String jwt = jwtUtils.generateToken(user.getId());
                         response.setHeader("Authorization", jwt);
                         response.setHeader("Access-Control-Expose-Headers", "Authorization");
                         return Result.succ(MapUtil.builder()
-                                .put("id", user.getId())
-                                .put("username", user.getName())
                                 .put("email", user.getEmail())
                                 .put("token", jwt)
                                 .map()
@@ -134,9 +132,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                     }
                 }
             } else {
-
-                logger.info("邮箱不存在，请检查");
-                return Result.fail("邮箱不存在，请检查");
+                if (!hasKey) {
+                    logger.info("验证码已过期，请重新获取");
+                    return Result.fail("验证码已过期，请重新获取");
+                } else {
+                    String realCode = (String) redisUtils.get(email);
+                    if (StringUtils.pathEquals(realCode, validateCode)) {
+                        User users = new User();
+                        users.setEmail(email);
+                        users.setName(email);
+                        userMapper.insert(users);
+                        String jwt = jwtUtils.generateTokens(users.getEmail());
+                        response.setHeader("Authorization", jwt);
+                        response.setHeader("Access-Control-Expose-Headers", "Authorization");
+                        return Result.succ(MapUtil.builder()
+                                .put("email", users.getEmail())
+                                .put("token", jwt)
+                                .map()
+                        );
+                    } else {
+                        logger.info("验证码错误");
+                        return Result.fail("验证码错误");
+                    }
+                }
             }
         }
     }
@@ -146,14 +164,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.and(warpper -> warpper.eq(User::getEmail, findPassword.getUserName()).or()
                 .eq(User::getName, findPassword.getUserName()).or()
-                .eq(User::getPhone, findPassword.getUserName())).select(User::getPassword,User::getId);
+                .eq(User::getPhone, findPassword.getUserName())).select(User::getPassword, User::getId);
         User users = userMapper.selectOne(queryWrapper);
         if (users != null) {
             if (!findPassword.getPassword().equals(findPassword.getConfirmPassword())) {
                 logger.info("密码不一致");
                 return Result.fail("密码不一致");
             }
-            if (findPassword.getPassword().equals("")){
+            if (findPassword.getPassword().equals("")) {
                 return Result.fail("密码不能为空");
             }
             User user = new User();
@@ -162,7 +180,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             userMapper.updateById(user);
             logger.info("修改成功");
             return Result.succ("修改成功");
-        }else {
+        } else {
             logger.info("用户不存在");
             return Result.fail("用户不存在");
         }
