@@ -14,13 +14,6 @@
       >
         登录
       </router-link>
-      <router-link
-        v-if="routePath === signInRoute"
-        class="btn btn--primary"
-        :to="signUpRoute"
-      >
-        注册
-      </router-link>
     </div>
   </header>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div class="StartNow bg">
+  <div class="StartNow bg-home">
     <div class="StartNow__container">
       <h1 class="StartNow__title">了解下一步。</h1>
       <p class="StartNow__subtitle">随时随地观看。随时取消。</p>
@@ -25,6 +25,10 @@ export default {
 
 <style lang="scss">
 @import "StartNow";
+.bg-home {
+  background-image: url("/login-the-crown_2-1500x1000.jpg");
+  background-position: center center;
+}
 </style>
 
 
