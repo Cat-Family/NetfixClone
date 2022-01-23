@@ -2,7 +2,7 @@ package com.yill.service.impl;
 
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.yill.constant.EmaliConstant;
+import com.yill.constant.EmailConstant;
 import com.yill.entity.User;
 import com.yill.entity.dto.user.input.FindPassword;
 import com.yill.entity.dto.user.input.ModifyDto;
@@ -45,6 +45,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private EmailUtils emailUtils;
+
+    @Autowired
+    private EmailConstant emailConstant;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -195,7 +198,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             User user = userMapper.queryUserByEmail(email);
             if (null != user) {
                 //发送邮件
-                Boolean sendEmail = emailUtils.sendEmail(email, EmaliConstant.EMALI_TITLE, "您的修改密码地址为：http://localhost:3000/RecoverPasswordForm?passwordKey=" + code);
+                Boolean sendEmail = emailUtils.sendEmail(email, emailConstant.getEMAIL_TITLE(),emailConstant.getFIND_PASSWORD_EMAIL_MESSAGE() + emailConstant.getFIND_PASSWORD_URL()+ code + emailConstant.getFIND_PASSWORD_EMAIL_MESSAGE_TIME());
                 if (sendEmail) {
                     return Result.succ(email);
                 } else {
