@@ -1,10 +1,9 @@
 package com.yill.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.yill.constant.EmaliConstant;
-import com.yill.entity.User;
+import com.yill.constant.EmailConstant;
 import com.yill.mapper.UserMapper;
 import com.yill.utils.CommonUtils;
+import com.yill.utils.EmailUtils;
 import com.yill.utils.RedisUtils;
 import com.yill.utils.Result;
 import org.slf4j.Logger;
@@ -15,14 +14,13 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 import java.io.File;
 import java.util.List;
-import java.util.Random;
 
 @Service("mailService")
+
 public class MailService {
 
     @Value("${spring.mail.username}")
@@ -37,18 +35,23 @@ public class MailService {
     @Autowired
     private RedisUtils redisUtils;
 
+    @Autowired
+    private EmailUtils emailUtils;
+
+    @Autowired
+    private EmailConstant emailConstant;
+
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public Result sendSimpleMail(String to){
         String code = CommonUtils.randomCode();
-        SimpleMailMessage message = new SimpleMailMessage();
             boolean hasKey = redisUtils.hasKey(to);
             if (!hasKey) {
-                message.setFrom(from);
-                message.setTo(to);
-                message.setSubject(EmaliConstant.EMALI_TITLE);
-                message.setText(EmaliConstant.EMALI_CONTENT+code+EmaliConstant.EMALI_CONTENT_TIME);
-                mailSender.send(message);
+                Boolean sendEmail = emailUtils.sendEmail(to, emailConstant.getEMAIL_TITLE(), emailConstant.getLOGIN_EMAIL_MESSAGE() + code + emailConstant.getLOGIN_EMAIL_MESSAGE_TIME());
+                if (!sendEmail) {
+                    logger.info("验证码发送失败");
+                    return Result.fail("验证码发送失败");
+                }
                 redisUtils.setWithTime(to,code,60);
                 logger.info("邮件发送成功");
                 return Result.succ("邮件发送成功");
