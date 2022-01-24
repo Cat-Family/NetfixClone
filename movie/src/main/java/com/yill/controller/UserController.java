@@ -1,33 +1,30 @@
 package com.yill.controller;
 
-
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.map.MapUtil;
-import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.yill.common.dto.LoginDto;
+import com.yill.entity.dto.user.input.FindPassword;
+import com.yill.entity.dto.user.input.LoginDto;
+import com.yill.entity.dto.user.input.ModifyDto;
 import com.yill.entity.User;
+import com.yill.entity.dto.user.input.RegisterDto;
+import com.yill.mapper.UserMapper;
+import com.yill.service.MailService;
 import com.yill.service.UserService;
 import com.yill.utils.JwtUtils;
+import com.yill.utils.RedisUtils;
 import com.yill.utils.Result;
-import com.yill.entity.dto.user.input.UserAddInput;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Random;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author 关注公众号：huluwa
@@ -38,18 +35,37 @@ import javax.validation.Valid;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private RedisUtils redisUtils;
 
     @Autowired
     JwtUtils jwtUtils;
 
-    @ApiOperation(value = "注册功能", tags = { "登录" })
-    @RequestMapping(value = "/login", produces = { "application/json" }, method = RequestMethod.POST)
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    private MailService mailService;
+
+    @Autowired
+    UserMapper userMapper;
+
+    /**
+     * 默认账号密码：
+     */
+    @CrossOrigin
+    @ResponseBody
+    @ApiOperation(value = "登录功能", tags = {"用户"})
+    @RequestMapping(value = "/login", produces = {"application/json"}, method = RequestMethod.POST)
     @Valid
-    public Result login(@Validated @RequestBody LoginDto loginDto, HttpServletResponse response) {
-        User user = userService.getOne(new QueryWrapper<User>().eq("name", loginDto.getName()));
+    public Result login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<User>();
+        queryWrapper.and(wrapper -> wrapper
+                .eq("name", loginDto.getName()).or()
+                .eq("phone", loginDto.getName()).or()
+                .eq("email", loginDto.getName()));
+        User user = userService.getOne(queryWrapper);
         Assert.notNull(user, "用户不存在");
-        if(!user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))) {
+        if (!user.getPassword().equals(loginDto.getPassword())) {
             return Result.fail("密码错误！");
         }
         String jwt = jwtUtils.generateToken(user.getId());
@@ -58,17 +74,90 @@ public class UserController {
         // 用户可以另一个接口
         return Result.succ(MapUtil.builder()
                 .put("id", user.getId())
-                .put("name", user.getName())
+                .put("username", user.getName())
                 .put("email", user.getEmail())
+                .put("token", jwt)
                 .map()
         );
     }
 
-    // 退出
-    @RequestMapping("/logout")
-    @RequiresAuthentication
-    public Result logout() {
-        SecurityUtils.getSubject().logout();
-        return Result.succ(null);
+//    @ApiOperation(value = "获取验证码", tags = {"用户"})
+//    @RequestMapping(value = "/getCheckCode", produces = {"application/json"}, method = RequestMethod.POST)
+//    @ResponseBody
+//    public String getCheckCode(String email) {
+//        String checkCode = String.valueOf(new Random().nextInt(899999) + 100000);
+//        redisUtils.setWithTime(email, checkCode, 60);
+//        String message = "欢迎使用无花果影音，您的注册验证码为：" + checkCode;
+//        try {
+//            mailService.sendSimpleMail(email, "注册验证码", message);
+//            redisUtils.set(email, checkCode);
+//        } catch (Exception e) {
+//            return "";
+//        }
+//        return checkCode;
+//    }
+
+    @ApiOperation(value = "获取验证码", tags = {"用户"})
+    @RequestMapping(value = "/getCheckCode", produces = {"application/json"}, method = RequestMethod.POST)
+    @ResponseBody
+    public Result getCheckCode(String email) {
+        Result result = mailService.sendSimpleMail(email);
+        return result;
     }
+
+//    @ApiOperation(value = "邮箱登录", tags = {"用户"})
+//    @RequestMapping(value = "email-login", produces = {"application/json"}, method = RequestMethod.POST)
+//    @ResponseBody
+//    public Result emailLogin( String email,String validateCode) {
+//        if (email==null||validateCode == null) {
+//            return Result.fail("邮箱或验证码出错");
+//        }
+//        //redis中的验证码
+//        Object checkCode = redisUtils.get(email);
+//        //校验
+//        System.out.println(checkCode);
+//        if (email!=null && validateCode != null && validateCode.equals(checkCode)) {
+//            return Result.succ("验证码正确");
+//        }
+//        return Result.fail("验证码错误");
+//    }
+
+    @ApiOperation(value = "邮箱登录(找回密码)", tags = {"用户"})
+    @RequestMapping(value = "email-login", produces = {"application/json"}, method = RequestMethod.POST)
+    @ResponseBody
+    public Result emailLogin( String email,String validateCode,HttpServletResponse response) {
+        Result result = userService.loginByEmail(email, validateCode, response);
+        return result;
+    }
+
+
+    @ApiOperation(value = "注册功能", tags = {"用户"})
+    @RequestMapping(value = "register", produces = {"application/json"}, method = RequestMethod.POST)
+    @ResponseBody
+    public Result region(@RequestBody RegisterDto registerDto,HttpServletResponse response) {
+        return userService.register(registerDto,response);
+    }
+
+    @ApiOperation(value = "修改完善功能", tags = {"用户"})
+    @RequestMapping(value = "update", produces = {"application/json"}, method = RequestMethod.POST)
+    @ResponseBody
+    public void modify(@RequestBody ModifyDto modifyDto) {
+        userService.modify(modifyDto);
+    }
+
+    @ApiOperation(value = "找回密码", tags = {"用户"})
+    @RequestMapping(value = "find-password", produces = {"application/json"}, method = RequestMethod.POST)
+    @ResponseBody
+    public Result findPassword(@RequestBody FindPassword findPassword) {
+       return userService.findPassword(findPassword);
+    }
+
+    @ApiOperation(value = "获取找回密码连接邮件", tags = {"用户"})
+    @RequestMapping(value = "send-email-for-find-password", produces = {"application/json"}, method = RequestMethod.POST)
+    @ResponseBody
+    public Result sendEmailForFindPassword(String email) {
+        return userService.sendEmailForFindPassword(email);
+    }
+
+
 }

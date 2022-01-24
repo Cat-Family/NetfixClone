@@ -22,5 +22,5 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue"
-  ]
+, "src/services/SliderService.js", "src/helpers/debounce.js"  ]
 }

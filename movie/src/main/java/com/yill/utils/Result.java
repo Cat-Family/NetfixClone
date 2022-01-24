@@ -1,17 +1,36 @@
 package com.yill.utils;
 
+import com.yill.constant.ResultCodeConstant;
 import lombok.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.util.Map;
+
 @Data
 public class Result implements Serializable {
 
-    private int code;  //200是正常，非200异常（访问异常，数据异常）
+    /**
+     * 状态码
+     */
+    private int code;
+    /**
+     * 接口信息
+     */
     private String msg;
+    /**
+     * 接口返回数据
+     */
     private Object data;
 
+    /**
+     * 构造私有，不能new
+     */
+    private Result(){};
+
     public static Result succ(Object data){
-        return succ(200,"操作成功",data);
+       return succ(ResultCodeConstant.SUCCESS,"操作成功",data);
     }
 
     public static Result succ(int code,String msg,Object data){
@@ -23,11 +42,11 @@ public class Result implements Serializable {
     }
 
     public static Result fail(String msg){
-        return fail(400,msg,null);
+        return fail(ResultCodeConstant.ERROR,msg,null);
     }
 
     public static Result fail(String msg,Object data){
-        return fail(400,msg,data);
+        return fail(ResultCodeConstant.ERROR,msg,data);
     }
     public static Result fail(int code,String msg,Object data){
         Result r = new Result();
@@ -35,5 +54,22 @@ public class Result implements Serializable {
         r.setMsg(msg);
         r.setData(data);
         return r;
+    }
+
+    /**
+     * 链式
+     * @return
+     */
+    public Result code(int code) {
+        this.setCode(code);
+        return this;
+    }
+    public Result msg(String msg) {
+        this.setMsg(msg);
+        return this;
+    }
+    public Result data(Object data) {
+        this.setData(data);
+        return this;
     }
 }

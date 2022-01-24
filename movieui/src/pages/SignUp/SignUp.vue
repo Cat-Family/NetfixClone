@@ -2,8 +2,20 @@
   <div class="SignUp">
     <div class="bg tile">
       <div class="tile__container">
-        <h1 class="tile__title">Sign Up</h1>
+        <h1 class="tile__title">注册</h1>
         <form @submit.prevent="onSignUp" class="form">
+          <div class="form__field">
+            <div class="input__wrapper">
+              <input
+                id="name"
+                required
+                placeholder="name"
+                v-model="name"
+                :class="[{ 'input--filled': name }, 'input']"
+              />
+              <label class="input__placeholder" for="email"> 用户名 </label>
+            </div>
+          </div>
           <div class="form__field">
             <div class="input__wrapper">
               <input
@@ -14,7 +26,7 @@
                 v-model="phone"
                 :class="[{ 'input--filled': phone }, 'input']"
               />
-              <label class="input__placeholder" for="email"> Phone </label>
+              <label class="input__placeholder" for="email"> 手机 </label>
             </div>
           </div>
           <div class="form__field">
@@ -27,7 +39,7 @@
                 v-model="email"
                 :class="[{ 'input--filled': email }, 'input']"
               />
-              <label class="input__placeholder" for="email"> Email </label>
+              <label class="input__placeholder" for="email"> 邮箱 </label>
             </div>
           </div>
           <div class="form__field">
@@ -45,9 +57,7 @@
                 v-model="password"
                 :class="[{ 'input--filled': password }, 'input']"
               />
-              <label class="input__placeholder" for="password">
-                Password
-              </label>
+              <label class="input__placeholder" for="password"> 密码 </label>
             </div>
             <ul class="form__error-list">
               <li
@@ -61,13 +71,11 @@
             <ul class="form__required-list">
               <li
                 :class="[
-                  { 'form__required-item--done': password.length >= 6 },
+                  { 'form__required-item--done': password.length >= 8 },
                   'form__required-item',
                 ]"
               >
-                <span class="form__required-text">
-                  At least 6 characters long
-                </span>
+                <span class="form__required-text"> 长度至少为 8 个字符 </span>
               </li>
               <li
                 :class="[
@@ -78,9 +86,7 @@
                   'form__required-item',
                 ]"
               >
-                <span class="form__required-text">
-                  One uppercase character
-                </span>
+                <span class="form__required-text"> 一个大写字母 </span>
               </li>
               <li
                 :class="[
@@ -91,9 +97,7 @@
                   'form__required-item',
                 ]"
               >
-                <span class="form__required-text">
-                  One lowercase character
-                </span>
+                <span class="form__required-text"> 一个小写字母 </span>
               </li>
               <li
                 :class="[
@@ -101,7 +105,7 @@
                   'form__required-item',
                 ]"
               >
-                <span class="form__required-text"> Latin characters only </span>
+                <span class="form__required-text"> 仅拉丁字符 </span>
               </li>
             </ul>
           </div>
@@ -121,7 +125,7 @@
                 :class="[{ 'input--filled': confirmPassword }, 'input']"
               />
               <label class="input__placeholder" for="confirm-password">
-                Confirm Password
+                确认密码
               </label>
             </div>
             <ul class="form__error-list">
@@ -136,10 +140,16 @@
           </div>
           <div class="form__btns">
             <button type="submit" class="btn btn--primary" :disabled="loading">
-              Sign Up
+              注册
             </button>
           </div>
         </form>
+        <p>
+          已有帐户？
+          <router-link class="link link--white" to="/signIn"
+            >立即登录。</router-link
+          >
+        </p>
         <div class="Spinner__overflow" v-if="loading">
           <Spinner />
         </div>
@@ -156,6 +166,7 @@ export default {
   name: "SignUp",
   data() {
     return {
+      name: "",
       phone: "",
       email: "",
       password: "",
@@ -168,10 +179,10 @@ export default {
   },
   computed: {
     user() {
-      // return this.$store.getters.user;
+      return this.$store.getters.user;
     },
     loading() {
-      // return this.$store.getters.loading;
+      return this.$store.getters.loading;
     },
   },
   components: {
@@ -180,7 +191,7 @@ export default {
   watch: {
     user(value) {
       if (value !== null && value !== undefined) {
-        this.$router.push("/");
+        this.$router.push(routes.signIn);
       }
     },
   },
@@ -192,21 +203,19 @@ export default {
         confirmPassword: [],
       };
       if (password !== confirmPassword) {
-        this.errors.confirmPassword.push("Passwords do not match.");
+        this.errors.confirmPassword.push("两次密码不匹配");
       }
-      if (password.length < 6) {
-        this.errors.password.push("Password should be at least 6 characters.");
+      if (password.length < 8) {
+        this.errors.password.push("长度至少为 8 个字符");
       }
       if (
         password === password.toLowerCase() ||
         password === password.toUpperCase()
       ) {
-        this.errors.password.push(
-          "Contains at least one uppercase and lowercase characters."
-        );
+        this.errors.password.push("至少包含一个大小写字母");
       }
       if (!this.isLatin(password)) {
-        this.errors.password.push("Latin characters and numbers only.");
+        this.errors.password.push("仅拉丁字符");
       }
       return Object.values(this.errors).every((field) => field.length === 0);
     },
@@ -216,15 +225,12 @@ export default {
     },
     onSignUp() {
       if (!this.isFormValid(this)) return null;
-      console.log({
+      this.$store.dispatch(actions.signUp, {
+        name: this.name,
         phone: this.phone,
         email: this.email,
         password: this.password,
       });
-      // this.$store.dispatch(actions.signUp, {
-      //   email: this.email,
-      //   password: this.password
-      // });
     },
   },
 };

@@ -3,10 +3,9 @@ import App from "./App.vue";
 
 /** Add fontawesome */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-/* import the fontawesome core */
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPhone } from "@fortawesome/free-solid-svg-icons/";
-library.add(faPhone);
+
+import "element-plus/dist/index.css";
+
 
 /** Module */
 import store from "./store";

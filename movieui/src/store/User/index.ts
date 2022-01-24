@@ -1,9 +1,16 @@
-import router from "../../router";
+import { ElMessage } from "element-plus";
 import { routes, actions } from "../../helpers/constants";
+import instance from "../../request";
+import router from "../../router/index";
 
 export default {
   state: {
-    user: null,
+    user: {
+      token: localStorage.getItem("token"),
+      email: localStorage.getItem("email"),
+      username: localStorage.getItem("username"),
+      id: localStorage.getItem("id"),
+    },
   },
   mutations: {
     setUser(state, payload) {
@@ -11,21 +18,90 @@ export default {
     },
   },
   actions: {
-    singnUp({ commit }, payload) {
+    signUp({ commit }, payload) {
       commit(actions.setLoading, true);
       commit(actions.clearError);
-      console.log(payload.phone, payload.email, payload.password);
+      instance
+        .post(`/user/register`, payload)
+        .then((res) => {
+          commit(actions.setLoading, false);
+        })
+        .catch((error) => {
+          commit(actions.setLoading, false);
+          commit(
+            actions.setError,
+            error.response.data.msg ? error.response.data.msg : error
+          );
+        });
     },
-
     signIn({ commit }, payload) {
       commit(actions.setLoading, true);
       commit(actions.clearError);
-      console.log(payload);
+      instance
+        .post(`/user/login`, payload)
+        .then((res) => {
+          commit(actions.setLoading, false);
+          commit(actions.setUser, res.data.data);
+          const userInfo = res.data.data;
+          if (payload.rememberMe) {
+            localStorage.setItem("token", userInfo.token);
+            localStorage.setItem("email", userInfo.email);
+            localStorage.setItem("username", userInfo.username);
+            localStorage.setItem("id", userInfo.id);
+          }
+        })
+        .catch((error) => {
+          commit(actions.setLoading, false);
+          commit(
+            actions.setError,
+            error.response?.data.msg ? error.response.data.msg : error
+          );
+        });
     },
-    signInPhone({ commit }, payload) {
+    signInEmail({ commit }, payload) {
       commit(actions.setLoading, true);
       commit(actions.clearError);
-      console.log(payload);
+      instance
+        .post(
+          `/user/email-login?email=${payload.email}&validateCode=${payload.code}`,
+          payload
+        )
+        .then((res) => {
+          commit(actions.setLoading, false);
+          commit(actions.setUser, res.data.data);
+          const userInfo = res.data.data;
+          if (payload.rememberMe) {
+            localStorage.setItem("token", userInfo.token);
+            localStorage.setItem("email", userInfo.email);
+            localStorage.setItem("username", userInfo.username);
+            localStorage.setItem("id", userInfo.id);
+          }
+        })
+        .catch((error) => {
+          commit(actions.setLoading, false);
+          commit(
+            actions.setError,
+            error.response?.data.msg ? error.response.data.msg : error
+          );
+        });
+    },
+    sendEmial({ commit }, payload) {
+      commit(actions.clearError);
+      instance
+        .post(`/user/getCheckCode?email=${payload.email}`)
+        .then((res) => {})
+        .catch((error) =>
+          commit(
+            actions.setError,
+            error.response?.data.msg ? error.response.data.msg : error
+          )
+        );
+    },
+    logout({ commit }) {
+      commit(actions.setUser, null);
+      localStorage.clear();
+      router.push(routes.startNow);
+      ElMessage.success("注销成功");
     },
   },
   getters: {

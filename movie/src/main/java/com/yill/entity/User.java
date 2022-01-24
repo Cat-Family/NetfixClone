@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author 关注公众号：huluwa
@@ -30,6 +30,11 @@ public class User implements Serializable {
      * 用户名称
      */
     private String name;
+
+    /**
+     * 用户头像
+     */
+    private String avatar;
 
     /**
      * 用户真实姓名
