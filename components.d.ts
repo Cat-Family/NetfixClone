@@ -7,8 +7,6 @@ declare module 'vue' {
     AuthorizedHeader: typeof import('./src/components/Header/AuthorizedHeader.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElDialog: typeof import('element-plus/es')['ElDialog']
-    ElForm: typeof import('element-plus/es')['ElForm']
-    ElFormItem: typeof import('element-plus/es')['ElFormItem']
     Header: typeof import('./src/components/Header/Header.vue')['default']
     MovieDetails: typeof import('./src/components/MovieDetails/MovieDetails.vue')['default']
     MovieLabels: typeof import('./src/components/MovieLabels/MovieLabels.vue')['default']
