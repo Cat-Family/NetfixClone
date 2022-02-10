@@ -1,11 +1,58 @@
-# Vue 3 + Typescript + Vite
+# NetfilxClone
 
-This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+There consosts of two parts, including Admin UI and Netfilx Clone UI
 
-## Recommended IDE Setup
+## Netfilx Clone UI
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+### Env and dependencies
 
-## Type Support For `.vue` Imports in TS
+- node
+- yarn
+- vite
+- typeScript
+- @vue/cli ~3
+- axios
+- fortawesome
+- sass
+- vuex
+- vue-router
+- store
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's `.vue` type support plugin by running `Volar: Switch TS Plugin on/off` from VSCode command palette.
+``` shell
+    # start project
+    yarn dev 
+
+    # build
+    yarn build
+
+    # review build projects
+    yarn preview 
+```
+
+## Admin UI
+
+### Env and dependencies
+
+- node
+- yarn
+- webpack
+- eslint
+- @vue/cli ~3
+- ant-design-vue
+- vuex
+- vue-router
+- store
+
+``` shell
+# Install dependencies
+yarn install
+
+# Compiles and hot-reloads for development
+yarn run serve
+
+# Compiles and minifies for production
+yarn run build
+
+# Lints and fixes files
+yarn run lint
+```
