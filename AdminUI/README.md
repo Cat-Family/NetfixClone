@@ -102,7 +102,7 @@ This project exists thanks to all the people who contribute.
 
 ### Docs
 
-[add page loading animate](./AdminUI/docs/add-page-loading-animate.md)  
+[add page loading animate](./docs/add-page-loading-animate.md)  
 
-[webpack bundle analyzer](./AdminUI/docs/webpack-bundle-analyzer.md)
+[webpack bundle analyzer](./docs/webpack-bundle-analyzer.md)
 
