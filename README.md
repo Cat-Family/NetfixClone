@@ -33,7 +33,7 @@ There consosts of two parts, including Admin UI and Netfilx Clone UI
 ```
 
 ## Admin UI
-[More details](./AdminUI/README.md)|[更多详细](./AdminUI/README.zh-CN.md)
+[More details](./AdminUI/README.md) | [更多详细](./AdminUI/README.zh-CN.md)
 ### Env and dependencies
 
 - node
