@@ -19,6 +19,9 @@ There consosts of two parts, including Admin UI and Netfilx Clone UI
 - store
 
 ``` shell
+    # Install dependencies
+    yarn
+
     # start project
     yarn dev 
 
@@ -30,7 +33,7 @@ There consosts of two parts, including Admin UI and Netfilx Clone UI
 ```
 
 ## Admin UI
-
+[More details](./AdminUI/README.md)|[更多详细](./AdminUI/README.zh-CN.md)
 ### Env and dependencies
 
 - node
@@ -45,14 +48,14 @@ There consosts of two parts, including Admin UI and Netfilx Clone UI
 
 ``` shell
 # Install dependencies
-yarn install
+yarn
 
 # Compiles and hot-reloads for development
-yarn run serve
+yarn serve
 
 # Compiles and minifies for production
-yarn run build
+yarn build
 
 # Lints and fixes files
-yarn run lint
+yarn lint
 ```
