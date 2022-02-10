@@ -62,7 +62,7 @@ yarn build
 yarn lint
 ```
 
-### doc
+### 文档
 
 [为首屏增加 加载动画](./AdminUI/docs/add-page-loading-animate.md)  
 

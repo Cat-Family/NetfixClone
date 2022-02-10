@@ -35,6 +35,7 @@ yarn preview
 ```
 
 ## Admin UI
+
 [More details](./AdminUI/README.md) | [更多详细](./AdminUI/README.zh-CN.md)
 ### Env and dependencies
 
@@ -62,7 +63,7 @@ yarn build
 yarn lint
 ```
 
-### doc
+### Docs
 
 [add page loading animate](./AdminUI/docs/add-page-loading-animate.md)  
 

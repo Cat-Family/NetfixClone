@@ -99,3 +99,10 @@ Modern browsers and IE10.
 
 This project exists thanks to all the people who contribute. 
 <a href="https://github.com/vueComponent/ant-design-vue-pro/graphs/contributors"><img src="https://opencollective.com/ant-design-pro-vue/contributors.svg?width=890&button=false" /></a>
+
+### Docs
+
+[add page loading animate](./AdminUI/docs/add-page-loading-animate.md)  
+
+[webpack bundle analyzer](./AdminUI/docs/webpack-bundle-analyzer.md)
+
