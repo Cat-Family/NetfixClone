@@ -110,6 +110,6 @@ This project exists thanks to all the people who contribute.
 
 ### 文档
 
-[为首屏增加 加载动画](./AdminUI/docs/add-page-loading-animate.md)  
+[为首屏增加 加载动画](./docs/add-page-loading-animate.md)  
 
-[先增加依赖](./AdminUI/docs/webpack-bundle-analyzer.md)
+[先增加依赖](./docs/webpack-bundle-analyzer.md)
