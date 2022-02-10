@@ -1,4 +1,4 @@
-先增加依赖
+# 先增加依赖
 
 ```bash
 // npm
@@ -10,7 +10,7 @@ $ yarn add webpack-bundle-analyzer -D
 
 配置文件 `vue.config.js` 增加 `configureWebpack.plugins` 参数
 
-```
+``` javascript
 const path = require('path')
 const webpack = require('webpack')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
@@ -35,6 +35,4 @@ module.exports = {
 }
 ```
 
-
-
-启动 `cli` 的 `build` 命令进行项目编译，编译完成时，会自动运行一个 http://localhost:8888 的地址，完整显示了支持库依赖
+启动 `cli` 的 `build` 命令进行项目编译，编译完成时，会自动运行一个 <http://localhost:8888> 的地址，完整显示了支持库依赖

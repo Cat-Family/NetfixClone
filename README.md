@@ -1,5 +1,7 @@
 # NetfilxClone
 
+English | [简体中文](./README.zh-CN.md)
+
 There consosts of two parts, including Admin UI and Netfilx Clone UI
 
 ## Netfilx Clone UI
@@ -19,17 +21,17 @@ There consosts of two parts, including Admin UI and Netfilx Clone UI
 - store
 
 ``` shell
-    # Install dependencies
-    yarn
+# Install dependencies
+yarn
 
-    # start project
-    yarn dev 
+# start project
+yarn dev 
 
-    # build
-    yarn build
+# build
+yarn build
 
-    # review build projects
-    yarn preview 
+# review build projects
+yarn preview 
 ```
 
 ## Admin UI
@@ -59,3 +61,9 @@ yarn build
 # Lints and fixes files
 yarn lint
 ```
+
+### doc
+
+[add page loading animate](./AdminUI/docs/add-page-loading-animate.md)  
+
+[webpack bundle analyzer](./AdminUI/docs/webpack-bundle-analyzer.md)
