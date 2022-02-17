@@ -12,7 +12,7 @@ There consosts of two parts, including Admin UI and Netfilx Clone UI
 - yarn
 - vite
 - typeScript
-- @vue/cli ~3
+- vue3
 - axios
 - fortawesome
 - sass

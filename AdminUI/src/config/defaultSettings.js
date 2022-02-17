@@ -24,7 +24,7 @@ export default {
     locale: true
   },
   title: 'Ant Design Pro',
-  pwa: false,
+  pwa: true,
   iconfontUrl: '',
   production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true'
 }

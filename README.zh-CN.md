@@ -12,7 +12,7 @@
 - yarn
 - vite
 - typeScript
-- @vue/cli ~3
+- vue3
 - axios
 - fortawesome
 - sass

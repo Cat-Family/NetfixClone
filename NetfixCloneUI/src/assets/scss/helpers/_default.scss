@@ -1,43 +1,43 @@
 html {
-	-webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-	font-family: Helvetica, Arial ,sans-serif;
-	font-size: 14px;
-	color: $white;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: $white;
   background: $gray900;
   @include md {
-    font-size: 16px;;
+    font-size: 16px;
   }
 }
 
 button {
-	background-color: transparent;
-	border: none;
-	cursor: pointer;
-	padding: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 }
 
 figure {
-	margin: 0;
+  margin: 0;
 }
 
 * {
-	box-sizing: border-box;
-	position: relative;
+  box-sizing: border-box;
+  position: relative;
 }
 
 a,
 button,
 input,
 textarea {
-	transition-duration: .3s;
+  transition-duration: 0.3s;
 
-	&:active,
-	&:focus {
-		outline: none;
-	}
+  &:active,
+  &:focus {
+    outline: none;
+  }
 }
 
 input,
@@ -50,7 +50,12 @@ a {
   color: $gray400;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0;
 }
 
@@ -81,13 +86,14 @@ ul {
 }
 
 .no-transition {
-  transition: none!important;
-  transition-duration: 0s!important;
+  transition: none !important;
+  transition-duration: 0s !important;
 }
 
 .bg {
   background-image: url("./assets/images/background/website.jpg");
   background-position: center center;
+  background-size: cover;
 }
 
 .flex-jc {

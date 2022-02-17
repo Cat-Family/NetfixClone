@@ -25,9 +25,20 @@ export default {
 
 <style lang="scss">
 @import "StartNow";
-.bg-home {
-  background-image: url("/login-the-crown_2-1500x1000.jpg");
-  background-position: center center;
+
+@media (max-width: 30em) {
+  .bg-home {
+    background-image: url("/login-the-crown_2-1500x1000.jpg");
+    background-position: center right;
+    background-size: cover;
+  }
+}
+
+@media (min-width: 30em) {
+  .bg-home {
+    background-image: url("/login-the-crown_2-1500x1000.jpg");
+    background-position: center center;
+  }
 }
 </style>
 
