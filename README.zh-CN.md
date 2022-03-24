@@ -2,8 +2,6 @@
 
 [English](./README.md) | 简体中文
 
-该项目分为两个部分: 一个是NetfilxClone UI， 另一个是Admin UI;
-
 ## Netfilx Clone UI
 
 ### 环境依赖
@@ -63,7 +61,3 @@ yarn lint
 ```
 
 ### 文档
-
-[为首屏增加 加载动画](./AdminUI/docs/add-page-loading-animate.md)  
-
-[先增加依赖](./AdminUI/docs/webpack-bundle-analyzer.md)
