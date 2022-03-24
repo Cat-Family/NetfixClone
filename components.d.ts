@@ -6,7 +6,11 @@ declare module 'vue' {
   export interface GlobalComponents {
     AuthorizedHeader: typeof import('./src/components/Header/AuthorizedHeader.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElCarousel: typeof import('element-plus/es')['ElCarousel']
+    ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
     ElDialog: typeof import('element-plus/es')['ElDialog']
+    ElSkeleton: typeof import('element-plus/es')['ElSkeleton']
+    ElSkeletonItem: typeof import('element-plus/es')['ElSkeletonItem']
     Header: typeof import('./src/components/Header/Header.vue')['default']
     MovieDetails: typeof import('./src/components/MovieDetails/MovieDetails.vue')['default']
     MovieLabels: typeof import('./src/components/MovieLabels/MovieLabels.vue')['default']

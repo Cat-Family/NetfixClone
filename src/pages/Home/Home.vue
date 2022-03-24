@@ -1,16 +1,15 @@
 <template>
   <div class="Home">
-    <div class="Home__main-slider">
-      <Slider ref="slider" :options="options">
-        <div
-          :key="index"
-          :class="`slide--${index}`"
-          v-for="(movie, index) in movieList"
-        >
-          <MovieDetails :movie="movie" />
-        </div>
-      </Slider>
-    </div>
+    <el-carousel ref="slider" class="Home__main-slider" height="100%">
+      <el-skeleton-item variant="image"  animated style="width: 100%; height: 100%" />
+      <el-carousel-item
+        v-for="(movie, index) in movieList"
+        :key="index"
+      >
+        <MovieDetails :movie="movie" />
+      </el-carousel-item>
+    </el-carousel>
+
     <div class="Home__slider-list">
       <MovieSlider
         category-title="Netflix Originals"
@@ -25,52 +24,35 @@
 
 <script>
 import axios from "axios";
-import Slider from "../../components/Slider/Slider.vue";
 import MovieDetails from "../../components/MovieDetails/MovieDetails.vue";
 import MovieSlider from "../../components/MovieSlider/MovieSlider.vue";
+import { ref } from "vue";
 
 export default {
   name: "Home",
-  data() {
-    return {
-      movieList: [],
-      options: {
-        dots: true,
-        autoplay: true,
-        slidesToShow: 1,
-        autoplaySpeed: 5000,
-        speed: 300,
-        timing: "ease-in-out",
-      },
-    };
-  },
   computed: {
     user() {
       return this.$store.getters.user;
     },
   },
   components: {
-    Slider,
     MovieDetails,
     MovieSlider,
   },
-  mounted() {
-    this.$refs.slider.toggleLoading();
-    this.$refs.slider.disableAutoPlay();
+  setup() {
+    const movieList = ref([]);
+    const loading = ref(true);
     axios
       .get("/movie.json")
       .then((response) => {
-        this.movieList = response.data.results.splice(0, 10);
-      })
-      .then(() => {
-        this.$refs.slider.reload();
+        movieList.value = response.data.results.splice(0, 10);
+        loading.value = false;
       })
       .catch((error) => {
         console.log(error);
-      })
-      .finally(() => {
-        this.$refs.slider.toggleLoading();
       });
+
+    return { movieList, loading };
   },
 };
 </script>
