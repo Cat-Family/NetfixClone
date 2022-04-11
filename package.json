@@ -16,7 +16,7 @@
     "element-plus": "^2.1.4",
     "sass": "^1.46.0",
     "sass-loader": "^12.4.0",
-    "unplugin-auto-import": "^0.6.6",
+    "unplugin-auto-import": "^0.7.0",
     "unplugin-vue-components": "^0.18.4",
     "vue": "^3.2.25",
     "vue-plyr": "^7.0.0",
