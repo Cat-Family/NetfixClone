@@ -17,7 +17,7 @@
     "sass": "^1.46.0",
     "sass-loader": "^12.4.0",
     "unplugin-auto-import": "^0.6.6",
-    "unplugin-vue-components": "^0.18.4",
+    "unplugin-vue-components": "^0.19.2",
     "vue": "^3.2.25",
     "vue-plyr": "^7.0.0",
     "vue-router": "4",
