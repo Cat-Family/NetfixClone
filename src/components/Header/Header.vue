@@ -2,6 +2,9 @@
   <div v-if="begin">
     <AuthorizedHeader />
   </div>
+  <div v-else-if="adminHeader">
+    
+  </div>
   <div v-else>
     <UnauthorizedHeader />
   </div>
@@ -25,8 +28,15 @@ export default {
     begin() {
       const route = useRoute();
       return (
-        route.path != "/" && route.path != "/signIn" && route.path != "/signUp"
+        route.path != "/" &&
+        route.path != "/signIn" &&
+        route.path != "/signUp" &&
+        route.path != "/admin"
       );
+    },
+    adminHeader() {
+      const route = useRoute();
+      return route.path == "/admin";
     },
   },
   components: {

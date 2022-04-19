@@ -33,17 +33,11 @@ const routes = [
     path: "/home",
     name: "Home",
     component: Home,
-    // meta: {
-    //   requiresAuth: true,
-    // },
   },
   {
     path: "/watch",
     name: "Watch",
     component: Watch,
-    // meta: {
-    //   requiresAuth: true,
-    // },
   },
   {
     path: "/profile",
