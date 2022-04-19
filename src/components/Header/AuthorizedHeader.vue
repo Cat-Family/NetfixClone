@@ -64,7 +64,19 @@
     </div>
 
     <div class="Header__actions">
-      <ProfileDropdown />
+      <el-dropdown>
+        <el-avatar
+          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+        />
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item>用户配置</el-dropdown-item>
+            <el-dropdown-item @click="onLogOut">退出登录</el-dropdown-item>
+            <el-dropdown-item>管理员</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+
       <button
         :class="[{ 'hamburger--active': isMenuOpened }, 'hamburger', 'button']"
         v-on:click="toggleSidebar"
@@ -74,11 +86,18 @@
         <span />
       </button>
     </div>
+    <el-drawer
+      v-model="drawer"
+      title="I am the title"
+      :direction="direction"
+      :before-close="handleClose"
+    >
+      <span>Hi, there!</span>
+    </el-drawer>
   </header>
 </template>
 
 <script>
-import ProfileDropdown from "../ProfileDropdown/ProfileDropdown.vue";
 import NetflixLogo from "../../assets/images/netflix.svg";
 import debounce from "../../helpers/debounce";
 import { routes, actions } from "../../helpers/constants";
@@ -109,7 +128,6 @@ export default {
     },
   },
   components: {
-    ProfileDropdown,
     NetflixLogo,
   },
   watch: {
@@ -141,6 +159,9 @@ export default {
       if (this.isMenuOpened)
         document.documentElement.classList.add("no-scroll");
       else document.documentElement.classList.remove("no-scroll");
+    },
+    onLogOut() {
+      this.$store.dispatch(actions.logout);
     },
   },
   created() {

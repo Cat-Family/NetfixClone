@@ -1,0 +1,19 @@
+{
+    "editor.suggest.preview": true,
+    "editor.suggest.shareSuggestSelections": true,
+    "editor.cursorSmoothCaretAnimation": true,
+    "editor.cursorBlinking": "smooth",
+    "editor.quickSuggestions": {
+        "other": "on",
+        "comments": "off",
+        "strings": "off",
+        "ordered_list":{
+            "scope":"markdown",
+            "prefix":"ol",
+            "body": [
+                "$CURSOR_NUMBER. $0"
+            ],
+            "description":"Add order list"
+        }
+    },
+}

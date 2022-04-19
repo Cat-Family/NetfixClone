@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header v-if="route.path !== '/Watch'" />
+    <Header />
     <main>
       <router-view />
     </main>
@@ -17,6 +17,7 @@ export default {
   },
   setup() {
     const route = useRoute();
+    
     return {
       route,
     };

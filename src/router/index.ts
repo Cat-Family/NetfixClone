@@ -8,6 +8,8 @@ import Watch from "../pages/Watch/Watch.vue";
 import RecoverPassword from "../pages/RecoverPassword/RecoverPassword.vue";
 import RecoverPasswordSuccess from "../pages/RecoverPassword/RecoverPasswordSuccess.vue";
 import RecoverPasswordForm from "../pages/RecoverPassword/RecoverPasswordForm.vue";
+import Profile from "../pages/Profile/Profile.vue";
+import Admin from "../pages/Admin/Admin.vue";
 
 const store = useStore();
 const history = createWebHistory();
@@ -28,7 +30,7 @@ const routes = [
     component: SignUp,
   },
   {
-    path: "/Home",
+    path: "/home",
     name: "Home",
     component: Home,
     // meta: {
@@ -36,12 +38,17 @@ const routes = [
     // },
   },
   {
-    path: "/Watch",
+    path: "/watch",
     name: "Watch",
     component: Watch,
     // meta: {
     //   requiresAuth: true,
     // },
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: Profile,
   },
   {
     path: "/RecoverPassword",
@@ -58,6 +65,11 @@ const routes = [
     name: "RecoverPasswordForm",
     component: RecoverPasswordForm,
   },
+  {
+    path: "/admin",
+    name: "Admin",
+    component: Admin,
+  }
 ];
 
 const router = createRouter({

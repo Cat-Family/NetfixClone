@@ -1,5 +1,5 @@
 <template>
-  <div v-if="userIsAuthenticated && begin">
+  <div v-if="begin">
     <AuthorizedHeader />
   </div>
   <div v-else>
