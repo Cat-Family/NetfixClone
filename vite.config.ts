@@ -11,6 +11,8 @@ export default defineConfig({
     // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
     vuetify({
       autoImport: true,
+      styles: true,
+      stylesTimeout: 10000
     }),
   ],
   define: { 'process.env': {} },

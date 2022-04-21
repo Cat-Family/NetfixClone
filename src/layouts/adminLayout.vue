@@ -50,8 +50,8 @@
 
     <v-app-bar-title>管理员后台</v-app-bar-title>
     <v-spacer></v-spacer>
-    <v-btn icon>
-      <v-icon>mdi-dots-vertical</v-icon>
+    <v-btn icon href="/">
+      <v-icon>mdi-home-outline</v-icon>
     </v-btn>
   </v-app-bar>
 
@@ -115,5 +115,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
