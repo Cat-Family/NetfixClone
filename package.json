@@ -37,7 +37,7 @@
     "unplugin-auto-import": "^0.7.1",
     "vite": "^2.9.5",
     "vue-cli-plugin-vuetify": "~2.4.8",
-    "vue-tsc": "^0.34.8",
+    "vue-tsc": "^0.34.9",
     "vuetify-loader": "^2.0.0-alpha.0"
   }
 }
