@@ -11,7 +11,9 @@
 </template>
 
 <script>
+import { onMounted } from "vue-demi";
 import { routes } from "../../helpers/constants";
+import { useStore } from "vuex";
 
 export default {
   name: "StartNow",
@@ -41,5 +43,3 @@ export default {
   }
 }
 </style>
-
-

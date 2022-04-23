@@ -1,7 +1,7 @@
 <template>
-  <header :class="[{ 'Header--bg': isScrolled }, 'Header']">
+  <header class="Header">
     <router-link :to="homeRoute">
-      <router-link to="/home">
+      <router-link to="/admin/user">
         <img
           class="Header__logo Header__logo--un"
           src="../../assets/images/netflix.png"
@@ -11,57 +11,18 @@
 
     <nav :class="[{ 'Header__nav--opened': isMenuOpened }, 'Header__nav']">
       <ul class="Header__nav-list">
-        <li
-          class="Header__nav-item"
-          v-for="(navItem, index) in navList"
-          :key="index"
-        >
-          <router-link
-            v-if="!navItem.nav"
-            class="Header__nav-link"
-            :to="navItem.link"
-          >
-            {{ navItem.title }}
+        <li class="Header__nav-item">
+          <router-link class="Header__nav-link" to="/admin/user">
+            用户管理
           </router-link>
-          <div v-else class="Header__nav-link">
-            {{ navItem.title }}
-            <div class="dropdown">
-              <div
-                class="dropdown__list"
-                v-for="(dropdownItem, index) in navItem.nav"
-                :key="index"
-              >
-                <router-link
-                  class="dropdown__btn"
-                  :to="`${navItem.link}/${dropdownItem.id}`"
-                >
-                  {{ dropdownItem.name }}
-                </router-link>
-              </div>
-            </div>
-          </div>
+        </li>
+        <li class="Header__nav-item">
+          <router-link class="Header__nav-link" to="/admin/video">
+            视频管理
+          </router-link>
         </li>
       </ul>
     </nav>
-
-    <div
-      class="Header__search"
-      :class="[{ 'Header__search--active': search }, 'Header__search']"
-    >
-      <label class="flex-jc">
-        <font-awesome-icon
-          :icon="['fas', 'search']"
-          class="Header__search-icon"
-        />
-        <input
-          name="search"
-          type="text"
-          placeholder="Titles, characters, geners"
-          v-model="search"
-          class="Header__search-input"
-        />
-      </label>
-    </div>
 
     <div class="Header__actions">
       <el-dropdown>
@@ -77,9 +38,7 @@
             >
             <el-dropdown-item @click="onLogOut">退出登录</el-dropdown-item>
             <el-dropdown-item
-              ><router-link to="/admin/user"
-                >管理员
-              </router-link></el-dropdown-item
+              ><router-link to="/home">用户页面</router-link></el-dropdown-item
             >
           </el-dropdown-menu>
         </template>
@@ -94,14 +53,6 @@
         <span />
       </button>
     </div>
-    <el-drawer
-      v-model="drawer"
-      title="I am the title"
-      :direction="direction"
-      :before-close="handleClose"
-    >
-      <span>Hi, there!</span>
-    </el-drawer>
   </header>
 </template>
 
@@ -109,10 +60,9 @@
 import NetflixLogo from "../../assets/images/netflix.svg";
 import debounce from "../../helpers/debounce";
 import { routes, actions } from "../../helpers/constants";
-import { ref } from "vue";
 
 export default {
-  name: "AuthorizedHeader",
+  name: "AdminHeader",
   data() {
     return {
       search: "",

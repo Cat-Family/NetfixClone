@@ -9,7 +9,13 @@ import RecoverPassword from "../pages/RecoverPassword/RecoverPassword.vue";
 import RecoverPasswordSuccess from "../pages/RecoverPassword/RecoverPasswordSuccess.vue";
 import RecoverPasswordForm from "../pages/RecoverPassword/RecoverPasswordForm.vue";
 import Profile from "../pages/Profile/Profile.vue";
-import Admin from "../pages/Admin/Admin.vue";
+import AdminUser from "../pages/Admin/User.vue";
+import AdminVideo from "../pages/Admin/Video.vue";
+import Search from "../pages/Search/Search.vue";
+import TVShows from "../pages/TVShows/TVShows.vue";
+import Movies from "../pages/Movies/Movies.vue";
+import Popular from "../pages/Popular/Popular.vue";
+import MyList from "../pages/MyList/MyList.vue";
 
 const store = useStore();
 const history = createWebHistory();
@@ -60,10 +66,40 @@ const routes = [
     component: RecoverPasswordForm,
   },
   {
-    path: "/admin",
-    name: "Admin",
-    component: Admin,
-  }
+    path: "/admin/user",
+    name: "Admin/user",
+    component: AdminUser,
+  },
+  {
+    path: "/admin/video",
+    name: "Admin/admin",
+    component: AdminVideo,
+  },
+  {
+    path: "/search/:search",
+    name: "Search",
+    component: Search,
+  },
+  {
+    path: `/movies/:id`,
+    name: 'Movies',
+    component: Movies,
+  },
+  {
+    path: `/tv-shows/:id`,
+    name: 'TVShows',
+    component: TVShows,
+  },
+  {
+    path: "/popular",
+    name: 'Popular',
+    component: Popular,
+  },
+  {
+    path: "/my-list",
+    name: 'My List',
+    component: MyList,
+  },
 ];
 
 const router = createRouter({
