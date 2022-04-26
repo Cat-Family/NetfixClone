@@ -11,7 +11,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/vue-fontawesome": "^3.0.0-5",
-    "axios": "^0.26.1",
+    "axios": "^0.27.0",
     "click-outside-vue3": "^4.0.1",
     "element-plus": "^2.1.10",
     "sass": "^1.50.1",
