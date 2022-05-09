@@ -38,6 +38,7 @@
                 type="danger"
                 size="mini"
                 auto-insert-space
+                :loading="deleteLoading && actionUserId === user.id"
                 @click="deleteUser(user.id)"
                 >删除</el-button
               >
@@ -54,9 +55,12 @@
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import { User, VideoPlay } from "@element-plus/icons-vue";
 import { useStore } from "vuex";
+import instance from "../../request";
 
 const store = useStore();
 const users = ref([]);
+const deleteLoading = ref(false);
+const actionUserId = ref(null);
 
 onMounted(() => {
   store.dispatch("getAllUsers");
@@ -69,6 +73,21 @@ watch(
   }
 );
 
+const deleteUser = async (id) => {
+  deleteLoading.value = true;
+  actionUserId.value = id;
+  const res = await instance.post(`/user/delete`, { id });
+
+  if (res.data.code == 200) {
+    store.dispatch("getAllUsers");
+    deleteLoading.value = false;
+    actionUserId.value = null;
+  }
+
+  deleteLoading.value = false;
+  actionUserId.value = null;
+};
+
 onUnmounted(() => {
   store.dispatch("clearAllUsers");
 });
@@ -77,7 +96,6 @@ onUnmounted(() => {
 <style scoped>
 .container {
   text-align: left;
-  overflow: hidden;
   width: 80%;
   margin: 0 auto;
   display: table;

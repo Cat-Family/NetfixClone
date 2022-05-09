@@ -9,7 +9,7 @@ const store = createStore({
     user: user,
     shared: shared,
     myList: myList,
-    admin: admin
+    admin: admin,
   },
 });
 

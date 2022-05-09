@@ -4,7 +4,12 @@
     <br />
     <div class="breadcrumbs">
       <h4>无花果后台 / 视频管理</h4>
-      <el-button type="primary" plain>添加影视</el-button>
+      <el-upload
+        class="upload-demo"
+        action="http://m39973w600.zicp.vip/movie/upload"
+      >
+        <el-button type="primary">上传视频</el-button>
+      </el-upload>
     </div>
     <el-divider />
     <main>

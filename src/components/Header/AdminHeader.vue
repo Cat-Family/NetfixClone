@@ -1,5 +1,5 @@
 <template>
-  <header class="Header">
+  <header :class="[{ 'Header--bg': isScrolled }, 'Header']">
     <router-link :to="homeRoute">
       <router-link to="/admin/user">
         <img
