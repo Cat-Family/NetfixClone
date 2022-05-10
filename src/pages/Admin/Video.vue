@@ -132,7 +132,8 @@
                 type="danger"
                 size="mini"
                 auto-insert-space
-                @click="deleteUser(movie.id)"
+                :loading="deleteLoading && actionMovieId === movie.id"
+                @click="deleteVideo(movie.id)"
                 >删除</el-button
               >
             </td>
@@ -153,6 +154,8 @@ const store = useStore();
 const users = ref([]);
 const centerDialogVisible = ref(false);
 const movies = ref([]);
+const actionMovieId = ref(null);
+const deleteLoading = ref(false);
 
 import { ElMessage, FormInstance, FormRules } from "element-plus";
 import instance from "../../request";
@@ -184,11 +187,20 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         ...ruleForm,
         releaseDate: new Date(ruleForm.releaseDate).getTime(),
       });
-      if (res.data.code === 400) {
+      if (res.data.code === 200) {
+        centerDialogVisible.value = false;
+        ruleForm["overview"] = "";
+        ruleForm["original"] = false;
+        ruleForm["movieAddr"] = "";
+        ruleForm["posterPath"] = "";
+        ruleForm["releaseDate"] = "";
+        ruleForm["title"] = "";
+        ruleForm["type"] = "";
+        ruleForm["voteAverage"] = "";
+        ruleForm["post"] = "";
+        ruleForm["actors"] = "";
         store.dispatch("getMovies");
       }
-    } else {
-      console.log("校验失败", fields);
     }
   });
 };
@@ -199,6 +211,20 @@ const handlePosterSuccess = (res: any) => {
 
 const handleMovieSuccess = (res: any) => {
   ruleForm.posterPath = res.data;
+};
+
+const deleteVideo = async (id) => {
+  actionMovieId.value = id;
+  deleteLoading.value = true;
+  const res = await instance.post("/movie/delete-movie", { id });
+
+  if (res.data.code === 200) {
+    await store.dispatch("getMovies");
+    actionMovieId.value = null;
+    deleteLoading.value = false;
+  }
+  actionMovieId.value = null;
+  deleteLoading.value = false;
 };
 
 const resetForm = (formEl: FormInstance | undefined) => {

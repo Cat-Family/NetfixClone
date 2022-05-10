@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { onMounted } from "vue-demi";
+import { onMounted } from "vue";
 import { routes } from "../../helpers/constants";
 import { useStore } from "vuex";
 

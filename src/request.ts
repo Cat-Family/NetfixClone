@@ -35,7 +35,6 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (respose) => {
     if (respose.data.code === 200) {
-      ElMessage.success(respose.data.msg);
       return respose;
     } else if (respose.data.code === 401) {
       localStorage.clear();

@@ -1,11 +1,6 @@
 <template>
   <div class="Home">
     <el-carousel ref="slider" class="Home__main-slider" height="100%">
-      <el-skeleton-item
-        variant="image"
-        animated
-        style="width: 100%; height: 100%"
-      />
       <el-carousel-item v-for="(movie, index) in movieList" :key="index">
         <MovieDetails :movie="movie" />
       </el-carousel-item>
