@@ -8,13 +8,13 @@
       <table class="container">
         <thead>
           <tr>
-            <th><h1>ID</h1></th>
-            <th><h1>用户名</h1></th>
-            <th><h1>手机号</h1></th>
-            <th><h1>密码</h1></th>
-            <th><h1>邮箱</h1></th>
-            <th><h1>等级</h1></th>
-            <th><h1>操作</h1></th>
+            <th><h2>ID</h2></th>
+            <th><h2>用户名</h2></th>
+            <th><h2>手机号</h2></th>
+            <th><h2>密码</h2></th>
+            <th><h2>邮箱</h2></th>
+            <th><h2>等级</h2></th>
+            <th><h2>操作</h2></th>
           </tr>
         </thead>
         <tbody>
@@ -30,7 +30,7 @@
                 plain
                 size="mini"
                 type="primary"
-                @click="deleteUser(user.id)"
+                @click="update(user.id)"
                 >设为管理员</el-button
               >
               <el-button
@@ -87,6 +87,8 @@ const deleteUser = async (id) => {
   deleteLoading.value = false;
   actionUserId.value = null;
 };
+
+const update = async (id) => {};
 
 onUnmounted(() => {
   store.dispatch("clearAllUsers");

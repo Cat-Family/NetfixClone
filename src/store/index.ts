@@ -3,6 +3,7 @@ import user from "./User";
 import shared from "./shared";
 import myList from "./myList";
 import admin from "./admin";
+import video from "./admin/video";
 
 const store = createStore({
   modules: {
@@ -10,6 +11,7 @@ const store = createStore({
     shared: shared,
     myList: myList,
     admin: admin,
+    video: video,
   },
 });
 
