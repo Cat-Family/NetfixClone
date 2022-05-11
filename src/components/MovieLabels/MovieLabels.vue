@@ -1,10 +1,10 @@
 <template>
   <div class="MovieLabels">
     <span :class="['MovieLabels__rate', `MovieLabels__rate--${movieRateColor}`]">
-      {{ movieRate }} Match
+      {{ movieRate }} 分
     </span>
     <span class="MovieLabels__date">
-      {{ movieReleaseDate }}
+      {{ movieReleaseDate}}
     </span>
   </div>
 </template>
@@ -14,14 +14,13 @@
     name: 'MovieLabels',
     props: {
       movie: {
-        vote_average: Number,
-        release_date: String,
-        first_air_date: String,
+        voteAverage: String,
+        releaseDate: String,
       },
     },
     computed: {
       movieRate() {
-        return `${this.movie.vote_average * 10}%`;
+        return `${this.movie.voteAverage }`;
       },
       movieRateColor() {
         const percent = this.movie.vote_average * 10;
@@ -30,7 +29,7 @@
         return 'green';
       },
       movieReleaseDate() {
-        return new Date(this.movie.release_date || this.movie.first_air_date).toLocaleDateString();
+        return new Date(this.movie.releaseDate).toLocaleDateString();
       },
     },
   }

@@ -5,6 +5,9 @@
   <div v-else-if="adminHeader">
     <AdminHeader />
   </div>
+  <div v-else-if="watchHeader">
+
+  </div>
   <div v-else>
     <UnauthorizedHeader />
   </div>
@@ -32,14 +35,19 @@ export default {
         route.path != "/" &&
         route.path != "/signIn" &&
         route.path != "/signUp" &&
-        route.path != "/admin/video"&&
-        route.path != "/admin/user"
+        route.path != "/admin/video" &&
+        route.path != "/admin/user" &&
+        route.path != '/Watch'
       );
     },
     adminHeader() {
       const route = useRoute();
       return route.path == "/admin/user" || route.path == "/admin/video";
     },
+    watchHeader() {
+      const route = useRoute();
+      return route.path == '/Watch';
+    }
   },
   components: {
     AuthorizedHeader,

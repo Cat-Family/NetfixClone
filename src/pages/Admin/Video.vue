@@ -206,11 +206,11 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 };
 
 const handlePosterSuccess = (res: any) => {
-  ruleForm.movieAddr = res.data;
+  ruleForm.posterPath = res.data;
 };
 
 const handleMovieSuccess = (res: any) => {
-  ruleForm.posterPath = res.data;
+  ruleForm.movieAddr = res.data;
 };
 
 const deleteVideo = async (id) => {

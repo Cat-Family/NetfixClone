@@ -120,11 +120,11 @@ export default {
       isMenuOpened: false,
       homeRoute: routes.home,
       navList: [
-        { title: "Home", link: routes.home },
-        { title: "TV Shows", link: routes.tvShows, nav: [] },
-        { title: "Movies", link: routes.movies, nav: [] },
-        { title: "New & Popular", link: routes.popular },
-        { title: "My List", link: routes.myList },
+        { title: "主页", link: routes.home },
+        { title: "电视", link: routes.tvShows, nav: [] },
+        { title: "电影", link: routes.movies, nav: [] },
+        { title: "收藏夹", link: routes.collection },
+        { title: "浏览记录", link: routes.myList },
       ],
     };
   },
@@ -146,8 +146,8 @@ export default {
     genres(value) {
       if (value !== null && value !== undefined) {
         this.navList = this.navList.map((item) => {
-          if (item.title === "TV Shows") return { ...item, nav: value.tv };
-          if (item.title === "Movies") return { ...item, nav: value.movies };
+          if (item.title === "电视") return { ...item, nav: value.tv };
+          if (item.title === "电影") return { ...item, nav: value.movies };
           return item;
         });
       }

@@ -1,9 +1,9 @@
 <template>
   <div class="page__content">
     <h1 class="page__title">
-      Popular
+      收藏夹
       </h1>
-    <MovieList request-url="movie/popular" />
+    <MovieList request-url="/collection" />
   </div>
 </template>
 
@@ -11,7 +11,7 @@
   import MovieList from '../../components/MovieList/MovieList.vue';
 
   export default {
-    name: 'Popular',
+    name: 'Collection',
     components: {
       MovieList,
     },

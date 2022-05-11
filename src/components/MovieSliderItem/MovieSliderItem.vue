@@ -2,7 +2,7 @@
   <div
     class="MovieSliderItem"
     :style="{
-      backgroundImage: 'url(' + getImageUrl(movie.backdrop_path, 1) + ')',
+      backgroundImage: 'url(' + movie.posterPath + ')',
     }"
   >
     <div class="MovieSliderItem__details">
@@ -35,9 +35,6 @@ export default {
     MovieLabels,
   },
   methods: {
-    getImageUrl(url, size) {
-      return getImageUrl(url, size, "backdrop");
-    },
     selectMovie(movie) {
       const slide = this.$el.parentNode;
       const slider = slide.parentNode;

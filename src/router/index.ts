@@ -14,7 +14,7 @@ import AdminVideo from "../pages/Admin/Video.vue";
 import Search from "../pages/Search/Search.vue";
 import TVShows from "../pages/TVShows/TVShows.vue";
 import Movies from "../pages/Movies/Movies.vue";
-import Popular from "../pages/Popular/Popular.vue";
+import Collection from "../pages/Collection/Collection.vue";
 import MyList from "../pages/MyList/MyList.vue";
 
 const store = useStore();
@@ -91,9 +91,9 @@ const routes = [
     component: TVShows,
   },
   {
-    path: "/popular",
-    name: 'Popular',
-    component: Popular,
+    path: "/collection",
+    name: 'Collection',
+    component: Collection,
   },
   {
     path: "/my-list",

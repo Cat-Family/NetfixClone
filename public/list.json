@@ -1,1 +1,48 @@
-{"genres":[{"id":28,"name":"Action"},{"id":12,"name":"Adventure"},{"id":16,"name":"Animation"},{"id":35,"name":"Comedy"},{"id":80,"name":"Crime"},{"id":99,"name":"Documentary"},{"id":18,"name":"Drama"},{"id":10751,"name":"Family"},{"id":14,"name":"Fantasy"},{"id":36,"name":"History"},{"id":27,"name":"Horror"},{"id":10402,"name":"Music"},{"id":9648,"name":"Mystery"},{"id":10749,"name":"Romance"},{"id":878,"name":"Science Fiction"},{"id":10770,"name":"TV Movie"},{"id":53,"name":"Thriller"},{"id":10752,"name":"War"},{"id":37,"name":"Western"}]}
+{
+    "genres": [
+        {
+            "id": 1,
+            "name": "动画"
+        },
+        {
+            "id": 2,
+            "name": "戏剧"
+        },
+        {
+            "id": 3,
+            "name": "纪录片"
+        },
+        {
+            "id": 4,
+            "name": "科幻"
+        },
+        {
+            "id": 5,
+            "name": "新闻"
+        },
+        {
+            "id": 6,
+            "name": "犯罪片"
+        },
+        {
+            "id": 7,
+            "name": "喜剧"
+        },
+        {
+            "id": 8,
+            "name": "恐怖"
+        },
+        {
+            "id": 9,
+            "name": "浪漫"
+        },
+        {
+            "id": 10,
+            "name": "惊悚"
+        },
+        {
+            "id": 11,
+            "name": "魔幻"
+        }
+    ]
+}

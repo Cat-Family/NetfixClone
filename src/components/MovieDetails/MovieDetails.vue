@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="MovieDetails"
-    :style="{ backgroundImage: getBackgroundImageUrl(movie.backdrop_path, 2) }"
-  >
+  <div class="MovieDetails" :style="{ backgroundImage: getBackgroundImageUrl(movie.posterPath) }">
     <div class="MovieDetails__fade--top" />
     <div class="MovieDetails__wrapper">
       <h1 class="MovieDetails__title">
@@ -13,49 +10,17 @@
         <p class="MovieDetails__description">
           {{ movie.overview }}
         </p>
-        <p class="MovieDetails__description">
-          Genres:
-          <span class="MovieDetails__description--white">{{
-            movieGenres
-          }}</span>
-        </p>
-        <button
-          v-if="!isMovieInMyList"
-          type="button"
-          class="btn MovieDetails__btn"
-          @click="addMovieToMyList"
-        >
-          <font-awesome-icon
-            :icon="['fas', 'plus']"
-            class="MovieDetails__btn-icon"
-            fixed-width
-          />
-          My List
+        <button v-if="!isMovieInMyList" type="button" class="btn MovieDetails__btn"
+          @click="addMovieToMyList(this.movie.id)">
+          <font-awesome-icon :icon="['fas', 'plus']" class="MovieDetails__btn-icon" fixed-width />
+          收藏
         </button>
-        <button
-          v-else
-          type="button"
-          class="btn MovieDetails__btn"
-          @click="removeMovieFromMyList"
-        >
-          <font-awesome-icon
-            :icon="['fas', 'minus']"
-            class="MovieDetails__btn-icon"
-            fixed-width
-          />
+        <button v-else type="button" class="btn MovieDetails__btn" @click="removeMovieFromMyList">
+          <font-awesome-icon :icon="['fas', 'minus']" class="MovieDetails__btn-icon" fixed-width />
           播放列表
         </button>
-        <button
-          v-if="!isMovieInMyList"
-          type="button"
-          class="btn MovieDetails__btn"
-          @click="toPaly(this.movie.id)"
-        >
-          <font-awesome-icon
-            :icon="['fas', 'play']"
-            class="MovieDetails__btn-icon"
-            fixed-width
-          />
+        <button v-if="!isMovieInMyList" type="button" class="btn MovieDetails__btn" @click="toPaly(this.movie.id)">
+          <font-awesome-icon :icon="['fas', 'play']" class="MovieDetails__btn-icon" fixed-width />
           立即观看
         </button>
       </div>
@@ -69,6 +34,7 @@ import MovieLabels from "../MovieLabels/MovieLabels.vue";
 import getImageUrl from "../../helpers/getImageUrl";
 import { actions } from "../../helpers/constants";
 import { useRouter } from "vue-router";
+import instance from "../../request";
 
 export default {
   name: "MovieDetails",
@@ -78,18 +44,10 @@ export default {
       name: String,
       title: String,
       overview: String,
-      genre_ids: Array,
-      backdrop_path: String,
+      posterPath: String,
     },
   },
   computed: {
-    movieGenres() {
-      if (!this.$store.getters.genres) return "";
-      return this.$store.getters.genres.movies
-        .filter(({ id }) => this.movie.genre_ids.includes(id))
-        .map(({ name }) => name)
-        .join(", ");
-    },
     isMovieInMyList() {
       return this.$store.getters.myList.find(({ id }) => id === this.movie.id);
     },
@@ -98,18 +56,15 @@ export default {
     MovieLabels,
   },
   methods: {
-    getBackgroundImageUrl(url, size) {
-      return `url(${getImageUrl(url, size, "backdrop")})`;
+    getBackgroundImageUrl(url) {
+      return `url(${url})`;
     },
-    addMovieToMyList() {
-      this.$store.dispatch(actions.addMovieToMyList, {
-        movie: this.movie,
-      });
-    },
-    removeMovieFromMyList() {
-      this.$store.dispatch(actions.removeMovieFromMyList, {
-        movie: this.movie,
-      });
+    addMovieToMyList(id) {
+      instance.post("/collect/collection", {
+        user_id: window.localStorage.getItem("id"),
+        movie_id: id
+      })
+
     },
   },
   setup() {

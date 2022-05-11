@@ -2,16 +2,8 @@
   <div class="MovieSlider__wrapper">
     <h2 class="MovieSlider__title">{{ categoryTitle }}</h2>
     <div v-click-outside="unselectMovie">
-      <Slider
-        ref="slider"
-        :options="options"
-        :class="{ 'Slider--has-selected': selectedMovie }"
-      >
-        <div
-          v-for="(movie, index) in movieList"
-          :key="index"
-          :class="`slide--${index}`"
-        >
+      <Slider ref="slider" :options="options" :class="{ 'Slider--has-selected': selectedMovie }">
+        <div v-for="(movie, index) in movieList" :key="movie.id" :class="`slide--${movie.id}`">
           <MovieSliderItem :movie="movie" v-on:select-movie="selectMovie" />
         </div>
       </Slider>
@@ -34,17 +26,19 @@ import Slider from "../../components/Slider/Slider.vue";
 import MovieSliderItem from "../../components/MovieSliderItem/MovieSliderItem.vue";
 import MovieDetails from "../../components/MovieDetails/MovieDetails.vue";
 // import clickOutside from "../../directives/clickOutside";
+import instance from "../../request";
 
 export default {
   name: "MovieSlider",
   props: {
     categoryTitle: String,
-    requestUrl: String,
+    params: String,
   },
   data() {
     return {
       movieList: [],
       selectedMovie: null,
+      param: {},
       options: {
         dots: false,
         navButtons: false,
@@ -76,7 +70,7 @@ export default {
   },
   methods: {
     selectMovie(movie) {
-      if (this.selectedMovie && this.selectedMovie.id === movie.id)
+      if (this.selectedMovie && this.selectedMovie === movie)
         this.selectedMovie = null;
       else this.selectedMovie = movie;
     },
@@ -86,10 +80,21 @@ export default {
   },
   mounted() {
     this.$refs.slider.toggleLoading();
-    axios
-      .get(`/${this.requestUrl}`)
+
+    if (this.params === "original") {
+      this.param = { original: 1 }
+    }
+    if (this.params === "tv") {
+      this.param = { post: 1 }
+    }
+    if (this.params === "movie") {
+      this.param = { post: 0 }
+    }
+
+    instance
+      .post("/movie/zone", this.param)
       .then((response) => {
-        this.movieList = response.data.results;
+        this.movieList = response.data.data;
       })
       .then(() => {
         this.$refs.slider.reload();

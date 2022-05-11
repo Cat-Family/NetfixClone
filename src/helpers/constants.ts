@@ -11,6 +11,7 @@ interface router {
   popular: string;
   myList: string;
   search: string;
+  collection: string;
 }
 
 export const routes: router = {
@@ -24,7 +25,8 @@ export const routes: router = {
   home: "/home",
   tvShows: "/tv-shows",
   movies: "/movies",
-  popular: "/popular",
+  collection: "/collection",
+  popular: "/collection",
   myList: "/my-list",
   search: "/search",
 };

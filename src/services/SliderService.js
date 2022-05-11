@@ -289,7 +289,7 @@ export const preparations = {
       }
 
       this.slides[this.currentSlide].classList.add('Slider__slide--active');
-      this.slides[this.currentSlide + this.options.slidesToShow - 1].classList.add('Slider__slide--last');
+      this.slides[this.currentSlide + this.options.slidesToShow - 1]?.classList.add('Slider__slide--last');
 
       let start = (this.clonedSlides) ? this.slidesCount + this.currentSlide : this.currentSlide;
 

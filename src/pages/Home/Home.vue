@@ -7,22 +7,18 @@
     </el-carousel>
 
     <div class="Home__slider-list">
-      <MovieSlider
-        category-title="Netflix Originals"
-        request-url="now_playing.json"
-      />
-      <MovieSlider category-title="Trending Now" request-url="week.json" />
-      <MovieSlider category-title="Recently Added" request-url="tv.json" />
-      <MovieSlider category-title="Top Rated" request-url="top_rated.json" />
+      <MovieSlider category-title="原创" params="original" />
+      <MovieSlider category-title="电视" params="tv" />
+      <MovieSlider category-title="电影" params="movie" />
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
 import MovieDetails from "../../components/MovieDetails/MovieDetails.vue";
 import MovieSlidater from "../../components/MovieSlider/MovieSlider.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import instance from "../../request";
 
 export default {
   name: "Home",
@@ -37,18 +33,13 @@ export default {
   },
   setup() {
     let movieList = ref([]);
-    const loading = ref(true);
-    axios
-      .get("/movie.json")
-      .then((response) => {
-        movieList.value = response.data.results.splice(0, 10);
-        loading.value = false;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
 
-    return { movieList, loading };
+    onMounted(async () => {
+      const res = await instance.post("/movie/zone", {})
+      movieList.value = res.data.data?.slice(0, 7)
+    })
+
+    return { movieList };
   },
 };
 </script>
