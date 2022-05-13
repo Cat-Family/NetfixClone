@@ -10,16 +10,16 @@
         <p class="MovieDetails__description">
           {{ movie.overview }}
         </p>
-        <button v-if="!isMovieInMyList" type="button" class="btn MovieDetails__btn"
+        <button v-if="this.movie.isCollect == 0" type="button" class="btn MovieDetails__btn"
           @click="addMovieToMyList(this.movie.id)">
           <font-awesome-icon :icon="['fas', 'plus']" class="MovieDetails__btn-icon" fixed-width />
           收藏
         </button>
-        <button v-else type="button" class="btn MovieDetails__btn" @click="removeMovieFromMyList">
+        <button v-else type="button" class="btn MovieDetails__btn" @click="removeMovieFromMyList(this.movie.id)">
           <font-awesome-icon :icon="['fas', 'minus']" class="MovieDetails__btn-icon" fixed-width />
-          播放列表
+          取消收藏
         </button>
-        <button v-if="!isMovieInMyList" type="button" class="btn MovieDetails__btn" @click="toPaly(this.movie.id)">
+        <button type="button" class="btn MovieDetails__btn" @click="toPaly(this.movie.id)">
           <font-awesome-icon :icon="['fas', 'play']" class="MovieDetails__btn-icon" fixed-width />
           立即观看
         </button>
@@ -45,12 +45,11 @@ export default {
       title: String,
       overview: String,
       posterPath: String,
+      isCollect: Number
     },
   },
   computed: {
-    isMovieInMyList() {
-      return this.$store.getters.myList.find(({ id }) => id === this.movie.id);
-    },
+
   },
   components: {
     MovieLabels,
@@ -64,8 +63,15 @@ export default {
         user_id: window.localStorage.getItem("id"),
         movie_id: id
       })
-
     },
+    removeMovieFromMyList(id) {
+      instance.post("/collect/cancel-collection", {
+        collectId: id,
+        user: window.localStorage.getItem("id")
+      }).then(() => {
+        window.location.reload();
+      })
+    }
   },
   setup() {
     const router = useRouter();

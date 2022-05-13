@@ -88,7 +88,12 @@ const deleteUser = async (id) => {
   actionUserId.value = null;
 };
 
-const update = async (id) => {};
+const update = async (id) => {
+  const res = await instance.post(`/user/update`, { id });
+    if (res.data.code == 200) {
+    store.dispatch("getAllUsers");
+  }
+};
 
 onUnmounted(() => {
   store.dispatch("clearAllUsers");

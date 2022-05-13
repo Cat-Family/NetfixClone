@@ -48,6 +48,7 @@ export default {
             localStorage.setItem("email", userInfo.email);
             localStorage.setItem("username", userInfo.username);
             localStorage.setItem("id", userInfo.id);
+            localStorage.setItem("level", userInfo.level);
           }
         })
         .catch((error) => {
@@ -89,7 +90,7 @@ export default {
       commit(actions.clearError);
       instance
         .post(`/user/getCheckCode?email=${payload.email}`)
-        .then((res) => {})
+        .then((res) => { })
         .catch((error) =>
           commit(
             actions.setError,

@@ -2,10 +2,7 @@
   <header :class="[{ 'Header--bg': isScrolled }, 'Header']">
     <router-link :to="homeRoute">
       <router-link to="/admin/user">
-        <img
-          class="Header__logo Header__logo--un"
-          src="../../assets/images/netflix.png"
-        />
+        <img class="Header__logo Header__logo--un" src="../../assets/images/netflix.png" />
       </router-link>
     </router-link>
 
@@ -26,28 +23,18 @@
 
     <div class="Header__actions">
       <el-dropdown>
-        <el-avatar
-          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-        />
+        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item
-              ><router-link to="/profile">
-                用户配置
-              </router-link></el-dropdown-item
-            >
+            <el-dropdown-item>
+              <router-link to="/home">用户页面</router-link>
+            </el-dropdown-item>
             <el-dropdown-item @click="onLogOut">退出登录</el-dropdown-item>
-            <el-dropdown-item
-              ><router-link to="/home">用户页面</router-link></el-dropdown-item
-            >
           </el-dropdown-menu>
         </template>
       </el-dropdown>
 
-      <button
-        :class="[{ 'hamburger--active': isMenuOpened }, 'hamburger', 'button']"
-        v-on:click="toggleSidebar"
-      >
+      <button :class="[{ 'hamburger--active': isMenuOpened }, 'hamburger', 'button']" v-on:click="toggleSidebar">
         <span />
         <span />
         <span />

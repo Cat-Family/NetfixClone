@@ -234,7 +234,7 @@ export default {
     const email = ref("");
     const password = ref("");
     const code = ref("");
-    const rememberMe = ref(false);
+    const rememberMe = ref(true);
     const signUpRoute = ref(routes.signUp);
     const signInEmailNext = ref(false);
     const codeBtnWord = ref("获取验证码"); // 获取验证码按钮文字

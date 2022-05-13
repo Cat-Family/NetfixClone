@@ -82,7 +82,7 @@ export default {
     this.$refs.slider.toggleLoading();
 
     if (this.params === "original") {
-      this.param = { original: 1 }
+      this.param = { original: 0 }
     }
     if (this.params === "tv") {
       this.param = { post: 1 }

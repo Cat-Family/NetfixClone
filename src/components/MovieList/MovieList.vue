@@ -86,17 +86,12 @@ export default {
         params = { type: path.split("/")[2], post: 1 };
       }
       if (path.split("/")[1] === "collection") {
-        if (window.localStorage.getItem("id")) {
-          params = { id: window.localStorage.getItem("id") }
-        }
+        params = { id: window.localStorage.getItem("id") || null }
       }
       if (path.split("/")[1] === "my-list") {
-        if (window.localStorage.getItem("id")) {
-          params = { id: window.localStorage.getItem("id"), mark: 1 }
-        }
+        params = { id: window.localStorage.getItem("id") || null, mark: 1 }
       }
       if (path.split("/")[1] === "search") {
-        console.log("test");
         params = { info: path.split("/")[2] }
       }
 
