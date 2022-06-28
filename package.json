@@ -16,7 +16,7 @@
     "element-plus": "^2.1.10",
     "qiniu-js": "^3.4.0",
     "sass": "^1.50.1",
-    "sass-loader": "^12.6.0",
+    "sass-loader": "^13.0.2",
     "unplugin-auto-import": "^0.7.1",
     "unplugin-vue-components": "^0.19.3",
     "vue": "^3.2.33",
