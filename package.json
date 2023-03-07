@@ -17,7 +17,7 @@
     "qiniu-js": "^3.4.0",
     "sass": "^1.50.1",
     "sass-loader": "^12.6.0",
-    "unplugin-auto-import": "^0.7.1",
+    "unplugin-auto-import": "^0.15.1",
     "unplugin-vue-components": "^0.19.3",
     "vue": "^3.2.33",
     "vue-plyr": "^7.0.0",
